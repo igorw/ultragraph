@@ -10,8 +10,11 @@ public class Dijkstra {
 	private Graph graph;
 	private Vertex origin;
 	private Vertex target;
-	
+
+	// boxed means visited at least once
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
+	// explored means all edges were traversed
+	private HashSet<Vertex> explored = new HashSet<Vertex>();
 	private Vertex currentVertex;
 	
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
