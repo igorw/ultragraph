@@ -10,15 +10,12 @@ public class Dijkstra {
 	private Graph graph;
 	private Vertex origin;
 	private Vertex target;
-
-	// boxed means visited at least once
+	
+	// boxed means all edges were traversed
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
 	
-	// explored means all edges were traversed
-	private HashSet<Vertex> explored = new HashSet<Vertex>();
-	
 	// the currently selected vertex
-	private Vertex currentVertex;
+	private Vertex boxedVertex;
 	
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
 		this.graph = graph;
@@ -27,71 +24,80 @@ public class Dijkstra {
 	}
 	
 	public void execute() {
-		Edge currentEdge;
 		
-		origin.setWeight(0);
+		origin.setLabel(0);
 		
-		currentVertex = origin;
+		boxedVertex = origin;
 
 		// loop through all vertices
 		while (true) {
 			
-			// loop through all edges
-			while (null != (currentEdge = getLowestEdge(currentVertex))) {
-				boxVertex(currentEdge.getTarget(), currentVertex, currentEdge);
+			System.out.println(boxedVertex);
+			
+			// add newly boxed vertex to boxed array
+			boxed.add(boxedVertex);
+			
+			// label all vertices
+			for (Edge e : boxedVertex.getEdges()) {
 				
-				System.out.println(currentVertex + " " + currentEdge.getTarget() + " " + currentEdge.getTarget().getWeight());
+				// we don't want to go back to the origin
+				if (e.getTarget() == origin) {
+					continue;
+				}
+				
+				// targeted vertex is already boxed
+				if (boxed.contains(e.getTarget())) {
+					// unless we can get a better deal, we skip labelling
+					if (e.getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
+						continue;
+					}
+				}
+				
+				if (e.getTarget() == target) {
+					
+				}
+				
+				e.getTarget().setLabel(e.getFullWeight());
+				e.getTarget().setOrigin(boxedVertex);
+				
+				System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel());
 			}
 			
-			// we have traversed all edges
-			explored.add(currentVertex);
+			// we found our target
+			if (boxedVertex == target) {
+				break;
+			}
 			
-			currentVertex = getLowestVertex();
-			System.out.println(currentVertex);
+			// find next vertex for boxing
+			boxedVertex = getLowestVertex();
+			
+			// vertex not found, some error
+			if (boxedVertex == null) {
+				System.out.println("Error - no vertex found for boxing");
+				return;
+			}
 		}
-	}
-	
-	// touch vertex, set origin and weight
-	private void boxVertex(Vertex vertex, Vertex origin, Edge edge) {
-		vertex.setOrigin(origin);
-		vertex.setWeight(edge.getFullWeight());
 		
-		boxed.add(vertex);
-	}
-	
-	// find edge with lowest weight for a given vertex
-	// to be boxed
-	private Edge getLowestEdge(Vertex vertex) {
-		Edge selectedEdge = null;
-		for (Edge edge : vertex.getEdges()) {
-			
-			// don't get edges to the origin
-			if (edge.getTarget() == origin) {
-				continue;
-			}
-			
-			// ignore already boxed targets
-			// unless it results in a faster path (lower weight)
-			if (boxed.contains(edge.getTarget()) && edge.getTarget().getWeight() >= edge.getFullWeight()) {
-				continue;
-			}
-			
-			if (selectedEdge == null) {
-				// set the first edge
-				selectedEdge = edge;
-			} else if (edge.getWeight() < selectedEdge.getWeight()) {
-				// we have a lower edge, use this instead
-				selectedEdge = edge;
-			}
+		System.out.println("------");
+		for (Vertex vertex : graph.getVertices()) {
+			System.out.println(vertex + " " + vertex.getLabel() + " " + vertex.getOrigin());
 		}
-		return selectedEdge;
+		
+		// trace way back
+		/*Vertex vertex = target;
+		System.out.println(vertex);
+		
+		while (vertex != origin) {
+			vertex = vertex.getOrigin();
+			System.out.println(vertex);
+		}*/
 	}
 	
 	// find the vertex with the lowest weight
 	private Vertex getLowestVertex() {
 		Vertex selectedVertex = null;
 		for (Vertex vertex : graph.getVertices()) {
-			if (vertex != currentVertex && vertex.hasOrigin() && !explored.contains(currentVertex) && (selectedVertex == null || vertex.getWeight() < selectedVertex.getWeight())) {
+			if (!boxed.contains(vertex) && vertex.hasOrigin() && (selectedVertex == null || vertex.getLabel() < selectedVertex.getLabel())) {
 				selectedVertex = vertex;
 			}
 		}

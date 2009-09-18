@@ -37,6 +37,11 @@ public class Edge {
 	
 	// get the full relative weight
 	public int getFullWeight() {
-		return origin.getWeight() + weight;
+		return (origin.hasOrigin() ? origin.getLabel() : 0) + weight;
+	}
+	
+	// get full relative weight for alternate origin
+	public int getFullWeight(Vertex alternateOrigin) {
+		return (alternateOrigin.hasOrigin() ? alternateOrigin.getLabel() : 0) + weight;
 	}
 }

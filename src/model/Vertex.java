@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public class Vertex {
 	private String name;
-	private int weight = Vertex.INFINITE;
+	private int label = Vertex.INFINITE;
 	private Vertex origin;
+	
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
 	public static final int INFINITE = -1;
@@ -22,12 +23,12 @@ public class Vertex {
 		this.name = name;
 	}
 
-	public int getWeight() {
-		return weight;
+	public int getLabel() {
+		return label;
 	}
 
-	public void setWeight(int weight) {
-		this.weight = weight;
+	public void setLabel(int weight) {
+		this.label = weight;
 	}
 	
 	public boolean hasOrigin() {
@@ -58,17 +59,6 @@ public class Vertex {
 	public void connectTo(Vertex vertex, int weight) {
 		connectTo(vertex, weight, true);
 	}
-	
-	/*public int getWeightRecursive() {
-		if (!hasOrigin()) {
-			return Vertex.INFINITE;
-		}
-		
-		int rWeight = origin.getWeight();
-		for (Edge edge : edges) {
-			if (edge == origin)
-		}
-	}*/
 	
 	public String toString() {
 		return name;
