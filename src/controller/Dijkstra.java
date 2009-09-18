@@ -45,16 +45,12 @@ public class Dijkstra {
 					continue;
 				}
 				
-				// targeted vertex is already boxed
-				if (boxed.contains(e.getTarget())) {
-					// unless we can get a better deal, we skip labelling
-					if (e.getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
-						continue;
-					}
-				}
-				
-				if (e.getTarget() == target) {
-					
+				// targeted vertex is already touched
+				// unless we can get a better deal, we skip labelling
+				// this also catches going back to parent vertices
+				if (e.getTarget().hasOrigin() && e.getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
+					System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel() + " unprofitable");
+					continue;
 				}
 				
 				e.getTarget().setLabel(e.getFullWeight());
@@ -78,19 +74,16 @@ public class Dijkstra {
 			}
 		}
 		
-		System.out.println("------");
-		for (Vertex vertex : graph.getVertices()) {
-			System.out.println(vertex + " " + vertex.getLabel() + " " + vertex.getOrigin());
-		}
+		System.out.println("-----");
 		
 		// trace way back
-		/*Vertex vertex = target;
+		Vertex vertex = target;
 		System.out.println(vertex);
 		
 		while (vertex != origin) {
 			vertex = vertex.getOrigin();
 			System.out.println(vertex);
-		}*/
+		}
 	}
 	
 	// find the vertex with the lowest weight
