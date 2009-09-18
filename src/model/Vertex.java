@@ -47,15 +47,15 @@ public class Vertex {
 		return edges;
 	}
 	
-	public void connectTo(Vertex vertex, int weight, boolean remote) {
+	public void connectTo(Vertex vertex, int weight, boolean connectBack) {
 		edges.add(new Edge(this, vertex, weight));
-		if (remote) {
-			// add edge to the remote vertex
+		if (connectBack) {
+			// add edge back from the remote vertex
 			vertex.connectTo(this, weight, false);
 		}
 	}
 	
-	// if no remote given, assume true
+	// if no connectBack given, assume true
 	public void connectTo(Vertex vertex, int weight) {
 		connectTo(vertex, weight, true);
 	}
