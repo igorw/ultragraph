@@ -8,7 +8,7 @@ public class Vertex {
 	private Vertex origin;
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
-	public static final int INFINITE = 0;
+	public static final int INFINITE = -1;
 	
 	public Vertex(String name) {
 		setName(name);

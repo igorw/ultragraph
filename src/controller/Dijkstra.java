@@ -13,8 +13,11 @@ public class Dijkstra {
 
 	// boxed means visited at least once
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
+	
 	// explored means all edges were traversed
 	private HashSet<Vertex> explored = new HashSet<Vertex>();
+	
+	// the currently selected vertex
 	private Vertex currentVertex;
 	
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
@@ -24,7 +27,9 @@ public class Dijkstra {
 	}
 	
 	public void execute() {
-		Edge selectedEdge;
+		Edge currentEdge;
+		
+		origin.setWeight(0);
 		
 		currentVertex = origin;
 
@@ -32,11 +37,14 @@ public class Dijkstra {
 		while (true) {
 			
 			// loop through all edges
-			while (null != (selectedEdge = getLowestEdge(currentVertex))) {
-				boxVertex(selectedEdge.getTarget(), currentVertex, selectedEdge);
+			while (null != (currentEdge = getLowestEdge(currentVertex))) {
+				boxVertex(currentEdge.getTarget(), currentVertex, currentEdge);
 				
-				System.out.println(currentVertex + " " + selectedEdge.getTarget() + " " + selectedEdge.getTarget().getWeight());
+				System.out.println(currentVertex + " " + currentEdge.getTarget() + " " + currentEdge.getTarget().getWeight());
 			}
+			
+			// we have traversed all edges
+			explored.add(currentVertex);
 			
 			currentVertex = getLowestVertex();
 			System.out.println(currentVertex);
@@ -83,7 +91,7 @@ public class Dijkstra {
 	private Vertex getLowestVertex() {
 		Vertex selectedVertex = null;
 		for (Vertex vertex : graph.getVertices()) {
-			if (vertex != currentVertex && vertex.hasOrigin() && (selectedVertex == null || vertex.getWeight() < selectedVertex.getWeight())) {
+			if (vertex != currentVertex && vertex.hasOrigin() && !explored.contains(currentVertex) && (selectedVertex == null || vertex.getWeight() < selectedVertex.getWeight())) {
 				selectedVertex = vertex;
 			}
 		}
