@@ -54,6 +54,12 @@ public class Kruskal {
 		}
 		
 		System.out.println("done");
+		
+		for (Tree t : forrest.getTrees()) {
+			for (Edge e : t.getEdges()) {
+				System.out.println(e);
+			}
+		}
 	}
 	
 	// get shortest edge that does not complete a circuit
@@ -100,8 +106,8 @@ public class Kruskal {
 		// does the edge touch the tree
 		public boolean connects(Edge edge) {
 			for (Edge e : edges) {
-				if (edge.getOrigin() == e.getOrigin() || e.getOrigin() == e.getTarget()) return true;
-				if (edge.getTarget() == e.getOrigin() || e.getTarget() == e.getTarget()) return true;
+				if (edge.getOrigin() == e.getOrigin() || edge.getOrigin() == e.getTarget()) return true;
+				if (edge.getTarget() == e.getOrigin() || edge.getTarget() == e.getTarget()) return true;
 			}
 			return false;
 		}
