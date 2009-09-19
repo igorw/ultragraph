@@ -1,13 +1,13 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Vertex {
 	private String name;
 	private int label = Vertex.INFINITE;
 	private Vertex origin;
 	
-	private ArrayList<Edge> edges = new ArrayList<Edge>();
+	private HashSet<Edge> edges = new HashSet<Edge>();
 
 	public static final int INFINITE = -1;
 	
@@ -43,7 +43,7 @@ public class Vertex {
 		this.origin = origin;
 	}
 	
-	public ArrayList<Edge> getEdges() {
+	public HashSet<Edge> getEdges() {
 		return edges;
 	}
 	

@@ -6,6 +6,8 @@ import model.Edge;
 import model.Graph;
 import model.Vertex;
 
+// dijkstra's algorithm
+// find shortest path between two vertices
 public class Dijkstra {
 	private Graph graph;
 	private Vertex origin;
@@ -88,12 +90,41 @@ public class Dijkstra {
 	
 	// find the vertex with the lowest weight
 	private Vertex getLowestVertex() {
-		Vertex selectedVertex = null;
-		for (Vertex vertex : graph.getVertices()) {
-			if (!boxed.contains(vertex) && vertex.hasOrigin() && (selectedVertex == null || vertex.getLabel() < selectedVertex.getLabel())) {
-				selectedVertex = vertex;
+		Vertex lowest = null;
+		for (Vertex v : graph.getVertices()) {
+			if (!boxed.contains(v) && v.hasOrigin() && (lowest == null || v.getLabel() < lowest.getLabel())) {
+				lowest = v;
 			}
 		}
-		return selectedVertex;
+		return lowest;
+	}
+	
+	public static void main(String[] args) {
+		Vertex a = new Vertex("A");
+		Vertex b = new Vertex("B");
+		Vertex c = new Vertex("C");
+		Vertex d = new Vertex("D");
+		Vertex e = new Vertex("E");
+		Vertex f = new Vertex("F");
+		Vertex g = new Vertex("G");
+		Vertex h = new Vertex("H");
+
+		a.connectTo(b, 2);
+		a.connectTo(g, 6);
+		b.connectTo(c, 7);
+		b.connectTo(e, 2);
+		g.connectTo(e, 1);
+		g.connectTo(h, 4);
+		e.connectTo(f, 2);
+		f.connectTo(c, 3);
+		f.connectTo(h, 2);
+		c.connectTo(d, 3);
+		h.connectTo(d, 2);
+		
+		Graph graph = new Graph();
+		graph.addVertex(a, b, c, d, e, f, g, h);
+		
+		Dijkstra dijkstra = new Dijkstra(graph, a, d);
+		dijkstra.execute();
 	}
 }
