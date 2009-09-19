@@ -1,17 +1,23 @@
 package controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 
 import model.Edge;
 import model.Graph;
 import model.Vertex;
+import tools.Shell;
 
 // prim's algorithm
 // get a minimal spanning tree
 public class Prim {
 	private Graph graph;
 	private HashSet<Vertex> touched = new HashSet<Vertex>();
+	private HashSet<Edge> result = new HashSet<Edge>();
 	
 	public Prim(Graph graph) {
 		this.graph = graph;
@@ -19,7 +25,6 @@ public class Prim {
 	
 	public void execute() {
 		Vertex selectedVertex;
-		HashSet<Edge> result = new HashSet<Edge>();
 		
 		// get initial vertex
 		selectedVertex = getRandomVertex();
@@ -49,6 +54,21 @@ public class Prim {
 		}
 		
 		// we're done
+		try {
+			File tempFile = File.createTempFile("graphviz", null);
+			
+			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
+			out.write("graph g {\n");
+			for (Edge e : result) {
+				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + ";\n");
+			}
+			out.write("}\n");
+			out.close();
+			
+			Shell.exec("dot -Tpng -o /home/igor/prim.png < " + tempFile.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Vertex getRandomVertex() {
@@ -68,6 +88,12 @@ public class Prim {
 			
 			// skip already touched targets
 			if (touched.contains(e.getTarget())) {
+				continue;
+			}
+			
+			// and their vice-versas
+			Edge mirror = e.getOrigin().getMirror(e.getTarget());
+			if (mirror != null && touched.contains(mirror)) {
 				continue;
 			}
 			
