@@ -53,20 +53,31 @@ public class Prim {
 		}
 		
 		// we're done
-		try {
-			File tempFile = File.createTempFile("graphviz", null);
-			
-			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
-			out.write("graph g {\n");
-			for (Edge e : tree) {
-				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + ";\n");
+		
+		for (int i = 0, size = tree.size(); i < size; i++) {
+			try {
+				File tempFile = File.createTempFile("graphviz", null);
+				
+				BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
+				out.write("graph g {\n");
+				for (Vertex v : getTreeVertices()) {
+					out.write("\tNode " + v + ";\n");
+				}
+				int j = 0;
+				for (Edge e : tree) {
+					if (j > i) {
+						break;
+					}
+					out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [label=\"" + e.getWeight() + "\"];\n");
+					j++;
+				}
+				out.write("}\n");
+				out.close();
+				
+				Shell.exec("dot -Tpng -o /home/igor/prim" + i + ".png < " + tempFile.getAbsolutePath());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			out.write("}\n");
-			out.close();
-			
-			Shell.exec("dot -Tpng -o /home/igor/prim.png < " + tempFile.getAbsolutePath());
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
