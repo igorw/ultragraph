@@ -105,6 +105,7 @@ public class Prim {
 	}
 
 	// get shortest edge
+	// that touches tree at 1 end exclusively
 	private Edge getShortestEdge() {
 		Edge shortest = null;
 		for (Edge e : graph.getEdges()) {
@@ -137,7 +138,7 @@ public class Prim {
 				return false;
 			}
 		}
-		return true;
+		return (matches == 1) ? true : false;
 	}
 	
 	private HashSet<Vertex> getTreeVertices() {

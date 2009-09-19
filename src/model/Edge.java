@@ -44,4 +44,8 @@ public class Edge {
 	public int getFullWeight(Vertex alternateOrigin) {
 		return (alternateOrigin.hasOrigin() ? alternateOrigin.getLabel() : 0) + weight;
 	}
+	
+	public String toString() {
+		return getOrigin() + " " + getTarget() + " " + getWeight();
+	}
 }
