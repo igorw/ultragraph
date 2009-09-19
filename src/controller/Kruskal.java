@@ -41,25 +41,14 @@ public class Kruskal {
 			
 			forrest.add(shortestEdge);
 			
-			// all trees are connected
-			if (forrest.size() == 1 && i >= 1) {
+			if (forrest.size() == 1 && forrest.countEdges() - 1 == graph.getVertices().size()) {
 				break;
 			}
-			
-			/*if (tree.size() - 1 == graph.getVertices().size()) {
-				break;
-			}*/
 			
 			i++;
 		}
 		
 		System.out.println("done");
-		
-		for (Tree t : forrest.getTrees()) {
-			for (Edge e : t.getEdges()) {
-				System.out.println(e);
-			}
-		}
 	}
 	
 	// get shortest edge that does not complete a circuit
@@ -73,7 +62,10 @@ public class Kruskal {
 				continue;
 			}
 			
-			// check for curcuits
+			// check for curcuits (connects to more than 2 trees)
+			/*if (forrest.connects(e) >= 2) {
+				continue;
+			}*/
 			
 			if (shortest == null || e.getWeight() < shortest.getWeight()) {
 				shortest = e;
@@ -111,6 +103,11 @@ public class Kruskal {
 			}
 			return false;
 		}
+		
+		// number of edges
+		public int size() {
+			return edges.size();
+		}
 	}
 	
 	// a forrest contains a list of separate (disconnected) trees
@@ -130,6 +127,9 @@ public class Kruskal {
 			for (Edge e : t1.getEdges()) {
 				t2.add(e);
 			}
+			
+			// remove t1
+			remove(t1);
 			
 			// update reference
 			t1 = t2;
@@ -171,7 +171,6 @@ public class Kruskal {
 				// connects to one tree, add
 				tree1.add(e);
 			} else {
-				
 				// new tree, create
 				Tree t = new Tree();
 				t.add(e);
@@ -185,6 +184,26 @@ public class Kruskal {
 				if (t.contains(e)) return true;
 			}
 			return false;
+		}
+		
+		// does edge connect to tree
+		public int connects(Edge e) {
+			int count = 0;
+			for (Tree t : trees) {
+				if (t.connects(e)) {
+					count++;
+				}
+			}
+			return count;
+		}
+		
+		// count all edges
+		public int countEdges() {
+			int count = 0;
+			for (Tree t : trees) {
+				count += t.size();
+			}
+			return count;
 		}
 	}
 	
