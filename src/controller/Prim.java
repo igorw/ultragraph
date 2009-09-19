@@ -16,39 +16,38 @@ import tools.Shell;
 // get a minimal spanning tree
 public class Prim {
 	private Graph graph;
-	private HashSet<Vertex> touched = new HashSet<Vertex>();
-	private HashSet<Edge> result = new HashSet<Edge>();
+	private HashSet<Edge> tree = new HashSet<Edge>();
 	
 	public Prim(Graph graph) {
 		this.graph = graph;
 	}
 	
 	public void execute() {
-		Vertex selectedVertex;
+		Edge shortestEdge;
 		
-		// get initial vertex
-		selectedVertex = getRandomVertex();
+		// initial edge
+		shortestEdge = getShortestEdge(getRandomVertex());
+		
+		// add initial edge to tree
+		tree.add(shortestEdge);
 		
 		while (true) {
+			// find next shortest edge
+			shortestEdge = getShortestEdge();
 			
-			// mark vertex as touched
-			touched.add(selectedVertex);
-			
-			Edge shortestEdge = getShortestEdge();
-			
+			// none found
 			if (shortestEdge == null) {
 				System.out.println("Error - no shortest edge found");
 				return;
 			}
 			
-			result.add(shortestEdge);
+			// add shortest edge to tree
+			tree.add(shortestEdge);
 			
 			System.out.println(shortestEdge.getOrigin() + " " + shortestEdge.getTarget());
 			
-			selectedVertex = shortestEdge.getTarget();
-			
 			// check for final spanning tree
-			if (graph.getVertices().size() - 1 == result.size()) {
+			if (graph.getVertices().size() - 1 == tree.size()) {
 				break;
 			}
 		}
@@ -59,7 +58,7 @@ public class Prim {
 			
 			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
 			out.write("graph g {\n");
-			for (Edge e : result) {
+			for (Edge e : tree) {
 				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + ";\n");
 			}
 			out.write("}\n");
@@ -71,13 +70,14 @@ public class Prim {
 		}
 	}
 	
-	public Vertex getRandomVertex() {
+	// get initial vertex
+	private Vertex getRandomVertex() {
 		int index = new Random().nextInt(graph.getVertices().size() - 1) + 1;
 		return graph.getVertices().get(index);
 	}
 
-	// get shortest edge
-	public Edge getShortestEdge() {
+	// get shortest edge for a vertex
+	private Edge getShortestEdge(Vertex vertex) {
 		Edge shortest = null;
 		for (Edge e : graph.getEdges()) {
 			
@@ -86,14 +86,25 @@ public class Prim {
 				continue;
 			}
 			
-			// skip already touched targets
-			if (touched.contains(e.getTarget())) {
+			if (shortest == null || e.getWeight() < shortest.getWeight()) {
+				shortest = e;
+			}
+		}
+		return shortest;
+	}
+
+	// get shortest edge
+	private Edge getShortestEdge() {
+		Edge shortest = null;
+		for (Edge e : graph.getEdges()) {
+			
+			// skip self-referencial edges
+			if (e.getTarget() == e.getOrigin()) {
 				continue;
 			}
 			
-			// and their vice-versas
-			Edge mirror = e.getOrigin().getMirror(e.getTarget());
-			if (mirror != null && touched.contains(mirror)) {
+			// check for tree connections
+			if (!touchesTreeExclusive(e)) {
 				continue;
 			}
 			
@@ -102,6 +113,26 @@ public class Prim {
 			}
 		}
 		return shortest;
+	}
+	
+	// edge touches existing tree only at one end
+	private boolean touchesTreeExclusive(Edge checkEdge) {
+		for (Edge treeEdge : tree) {
+			if (
+						checkEdge.getOrigin() == treeEdge.getOrigin() && checkEdge.getTarget() != treeEdge.getTarget()
+					||	checkEdge.getOrigin() != treeEdge.getOrigin() && checkEdge.getTarget() == treeEdge.getTarget()
+					||	checkEdge.getOrigin() == treeEdge.getTarget() && checkEdge.getTarget() != treeEdge.getOrigin()
+					||	checkEdge.getOrigin() != treeEdge.getTarget() && checkEdge.getTarget() == treeEdge.getOrigin()
+			)
+			{
+				// all fine
+			}
+			else
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static void main(String[] args) {

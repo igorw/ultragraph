@@ -70,16 +70,6 @@ public class Vertex {
 		return null;
 	}
 	
-	// get the reverse edge of a connected vertex
-	public Edge getMirror(Vertex vertex) {
-		for (Edge e : edges) {
-			if (e.getTarget() == vertex) {
-				return e.getTarget().findEdge(this);
-			}
-		}
-		return null;
-	}
-	
 	public String toString() {
 		return name;
 	}
