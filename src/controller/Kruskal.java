@@ -8,13 +8,14 @@ import model.Vertex;
 
 public class Kruskal {
 	private Graph graph;
-	private HashSet<Edge> tree = new HashSet<Edge>();
+	private Forrest forrest = new Forrest();
 	private HashSet<Edge> cleanGrid = new HashSet<Edge>();
 	
 	public Kruskal(Graph graph) {
 		this.graph = graph;
 		
 		// initialise clean grid
+		// clean grid contains no reverse edges
 		for (Vertex v : graph.getVertices()) {
 			for (Edge e : v.getEdges()) {
 				if (!cleanGrid.contains(e.getTarget().findEdge(v))) {
@@ -26,6 +27,8 @@ public class Kruskal {
 	}
 	
 	public void execute() {
+		int i = 0;
+		
 		while (true) {
 			Edge shortestEdge = getShortestEdge();
 			
@@ -34,13 +37,20 @@ public class Kruskal {
 				System.exit(0);
 			}
 			
-			System.out.println("shortest found: " + shortestEdge + "\n");
+			System.out.println("shortest found: " + shortestEdge);
 			
-			tree.add(shortestEdge);
+			forrest.add(shortestEdge);
 			
-			if (tree.size() - 1 == graph.getVertices().size()) {
+			// all trees are connected
+			if (forrest.size() == 1 && i >= 1) {
 				break;
 			}
+			
+			/*if (tree.size() - 1 == graph.getVertices().size()) {
+				break;
+			}*/
+			
+			i++;
 		}
 		
 		System.out.println("done");
@@ -53,14 +63,11 @@ public class Kruskal {
 			
 			// no point if it's already included
 			// also reverse-edges
-			if (tree.contains(e) || tree.contains(e.getTarget().findEdge(e.getOrigin()))) {
+			if (forrest.contains(e) || forrest.contains(e.getTarget().findEdge(e.getOrigin()))) {
 				continue;
 			}
 			
-			// check if it creates circuit
-			if (createsCircuit(e)) {
-				continue;
-			}
+			// check for curcuits
 			
 			if (shortest == null || e.getWeight() < shortest.getWeight()) {
 				shortest = e;
@@ -69,23 +76,110 @@ public class Kruskal {
 		return shortest;
 	}
 	
-	private boolean createsCircuit(Edge edge) {
-		boolean originMatch = false;
-		boolean targetMatch = false;
-		System.out.println("does this create circuit: " + edge);
-		for (Edge e : tree) {
-			if (edge.getOrigin() == e.getOrigin() || edge.getOrigin() == e.getTarget()) {
-				originMatch = true;
-				System.out.println("origin match " + e);
+	// a tree contains a set of edges
+	public class Tree {
+		private HashSet<Edge> edges = new HashSet<Edge>();
+		
+		public void add(Edge e) {
+			edges.add(e);
+		}
+		
+		public void remove(Edge e) {
+			edges.remove(e);
+		}
+		
+		public HashSet<Edge> getEdges() {
+			return edges;
+		}
+		
+		// contains edge or reverse-edge
+		public boolean contains(Edge edge) {
+			return edges.contains(edge) || edges.contains(edge.getTarget().findEdge(edge.getOrigin()));
+		}
+		
+		// does the edge touch the tree
+		public boolean connects(Edge edge) {
+			for (Edge e : edges) {
+				if (edge.getOrigin() == e.getOrigin() || e.getOrigin() == e.getTarget()) return true;
+				if (edge.getTarget() == e.getOrigin() || e.getTarget() == e.getTarget()) return true;
+			}
+			return false;
+		}
+	}
+	
+	// a forrest contains a list of separate (disconnected) trees
+	public class Forrest {
+		private HashSet<Tree> trees = new HashSet<Tree>();
+		
+		public void add(Tree t) {
+			trees.add(t);
+		}
+		
+		public void remove(Tree t) {
+			trees.remove(t);
+		}
+		
+		// merge two trees
+		public void merge(Tree t1, Tree t2) {
+			for (Edge e : t1.getEdges()) {
+				t2.add(e);
+			}
+			
+			// update reference
+			t1 = t2;
+		}
+		
+		public int size() {
+			return trees.size();
+		}
+		
+		public HashSet<Tree> getTrees() {
+			return trees;
+		}
+		
+		// add edge to forrest
+		public void add(Edge e) {
+			Tree tree1 = null;
+			Tree tree2 = null;
+			for (Tree t : trees) {
+				if (t.connects(e)) {
+					tree1 = t;
+					break;
+				}
+			}
+			if (tree1 != null) {
+				for (Tree t : trees) {
+					if (t != tree1 && t.connects(e)) {
+						tree2 = t;
+						break;
+					}
+				}
+			}
+			
+			if (tree1 != null && tree2 != null) {
+				// if edge connects to two trees, merge
+				tree1.add(e);
+				tree2.add(e);
+				merge(tree1, tree2);
+			} else if (tree1 != null) {
+				// connects to one tree, add
+				tree1.add(e);
+			} else {
+				
+				// new tree, create
+				Tree t = new Tree();
+				t.add(e);
+				add(t);
 			}
 		}
-		for (Edge e : tree) {
-			if (edge.getTarget() == e.getOrigin() || edge.getTarget() == e.getTarget()) {
-				targetMatch = true;
-				System.out.println("target match: " + e);
+		
+		// contains edge
+		public boolean contains(Edge e) {
+			for (Tree t : trees) {
+				if (t.contains(e)) return true;
 			}
+			return false;
 		}
-		return originMatch && targetMatch;
 	}
 	
 	public static void main(String[] args) {
