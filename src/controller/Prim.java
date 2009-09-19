@@ -116,23 +116,26 @@ public class Prim {
 	}
 	
 	// edge touches existing tree only at one end
-	private boolean touchesTreeExclusive(Edge checkEdge) {
-		for (Edge treeEdge : tree) {
-			if (
-						checkEdge.getOrigin() == treeEdge.getOrigin() && checkEdge.getTarget() != treeEdge.getTarget()
-					||	checkEdge.getOrigin() != treeEdge.getOrigin() && checkEdge.getTarget() == treeEdge.getTarget()
-					||	checkEdge.getOrigin() == treeEdge.getTarget() && checkEdge.getTarget() != treeEdge.getOrigin()
-					||	checkEdge.getOrigin() != treeEdge.getTarget() && checkEdge.getTarget() == treeEdge.getOrigin()
-			)
-			{
-				// all fine
-			}
-			else
-			{
+	private boolean touchesTreeExclusive(Edge edge) {
+		int matches = 0;
+		for (Vertex vertex : getTreeVertices()) {
+			if (edge.getOrigin() == vertex) matches++;
+			if (edge.getTarget() == vertex) matches++;
+			
+			if (matches >= 2) {
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	private HashSet<Vertex> getTreeVertices() {
+		HashSet<Vertex> vertices = new HashSet<Vertex>();
+		for (Edge e : tree) {
+			vertices.add(e.getOrigin());
+			vertices.add(e.getTarget());
+		}
+		return vertices;
 	}
 	
 	public static void main(String[] args) {
