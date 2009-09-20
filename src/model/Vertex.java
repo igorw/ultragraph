@@ -6,7 +6,7 @@ public class Vertex {
 	private int label = -1;
 	private Vertex origin;
 	
-	private String color;
+	private String color = "black";
 	
 	public Vertex(String name) {
 		setName(name);

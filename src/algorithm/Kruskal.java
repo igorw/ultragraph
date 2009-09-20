@@ -1,55 +1,21 @@
-package controller;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashSet;
+package algorithm;
 
 import model.Edge;
 import model.Forrest;
 import model.Graph;
 import model.Vertex;
-import tools.Shell;
+import vizualisation.GraphViz;
 
 // kruskal's algorithm
 // get a minimal spanning tree
 public class Kruskal implements GraphAlgorithm {
 	private Graph graph;
 	private Forrest forrest = new Forrest();
+	private GraphViz viz;
 	
 	public Kruskal(Graph graph) {
 		this.graph = graph;
-	}
-
-	private int i = 0;
-	private void generateImage() {
-		try {
-			File tempFile = File.createTempFile("graphviz", null);
-			
-			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
-			out.write("graph g {\n");
-			for (Vertex v : graph.getVertices()) {
-				out.write("\r" + v + " [color=" + v.getColor() + "];\n");
-			}
-			HashSet<Edge> processed = new HashSet<Edge>();
-			for (Edge e : graph.getEdges()) {
-				if (processed.contains(e)) {
-					continue;
-				}
-				out.write("\t" + e.getV1() + " -- " + e.getV2() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
-				processed.add(e);
-			}
-			out.write("}\n");
-			out.close();
-			
-			// run dot to generate gifs
-			Shell.exec("circo -Tgif -o kruskal" + i++ + ".gif < " + tempFile.getAbsolutePath());
-			
-			//
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		this.viz = new GraphViz(graph, "kruskal");
 	}
 	
 	public void execute() {
@@ -59,13 +25,8 @@ public class Kruskal implements GraphAlgorithm {
 			e.setColor("grey");
 		}
 		
-		// same for vertices
-		for (Vertex v : graph.getVertices()) {
-			v.setColor("black");
-		}
-		
 		// initial image
-		generateImage();
+		viz.frame();
 		
 		while (true) {
 			Edge shortestEdge = getShortestEdge();
@@ -81,7 +42,7 @@ public class Kruskal implements GraphAlgorithm {
 			shortestEdge.getV1().setColor("red");
 			shortestEdge.getV2().setColor("red");
 			shortestEdge.setColor("red");
-			generateImage();
+			viz.frame();
 			
 			forrest.add(shortestEdge);
 			
@@ -91,14 +52,8 @@ public class Kruskal implements GraphAlgorithm {
 		}
 		
 		System.out.println("done");
-		
-		try {
-			// make an animated gif from out images
-			Shell.exec("gifsicle --delay=200 --loop kruskal*.gif > anim_kruskal.gif");
-			Shell.exec("rm kruskal*.gif");
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+
+		viz.save();
 	}
 	
 	// get shortest edge that does not complete a circuit

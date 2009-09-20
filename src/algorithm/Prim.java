@@ -1,9 +1,5 @@
-package controller;
+package algorithm;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashSet;
 
 import model.DirectedEdge;
@@ -11,44 +7,18 @@ import model.Edge;
 import model.Graph;
 import model.Tree;
 import model.Vertex;
-import tools.Shell;
+import vizualisation.GraphViz;
 
 // prim's algorithm
 // get a minimal spanning tree
 public class Prim implements GraphAlgorithm {
 	private Graph graph;
 	private Tree tree = new Tree();
+	private GraphViz viz;
 	
 	public Prim(Graph graph) {
 		this.graph = graph;
-	}
-	
-	private int i = 0;
-	private void generateImage() {
-		try {
-			File tempFile = File.createTempFile("graphviz", null);
-			
-			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
-			out.write("graph g {\n");
-			for (Vertex v : graph.getVertices()) {
-				out.write("\r" + v + " [color=" + v.getColor() + "];\n");
-			}
-			HashSet<Edge> processed = new HashSet<Edge>();
-			for (Edge e : graph.getEdges()) {
-				if (processed.contains(e)) {
-					// ignore reverse of already processed
-					continue;
-				}
-				out.write("\t" + e.getV1() + " -- " + e.getV2() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
-				processed.add(e);
-			}
-			out.write("}\n");
-			out.close();
-			
-			Shell.exec("circo -Tgif -o prim" + i++ + ".gif < " + tempFile.getAbsolutePath());
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		this.viz = new GraphViz(graph, "prim");
 	}
 	
 	public void execute() {
@@ -58,13 +28,8 @@ public class Prim implements GraphAlgorithm {
 			e.setColor("grey");
 		}
 		
-		// same for vertices
-		for (Vertex v : graph.getVertices()) {
-			v.setColor("black");
-		}
-		
 		// initial image
-		generateImage();
+		viz.frame();
 		
 		Edge shortestEdge;
 		Vertex randomVertex = graph.getRandomVertex();
@@ -74,13 +39,13 @@ public class Prim implements GraphAlgorithm {
 		
 		// select vertex
 		randomVertex.setColor("red");
-		generateImage();
+		viz.frame();
 		
 		// select vertices and edge
 		shortestEdge.getV1().setColor("red");
 		shortestEdge.getV2().setColor("red");
 		shortestEdge.setColor("red");
-		generateImage();
+		viz.frame();
 		
 		// add initial edge to tree
 		tree.add(shortestEdge);
@@ -101,7 +66,7 @@ public class Prim implements GraphAlgorithm {
 			shortestEdge.getV1().setColor("red");
 			shortestEdge.getV2().setColor("red");
 			shortestEdge.setColor("red");
-			generateImage();
+			viz.frame();
 			
 			// add shortest edge to tree
 			tree.add(shortestEdge);
@@ -114,13 +79,7 @@ public class Prim implements GraphAlgorithm {
 		
 		// we're done
 
-		try {
-			// generate animated gif
-			Shell.exec("gifsicle --delay=200 --loop prim*.gif > anim_prim.gif");
-			Shell.exec("rm prim*.gif");
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		viz.save();
 	}
 
 	// get shortest edge for a vertex

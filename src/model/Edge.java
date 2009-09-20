@@ -5,7 +5,7 @@ public class Edge {
 	private Vertex v2;
 	private int weight;
 	
-	private String color;
+	private String color = "black";
 	
 	public Edge(Vertex origin, Vertex target, int weight) {
 		setV1(origin);

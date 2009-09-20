@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class Graph {
 	private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
@@ -42,9 +43,30 @@ public class Graph {
 		return vEdges;
 	}
 	
+	// get all edges directly connecting v1 and v2
+	public HashSet<Edge> getVerticesEdges(Vertex v1, Vertex v2) {
+		HashSet<Edge> vEdges = new HashSet<Edge>();
+		for (Edge e : edges) {
+			if (e.getV1() == v1 && e.getV2() == v2 || e.getV2() == v1 && e.getV1() == v2) {
+				vEdges.add(e);
+			}
+		}
+		return vEdges;
+	}
+	
 	// get initial vertex
 	public Vertex getRandomVertex() {
 		int index = new Random().nextInt(vertices.size() - 1) + 1;
 		return vertices.get(index);
+	}
+	
+	public static Edge getShortestEdge(Set<Edge> edges) {
+		Edge shortest = null;
+		for (Edge e : edges) {
+			if (shortest == null || e.getWeight() > shortest.getWeight()) {
+				shortest = e;
+			}
+		}
+		return shortest;
 	}
 }
