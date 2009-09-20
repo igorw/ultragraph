@@ -41,7 +41,7 @@ public class Kruskal {
 			
 			forrest.add(shortestEdge);
 			
-			if (forrest.size() == 1 && forrest.countEdges() - 1 == graph.getVertices().size()) {
+			if (forrest.size() == 1 && forrest.countEdges() == graph.getVertices().size() - 1) {
 				break;
 			}
 			
@@ -62,10 +62,10 @@ public class Kruskal {
 				continue;
 			}
 			
-			// check for curcuits (connects to more than 2 trees)
-			/*if (forrest.connects(e) >= 2) {
+			// check for curcuits (origin and target connect to forrest)
+			if (forrest.connectsBoth(e)) {
 				continue;
-			}*/
+			}
 			
 			if (shortest == null || e.getWeight() < shortest.getWeight()) {
 				shortest = e;
@@ -100,6 +100,21 @@ public class Kruskal {
 			for (Edge e : edges) {
 				if (edge.getOrigin() == e.getOrigin() || edge.getOrigin() == e.getTarget()) return true;
 				if (edge.getTarget() == e.getOrigin() || edge.getTarget() == e.getTarget()) return true;
+			}
+			return false;
+		}
+		
+		// do both edges touch the tree
+		public boolean connectsBoth(Edge edge) {
+			int c = 0;
+			for (Edge e : edges) {
+				if (edge.getOrigin() == e.getOrigin() || edge.getOrigin() == e.getTarget()) c++;
+				if (edge.getTarget() == e.getOrigin() || edge.getTarget() == e.getTarget()) c++;
+				
+				if (c >= 2) {
+					// both edges touch the tree
+					return true;
+				}
 			}
 			return false;
 		}
@@ -187,14 +202,13 @@ public class Kruskal {
 		}
 		
 		// does edge connect to tree
-		public int connects(Edge e) {
-			int count = 0;
+		public boolean connectsBoth(Edge e) {
 			for (Tree t : trees) {
-				if (t.connects(e)) {
-					count++;
+				if (t.connectsBoth(e)) {
+					return true;
 				}
 			}
-			return count;
+			return false;
 		}
 		
 		// count all edges
