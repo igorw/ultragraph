@@ -5,10 +5,18 @@ public class Edge {
 	private Vertex target;
 	private int weight;
 	
+	private String color;
+	
 	public Edge(Vertex origin, Vertex target, int weight) {
 		setOrigin(origin);
 		setTarget(target);
 		setWeight(weight);
+	}
+	
+	public Edge(Vertex origin, Vertex target) {
+		setOrigin(origin);
+		setTarget(target);
+		setWeight(1);
 	}
 	
 	public Vertex getOrigin() {
@@ -33,6 +41,14 @@ public class Edge {
 	
 	public void setWeight(int weight) {
 		this.weight = weight;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	// get the full relative weight

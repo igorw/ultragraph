@@ -1,10 +1,15 @@
 package controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 
 import model.Edge;
 import model.Graph;
 import model.Vertex;
+import tools.Shell;
 
 public class Kruskal {
 	private Graph graph;
@@ -25,9 +30,41 @@ public class Kruskal {
 			}
 		}
 	}
+
+	private int i = 0;
+	private void generateImage() {
+		try {
+			File tempFile = File.createTempFile("graphviz", null);
+			
+			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
+			out.write("graph g {\n");
+			HashSet<Edge> processed = new HashSet<Edge>();
+			for (Edge e : graph.getEdges()) {
+				if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
+					continue;
+				}
+				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
+				processed.add(e);
+			}
+			out.write("}\n");
+			out.close();
+			
+			// run dot to generate gifs
+			Shell.exec("circo -Tgif -o kruskal" + i++ + ".gif < " + tempFile.getAbsolutePath());
+			
+			//
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 	
 	public void execute() {
-		int i = 0;
+		
+		// prepare all edges for display
+		for (Edge e : graph.getEdges()) {
+			e.setColor("grey");
+		}
+		generateImage();
 		
 		while (true) {
 			Edge shortestEdge = getShortestEdge();
@@ -39,16 +76,28 @@ public class Kruskal {
 			
 			System.out.println("shortest found: " + shortestEdge);
 			
+			shortestEdge.setColor("red");
+			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
+			generateImage();
+			
 			forrest.add(shortestEdge);
 			
 			if (forrest.size() == 1 && forrest.countEdges() == graph.getVertices().size() - 1) {
 				break;
 			}
-			
-			i++;
 		}
 		
 		System.out.println("done");
+		
+		try {
+			// make an animated gif from out images
+			Shell.exec("gifsicle --delay=200 --loop kruskal*.gif > anim_kruskal.gif");
+			
+			// clean up
+			Shell.exec("rm /home/igor/kruskal*.gif");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	// get shortest edge that does not complete a circuit
