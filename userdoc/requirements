@@ -2,5 +2,5 @@
 operating system : linux
 
 java
-graphviz
-gifsicle
+graphviz	: http://www.graphviz.org
+gifsicle	: http://www.lcdf.org/gifsicle/
