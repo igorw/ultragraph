@@ -94,7 +94,7 @@ public class Kruskal {
 			Shell.exec("gifsicle --delay=200 --loop kruskal*.gif > anim_kruskal.gif");
 			
 			// clean up
-			Shell.exec("rm /home/igor/kruskal*.gif");
+			Shell.exec("rm kruskal*.gif");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
