@@ -38,6 +38,9 @@ public class Kruskal {
 			
 			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
 			out.write("graph g {\n");
+			for (Vertex v : graph.getVertices()) {
+				out.write("\r" + v + " [color=" + v.getColor() + "];\n");
+			}
 			HashSet<Edge> processed = new HashSet<Edge>();
 			for (Edge e : graph.getEdges()) {
 				if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
@@ -60,10 +63,17 @@ public class Kruskal {
 	
 	public void execute() {
 		
-		// prepare all edges for display
+		// prepare edges for display
 		for (Edge e : graph.getEdges()) {
 			e.setColor("grey");
 		}
+		
+		// same for vertices
+		for (Vertex v : graph.getVertices()) {
+			v.setColor("black");
+		}
+		
+		// initial image
 		generateImage();
 		
 		while (true) {
@@ -76,6 +86,9 @@ public class Kruskal {
 			
 			System.out.println("shortest found: " + shortestEdge);
 			
+			// select vertices and edge
+			shortestEdge.getOrigin().setColor("red");
+			shortestEdge.getTarget().setColor("red");
 			shortestEdge.setColor("red");
 			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
 			generateImage();

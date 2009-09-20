@@ -23,27 +23,31 @@ public class Prim {
 	}
 	
 	private int i = 0;
-	private void generateImage() throws IOException {
-		File tempFile = File.createTempFile("graphviz", null);
-		
-		BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
-		out.write("graph g {\n");
-		HashSet<Edge> processed = new HashSet<Edge>();
-		for (Vertex v : graph.getVertices()) {
-			out.write("\r" + v + " [color=" + v.getColor() + "];\n");
-		}
-		for (Edge e : graph.getEdges()) {
-			if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
-				// ignore reverse of already processed
-				continue;
+	private void generateImage() {
+		try {
+			File tempFile = File.createTempFile("graphviz", null);
+			
+			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
+			out.write("graph g {\n");
+			for (Vertex v : graph.getVertices()) {
+				out.write("\r" + v + " [color=" + v.getColor() + "];\n");
 			}
-			out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
-			processed.add(e);
+			HashSet<Edge> processed = new HashSet<Edge>();
+			for (Edge e : graph.getEdges()) {
+				if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
+					// ignore reverse of already processed
+					continue;
+				}
+				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
+				processed.add(e);
+			}
+			out.write("}\n");
+			out.close();
+			
+			Shell.exec("circo -Tgif -o prim" + i++ + ".gif < " + tempFile.getAbsolutePath());
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
-		out.write("}\n");
-		out.close();
-		
-		Shell.exec("circo -Tgif -o prim" + i++ + ".gif < " + tempFile.getAbsolutePath());
 	}
 	
 	public void execute() {
@@ -58,12 +62,8 @@ public class Prim {
 			v.setColor("black");
 		}
 		
-		try {
-			// initial image
-			generateImage();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		// initial image
+		generateImage();
 		
 		Edge shortestEdge;
 		Vertex randomVertex = getRandomVertex();
@@ -71,23 +71,19 @@ public class Prim {
 		// initial edge
 		shortestEdge = getShortestEdge(randomVertex);
 		
+		// select vertex
+		randomVertex.setColor("red");
+		generateImage();
+		
+		// select vertices and edge
+		shortestEdge.getOrigin().setColor("red");
+		shortestEdge.getTarget().setColor("red");
+		shortestEdge.setColor("red");
+		shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
+		generateImage();
+		
 		// add initial edge to tree
 		tree.add(shortestEdge);
-		
-		try {
-			// select vertex
-			randomVertex.setColor("red");
-			generateImage();
-			
-			// select edge
-			shortestEdge.getOrigin().setColor("red");
-			shortestEdge.getTarget().setColor("red");
-			shortestEdge.setColor("red");
-			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
-			generateImage();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
 		
 		while (true) {
 			// find next shortest edge
@@ -99,21 +95,17 @@ public class Prim {
 				return;
 			}
 			
+			System.out.println(shortestEdge.getOrigin() + " " + shortestEdge.getTarget());
+			
+			// select vertices and edge
+			shortestEdge.getOrigin().setColor("red");
+			shortestEdge.getTarget().setColor("red");
+			shortestEdge.setColor("red");
+			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
+			generateImage();
+			
 			// add shortest edge to tree
 			tree.add(shortestEdge);
-			
-			try {
-				// select vertices and edge
-				shortestEdge.getOrigin().setColor("red");
-				shortestEdge.getTarget().setColor("red");
-				shortestEdge.setColor("red");
-				shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
-				generateImage();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			
-			System.out.println(shortestEdge.getOrigin() + " " + shortestEdge.getTarget());
 			
 			// check for final spanning tree
 			if (graph.getVertices().size() - 1 == tree.size()) {
