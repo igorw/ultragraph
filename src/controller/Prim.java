@@ -29,6 +29,9 @@ public class Prim {
 		BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
 		out.write("graph g {\n");
 		HashSet<Edge> processed = new HashSet<Edge>();
+		for (Vertex v : graph.getVertices()) {
+			out.write("\r" + v + " [color=" + v.getColor() + "];\n");
+		}
 		for (Edge e : graph.getEdges()) {
 			if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
 				// ignore reverse of already processed
@@ -44,13 +47,47 @@ public class Prim {
 	}
 	
 	public void execute() {
+		
+		// prepare edges for display
+		for (Edge e : graph.getEdges()) {
+			e.setColor("grey");
+		}
+		
+		// same for vertices
+		for (Vertex v : graph.getVertices()) {
+			v.setColor("black");
+		}
+		
+		try {
+			// initial image
+			generateImage();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
 		Edge shortestEdge;
+		Vertex randomVertex = getRandomVertex();
 		
 		// initial edge
-		shortestEdge = getShortestEdge(getRandomVertex());
+		shortestEdge = getShortestEdge(randomVertex);
 		
 		// add initial edge to tree
 		tree.add(shortestEdge);
+		
+		try {
+			// select vertex
+			randomVertex.setColor("red");
+			generateImage();
+			
+			// select edge
+			shortestEdge.getOrigin().setColor("red");
+			shortestEdge.getTarget().setColor("red");
+			shortestEdge.setColor("red");
+			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
+			generateImage();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		
 		while (true) {
 			// find next shortest edge
@@ -65,6 +102,17 @@ public class Prim {
 			// add shortest edge to tree
 			tree.add(shortestEdge);
 			
+			try {
+				// select vertices and edge
+				shortestEdge.getOrigin().setColor("red");
+				shortestEdge.getTarget().setColor("red");
+				shortestEdge.setColor("red");
+				shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
+				generateImage();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			
 			System.out.println(shortestEdge.getOrigin() + " " + shortestEdge.getTarget());
 			
 			// check for final spanning tree
@@ -76,27 +124,11 @@ public class Prim {
 		// we're done
 
 		try {
-			for (Edge e : graph.getEdges()) {
-				e.setColor("grey");
-			}
-			
-			generateImage();
-			
-			for (Edge edge : tree) {
-				for (Edge e : graph.getEdges()) {
-					if (e == edge || e == edge.getTarget().findEdge(edge.getOrigin())) {
-						// set color
-						e.setColor("red");
-					}
-				}
-				generateImage();
-			}
-			
 			// generate animated gif
 			Shell.exec("gifsicle --delay=200 --loop prim*.gif > anim_prim.gif");
 			Shell.exec("rm prim*.gif");
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -109,7 +141,7 @@ public class Prim {
 	// get shortest edge for a vertex
 	private Edge getShortestEdge(Vertex vertex) {
 		Edge shortest = null;
-		for (Edge e : graph.getEdges()) {
+		for (Edge e : vertex.getEdges()) {
 			
 			// skip self-referencial edges
 			if (e.getTarget() == e.getOrigin()) {

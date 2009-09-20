@@ -4,12 +4,12 @@ import java.util.HashSet;
 
 public class Vertex {
 	private String name;
-	private int label = Vertex.INFINITE;
+	private int label = -1;
 	private Vertex origin;
 	
 	private HashSet<Edge> edges = new HashSet<Edge>();
-
-	public static final int INFINITE = -1;
+	
+	private String color;
 	
 	public Vertex(String name) {
 		setName(name);
@@ -45,6 +45,14 @@ public class Vertex {
 	
 	public HashSet<Edge> getEdges() {
 		return edges;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	public void connectTo(Vertex vertex, int weight, boolean connectBack) {
