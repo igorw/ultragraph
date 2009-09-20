@@ -1,13 +1,10 @@
 package model;
 
-import java.util.HashSet;
 
 public class Vertex {
 	private String name;
 	private int label = -1;
 	private Vertex origin;
-	
-	private HashSet<Edge> edges = new HashSet<Edge>();
 	
 	private String color;
 	
@@ -43,39 +40,12 @@ public class Vertex {
 		this.origin = origin;
 	}
 	
-	public HashSet<Edge> getEdges() {
-		return edges;
-	}
-	
 	public String getColor() {
 		return color;
 	}
 	
 	public void setColor(String color) {
 		this.color = color;
-	}
-	
-	public void connectTo(Vertex vertex, int weight, boolean connectBack) {
-		edges.add(new Edge(this, vertex, weight));
-		if (connectBack) {
-			// add edge back from the remote vertex
-			vertex.connectTo(this, weight, false);
-		}
-	}
-	
-	// if no connectBack given, assume true
-	public void connectTo(Vertex vertex, int weight) {
-		connectTo(vertex, weight, true);
-	}
-	
-	// find an edge to a specific vertex
-	public Edge findEdge(Vertex vertex) {
-		for (Edge e : edges) {
-			if (e.getTarget() == vertex) {
-				return e;
-			}
-		}
-		return null;
 	}
 	
 	public String toString() {

@@ -1,38 +1,38 @@
 package model;
 
 public class Edge {
-	private Vertex origin;
-	private Vertex target;
+	private Vertex v1;
+	private Vertex v2;
 	private int weight;
 	
 	private String color;
 	
 	public Edge(Vertex origin, Vertex target, int weight) {
-		setOrigin(origin);
-		setTarget(target);
+		setV1(origin);
+		setV2(target);
 		setWeight(weight);
 	}
 	
 	public Edge(Vertex origin, Vertex target) {
-		setOrigin(origin);
-		setTarget(target);
+		setV1(origin);
+		setV2(target);
 		setWeight(1);
 	}
 	
-	public Vertex getOrigin() {
-		return origin;
+	public Vertex getV1() {
+		return v1;
 	}
 	
-	public void setOrigin(Vertex origin) {
-		this.origin = origin;
+	public void setV1(Vertex origin) {
+		this.v1 = origin;
 	}
 	
-	public Vertex getTarget() {
-		return target;
+	public Vertex getV2() {
+		return v2;
 	}
 	
-	public void setTarget(Vertex target) {
-		this.target = target;
+	public void setV2(Vertex target) {
+		this.v2 = target;
 	}
 	
 	public int getWeight() {
@@ -53,15 +53,15 @@ public class Edge {
 	
 	// get the full relative weight
 	public int getFullWeight() {
-		return (origin.hasOrigin() ? origin.getLabel() : 0) + weight;
+		return (v1.hasOrigin() ? v1.getLabel() : 0) + weight;
 	}
 	
-	// get full relative weight for alternate origin
+	// get full relative weight for alternate v1
 	public int getFullWeight(Vertex alternateOrigin) {
 		return (alternateOrigin.hasOrigin() ? alternateOrigin.getLabel() : 0) + weight;
 	}
 	
 	public String toString() {
-		return getOrigin() + " " + getTarget() + " " + getWeight();
+		return getV1() + " " + getV2() + " " + getWeight();
 	}
 }

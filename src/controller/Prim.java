@@ -5,18 +5,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Random;
 
+import model.DirectedEdge;
 import model.Edge;
 import model.Graph;
+import model.Tree;
 import model.Vertex;
 import tools.Shell;
 
 // prim's algorithm
 // get a minimal spanning tree
-public class Prim {
+public class Prim implements GraphAlgorithm {
 	private Graph graph;
-	private HashSet<Edge> tree = new HashSet<Edge>();
+	private Tree tree = new Tree();
 	
 	public Prim(Graph graph) {
 		this.graph = graph;
@@ -34,11 +35,11 @@ public class Prim {
 			}
 			HashSet<Edge> processed = new HashSet<Edge>();
 			for (Edge e : graph.getEdges()) {
-				if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
+				if (processed.contains(e)) {
 					// ignore reverse of already processed
 					continue;
 				}
-				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
+				out.write("\t" + e.getV1() + " -- " + e.getV2() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
 				processed.add(e);
 			}
 			out.write("}\n");
@@ -66,7 +67,7 @@ public class Prim {
 		generateImage();
 		
 		Edge shortestEdge;
-		Vertex randomVertex = getRandomVertex();
+		Vertex randomVertex = graph.getRandomVertex();
 		
 		// initial edge
 		shortestEdge = getShortestEdge(randomVertex);
@@ -76,10 +77,9 @@ public class Prim {
 		generateImage();
 		
 		// select vertices and edge
-		shortestEdge.getOrigin().setColor("red");
-		shortestEdge.getTarget().setColor("red");
+		shortestEdge.getV1().setColor("red");
+		shortestEdge.getV2().setColor("red");
 		shortestEdge.setColor("red");
-		shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
 		generateImage();
 		
 		// add initial edge to tree
@@ -95,13 +95,12 @@ public class Prim {
 				return;
 			}
 			
-			System.out.println(shortestEdge.getOrigin() + " " + shortestEdge.getTarget());
+			System.out.println(shortestEdge.getV1() + " " + shortestEdge.getV2());
 			
 			// select vertices and edge
-			shortestEdge.getOrigin().setColor("red");
-			shortestEdge.getTarget().setColor("red");
+			shortestEdge.getV1().setColor("red");
+			shortestEdge.getV2().setColor("red");
 			shortestEdge.setColor("red");
-			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
 			generateImage();
 			
 			// add shortest edge to tree
@@ -123,25 +122,19 @@ public class Prim {
 			ex.printStackTrace();
 		}
 	}
-	
-	// get initial vertex
-	private Vertex getRandomVertex() {
-		int index = new Random().nextInt(graph.getVertices().size() - 1) + 1;
-		return graph.getVertices().get(index);
-	}
 
 	// get shortest edge for a vertex
 	private Edge getShortestEdge(Vertex vertex) {
 		Edge shortest = null;
-		for (Edge e : vertex.getEdges()) {
+		for (DirectedEdge e : graph.getVertexEdges(vertex)) {
 			
 			// skip self-referencial edges
 			if (e.getTarget() == e.getOrigin()) {
 				continue;
 			}
 			
-			if (shortest == null || e.getWeight() < shortest.getWeight()) {
-				shortest = e;
+			if (shortest == null || e.getEdge().getWeight() < shortest.getWeight()) {
+				shortest = e.getEdge();
 			}
 		}
 		return shortest;
@@ -154,7 +147,7 @@ public class Prim {
 		for (Edge e : graph.getEdges()) {
 			
 			// skip self-referencial edges
-			if (e.getTarget() == e.getOrigin()) {
+			if (e.getV2() == e.getV1()) {
 				continue;
 			}
 			
@@ -174,8 +167,8 @@ public class Prim {
 	private boolean touchesTreeExclusive(Edge edge) {
 		int matches = 0;
 		for (Vertex vertex : getTreeVertices()) {
-			if (edge.getOrigin() == vertex) matches++;
-			if (edge.getTarget() == vertex) matches++;
+			if (edge.getV1() == vertex) matches++;
+			if (edge.getV2() == vertex) matches++;
 			
 			if (matches >= 2) {
 				return false;
@@ -186,9 +179,9 @@ public class Prim {
 	
 	private HashSet<Vertex> getTreeVertices() {
 		HashSet<Vertex> vertices = new HashSet<Vertex>();
-		for (Edge e : tree) {
-			vertices.add(e.getOrigin());
-			vertices.add(e.getTarget());
+		for (Edge e : tree.getEdges()) {
+			vertices.add(e.getV1());
+			vertices.add(e.getV2());
 		}
 		return vertices;
 	}
@@ -201,18 +194,18 @@ public class Prim {
 		Vertex e = new Vertex("E");
 		Vertex f = new Vertex("F");
 		
-		a.connectTo(b, 5);
-		a.connectTo(d, 4);
-		a.connectTo(e, 8);
-		b.connectTo(c, 3);
-		b.connectTo(d, 3);
-		d.connectTo(c, 7);
-		d.connectTo(e, 3);
-		e.connectTo(f, 1);
-		c.connectTo(f, 2);
-		
 		Graph graph = new Graph();
-		graph.addVertex(a, b, c, d, e, f);
+		graph.add(a, b, c, d, e, f);
+		
+		graph.connect(a, b, 5);
+		graph.connect(a, d, 4);
+		graph.connect(a, e, 8);
+		graph.connect(b, c, 3);
+		graph.connect(b, d, 3);
+		graph.connect(d, c, 7);
+		graph.connect(d, e, 3);
+		graph.connect(e, f, 1);
+		graph.connect(c, f, 2);
 		
 		Prim prim = new Prim(graph);
 		prim.execute();

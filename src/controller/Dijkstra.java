@@ -2,13 +2,13 @@ package controller;
 
 import java.util.HashSet;
 
-import model.Edge;
+import model.DirectedEdge;
 import model.Graph;
 import model.Vertex;
 
 // dijkstra's algorithm
 // find shortest path between two vertices
-public class Dijkstra {
+public class Dijkstra implements GraphAlgorithm {
 	private Graph graph;
 	private Vertex origin;
 	private Vertex target;
@@ -40,7 +40,7 @@ public class Dijkstra {
 			boxed.add(boxedVertex);
 			
 			// label all vertices
-			for (Edge e : boxedVertex.getEdges()) {
+			for (DirectedEdge e : graph.getVertexEdges(boxedVertex)) {
 				
 				// we don't want to go back to the origin
 				if (e.getTarget() == origin) {
@@ -50,12 +50,12 @@ public class Dijkstra {
 				// targeted vertex is already touched
 				// unless we can get a better deal, we skip labelling
 				// this also catches going back to parent vertices
-				if (e.getTarget().hasOrigin() && e.getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
+				if (e.getTarget().hasOrigin() && e.getEdge().getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
 					System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel() + " unprofitable");
 					continue;
 				}
 				
-				e.getTarget().setLabel(e.getFullWeight());
+				e.getTarget().setLabel(e.getEdge().getFullWeight());
 				e.getTarget().setOrigin(boxedVertex);
 				
 				System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel());
@@ -108,21 +108,20 @@ public class Dijkstra {
 		Vertex f = new Vertex("F");
 		Vertex g = new Vertex("G");
 		Vertex h = new Vertex("H");
-
-		a.connectTo(b, 2);
-		a.connectTo(g, 6);
-		b.connectTo(c, 7);
-		b.connectTo(e, 2);
-		g.connectTo(e, 1);
-		g.connectTo(h, 4);
-		e.connectTo(f, 2);
-		f.connectTo(c, 3);
-		f.connectTo(h, 2);
-		c.connectTo(d, 3);
-		h.connectTo(d, 2);
 		
 		Graph graph = new Graph();
-		graph.addVertex(a, b, c, d, e, f, g, h);
+		graph.add(a, b, c, d, e, f, g, h);
+		graph.connect(a, b, 2);
+		graph.connect(a, g, 6);
+		graph.connect(b, c, 7);
+		graph.connect(b, e, 2);
+		graph.connect(g, e, 1);
+		graph.connect(g, h, 4);
+		graph.connect(e, f, 2);
+		graph.connect(f, c, 3);
+		graph.connect(f, h, 2);
+		graph.connect(c, d, 3);
+		graph.connect(h, d, 2);
 		
 		Dijkstra dijkstra = new Dijkstra(graph, a, d);
 		dijkstra.execute();

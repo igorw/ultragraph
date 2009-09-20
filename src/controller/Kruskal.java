@@ -12,24 +12,14 @@ import model.Graph;
 import model.Vertex;
 import tools.Shell;
 
-public class Kruskal {
+// kruskal's algorithm
+// get a minimal spanning tree
+public class Kruskal implements GraphAlgorithm {
 	private Graph graph;
 	private Forrest forrest = new Forrest();
-	private HashSet<Edge> cleanGrid = new HashSet<Edge>();
 	
 	public Kruskal(Graph graph) {
 		this.graph = graph;
-		
-		// initialise clean grid
-		// clean grid contains no reverse edges
-		for (Vertex v : graph.getVertices()) {
-			for (Edge e : v.getEdges()) {
-				if (!cleanGrid.contains(e.getTarget().findEdge(v))) {
-					// ignore reverse connections
-					cleanGrid.add(e);
-				}
-			}
-		}
 	}
 
 	private int i = 0;
@@ -44,10 +34,10 @@ public class Kruskal {
 			}
 			HashSet<Edge> processed = new HashSet<Edge>();
 			for (Edge e : graph.getEdges()) {
-				if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
+				if (processed.contains(e)) {
 					continue;
 				}
-				out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
+				out.write("\t" + e.getV1() + " -- " + e.getV2() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
 				processed.add(e);
 			}
 			out.write("}\n");
@@ -88,10 +78,9 @@ public class Kruskal {
 			System.out.println("shortest found: " + shortestEdge);
 			
 			// select vertices and edge
-			shortestEdge.getOrigin().setColor("red");
-			shortestEdge.getTarget().setColor("red");
+			shortestEdge.getV1().setColor("red");
+			shortestEdge.getV2().setColor("red");
 			shortestEdge.setColor("red");
-			shortestEdge.getTarget().findEdge(shortestEdge.getOrigin()).setColor("red");
 			generateImage();
 			
 			forrest.add(shortestEdge);
@@ -115,11 +104,10 @@ public class Kruskal {
 	// get shortest edge that does not complete a circuit
 	private Edge getShortestEdge() {
 		Edge shortest = null;
-		for (Edge e : cleanGrid) {
+		for (Edge e : graph.getEdges()) {
 			
 			// no point if it's already included
-			// also reverse-edges
-			if (forrest.contains(e) || forrest.contains(e.getTarget().findEdge(e.getOrigin()))) {
+			if (forrest.contains(e)) {
 				continue;
 			}
 			
@@ -142,19 +130,19 @@ public class Kruskal {
 		Vertex d = new Vertex("D");
 		Vertex e = new Vertex("E");
 		Vertex f = new Vertex("F");
-
-		a.connectTo(b, 2);
-		a.connectTo(c, 6);
-		b.connectTo(c, 3);
-		b.connectTo(d, 3);
-		b.connectTo(e, 4);
-		c.connectTo(d, 1);
-		d.connectTo(e, 5);
-		d.connectTo(f, 5);
-		e.connectTo(f, 3);
 		
 		Graph graph = new Graph();
-		graph.addVertex(a, b, c, d, e, f);
+		graph.add(a, b, c, d, e, f);
+
+		graph.connect(a, b, 2);
+		graph.connect(a, c, 6);
+		graph.connect(b, c, 3);
+		graph.connect(b, d, 3);
+		graph.connect(b, e, 4);
+		graph.connect(c, d, 1);
+		graph.connect(d, e, 5);
+		graph.connect(d, f, 5);
+		graph.connect(e, f, 3);
 		
 		Kruskal kruskal = new Kruskal(graph);
 		kruskal.execute();
