@@ -22,6 +22,27 @@ public class Prim {
 		this.graph = graph;
 	}
 	
+	private int i = 0;
+	private void generateImage() throws IOException {
+		File tempFile = File.createTempFile("graphviz", null);
+		
+		BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
+		out.write("graph g {\n");
+		HashSet<Edge> processed = new HashSet<Edge>();
+		for (Edge e : graph.getEdges()) {
+			if (processed.contains(e.getTarget().findEdge(e.getOrigin()))) {
+				// ignore reverse of already processed
+				continue;
+			}
+			out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [color=" + e.getColor() + " label=" + e.getWeight() + "];\n");
+			processed.add(e);
+		}
+		out.write("}\n");
+		out.close();
+		
+		Shell.exec("circo -Tgif -o prim" + i++ + ".gif < " + tempFile.getAbsolutePath());
+	}
+	
 	public void execute() {
 		Edge shortestEdge;
 		
@@ -53,31 +74,29 @@ public class Prim {
 		}
 		
 		// we're done
-		
-		for (int i = 0, size = tree.size(); i < size; i++) {
-			try {
-				File tempFile = File.createTempFile("graphviz", null);
-				
-				BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
-				out.write("graph g {\n");
-				for (Vertex v : getTreeVertices()) {
-					out.write("\tNode " + v + ";\n");
-				}
-				int j = 0;
-				for (Edge e : tree) {
-					if (j > i) {
-						break;
-					}
-					out.write("\t" + e.getOrigin() + " -- " + e.getTarget() + " [label=\"" + e.getWeight() + "\"];\n");
-					j++;
-				}
-				out.write("}\n");
-				out.close();
-				
-				Shell.exec("dot -Tpng -o /home/igor/prim" + i + ".png < " + tempFile.getAbsolutePath());
-			} catch (IOException e) {
-				e.printStackTrace();
+
+		try {
+			for (Edge e : graph.getEdges()) {
+				e.setColor("grey");
 			}
+			
+			generateImage();
+			
+			for (Edge edge : tree) {
+				for (Edge e : graph.getEdges()) {
+					if (e == edge || e == edge.getTarget().findEdge(edge.getOrigin())) {
+						// set color
+						e.setColor("red");
+					}
+				}
+				generateImage();
+			}
+			
+			// generate animated gif
+			Shell.exec("gifsicle --delay=200 --loop prim*.gif > anim_prim.gif");
+			Shell.exec("rm prim*.gif");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
