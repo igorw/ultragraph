@@ -6,7 +6,7 @@ import model.DirectedEdge;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
-import vizualisation.GraphViz;
+import visualization.GraphViz;
 
 // dijkstra's algorithm
 // find shortest path between two vertices
@@ -21,7 +21,7 @@ public class Dijkstra implements GraphAlgorithm {
 	// the currently selected vertex
 	private Vertex boxedVertex;
 	
-	// vizualisation
+	// visualization
 	private GraphViz viz;
 	
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
@@ -132,7 +132,7 @@ public class Dijkstra implements GraphAlgorithm {
 			viz.frame();
 		}
 		
-		// save vizualisation
+		// save visualization
 		viz.save();
 	}
 	

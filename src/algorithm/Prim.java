@@ -7,7 +7,7 @@ import model.Edge;
 import model.Graph;
 import model.Tree;
 import model.Vertex;
-import vizualisation.GraphViz;
+import visualization.GraphViz;
 
 // prim's algorithm
 // get a minimal spanning tree
@@ -87,7 +87,7 @@ public class Prim implements GraphAlgorithm {
 		Edge shortest = null;
 		for (DirectedEdge e : graph.getVertexEdges(vertex)) {
 			
-			// skip self-referencial edges
+			// skip self-referential edges
 			if (e.getTarget() == e.getOrigin()) {
 				continue;
 			}
@@ -105,7 +105,7 @@ public class Prim implements GraphAlgorithm {
 		Edge shortest = null;
 		for (Edge e : graph.getEdges()) {
 			
-			// skip self-referencial edges
+			// skip self-referential edges
 			if (e.getV2() == e.getV1()) {
 				continue;
 			}

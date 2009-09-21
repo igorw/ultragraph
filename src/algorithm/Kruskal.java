@@ -1,16 +1,16 @@
 package algorithm;
 
 import model.Edge;
-import model.Forrest;
+import model.Forest;
 import model.Graph;
 import model.Vertex;
-import vizualisation.GraphViz;
+import visualization.GraphViz;
 
 // kruskal's algorithm
 // get a minimal spanning tree
 public class Kruskal implements GraphAlgorithm {
 	private Graph graph;
-	private Forrest forrest = new Forrest();
+	private Forest forest = new Forest();
 	private GraphViz viz;
 	
 	public Kruskal(Graph graph) {
@@ -44,9 +44,9 @@ public class Kruskal implements GraphAlgorithm {
 			shortestEdge.setColor("red");
 			viz.frame();
 			
-			forrest.add(shortestEdge);
+			forest.add(shortestEdge);
 			
-			if (forrest.size() == 1 && forrest.countEdges() == graph.getVertices().size() - 1) {
+			if (forest.size() == 1 && forest.countEdges() == graph.getVertices().size() - 1) {
 				break;
 			}
 		}
@@ -62,12 +62,12 @@ public class Kruskal implements GraphAlgorithm {
 		for (Edge e : graph.getEdges()) {
 			
 			// no point if it's already included
-			if (forrest.contains(e)) {
+			if (forest.contains(e)) {
 				continue;
 			}
 			
-			// check for curcuits (origin and target connect to forrest)
-			if (forrest.connectsBoth(e)) {
+			// check for circuits (origin and target connect to forest)
+			if (forest.connectsBoth(e)) {
 				continue;
 			}
 			

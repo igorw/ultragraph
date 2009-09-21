@@ -2,8 +2,8 @@ package model;
 
 import java.util.HashSet;
 
-//a forrest contains a list of separate (disconnected) trees
-public class Forrest {
+//a forest contains a list of separate (disconnected) trees
+public class Forest {
 	private HashSet<Tree> trees = new HashSet<Tree>();
 	
 	public void add(Tree t) {
@@ -44,7 +44,7 @@ public class Forrest {
 		return null;
 	}
 	
-	// add edge to forrest
+	// add edge to forest
 	public void add(Edge e) {
 		Tree tree1 = null;
 		Tree tree2 = null;
