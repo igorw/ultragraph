@@ -1,6 +1,6 @@
 package model;
 
-public class Edge {
+public class Edge implements Comparable<Edge> {
 	private Vertex v1;
 	private Vertex v2;
 	private int weight;
@@ -63,5 +63,15 @@ public class Edge {
 	
 	public String toString() {
 		return getV1() + " " + getV2() + " " + getWeight();
+	}
+	
+	public int compareTo(Edge e) {
+		if (getWeight() > e.getWeight()) {
+			return 1;
+		} else if (getWeight() < e.getWeight()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }

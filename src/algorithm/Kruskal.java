@@ -16,6 +16,8 @@ public class Kruskal implements GraphAlgorithm {
 	public Kruskal(Graph graph) {
 		this.graph = graph;
 		this.viz = new GraphViz(graph, "kruskal");
+		
+		this.graph.sortEdges();
 	}
 	
 	public void execute() {
@@ -58,7 +60,6 @@ public class Kruskal implements GraphAlgorithm {
 	
 	// get shortest edge that does not complete a circuit
 	private Edge getShortestEdge() {
-		Edge shortest = null;
 		for (Edge e : graph.getEdges()) {
 			
 			// no point if it's already included
@@ -71,11 +72,9 @@ public class Kruskal implements GraphAlgorithm {
 				continue;
 			}
 			
-			if (shortest == null || e.getWeight() < shortest.getWeight()) {
-				shortest = e;
-			}
+			return e;
 		}
-		return shortest;
+		return null;
 	}
 	
 	public static void main(String[] args) {

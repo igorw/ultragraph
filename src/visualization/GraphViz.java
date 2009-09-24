@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import model.Edge;
@@ -16,9 +19,13 @@ public class GraphViz {
 	private String name;
 	private int i = 0;
 	
+	private ArrayList<Vertex> vertices;
+	
 	public GraphViz(Graph graph, String name) {
 		this.graph = graph;
 		this.name = name;
+		
+		vertices = graph.getVertices();
 	}
 	
 	// snapshot a frame
@@ -28,7 +35,7 @@ public class GraphViz {
 			
 			BufferedWriter out = new BufferedWriter(new FileWriter(tempFile.getAbsoluteFile()));
 			out.write("graph g {\n");
-			for (Vertex v : graph.getVertices()) {
+			for (Vertex v : getSortedVertices()) {
 				out.write("\r" + v + " [color=" + v.getColor() + "];\n");
 			}
 			HashSet<Edge> processed = new HashSet<Edge>();
@@ -53,10 +60,21 @@ public class GraphViz {
 	public void save() {
 		try {
 			// generate animated gif
-			Shell.exec("gifsicle --delay=200 --loop " + name + "*.gif > anim_" + name + ".gif");
+			Shell.exec("gifsicle --delay=50 --loop " + name + "*.gif > anim_" + name + ".gif");
 			Shell.exec("rm " + name + "*.gif");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Vertex> getSortedVertices() {
+		ArrayList<Vertex> vertices = (ArrayList<Vertex>) this.vertices.clone();
+		Collections.sort(vertices, new Comparator<Vertex>() {
+			public int compare(Vertex v1, Vertex v2) {
+				return v1.getName().compareTo(v2.getName());
+			}
+		});
+		
+		return vertices;
 	}
 }

@@ -137,14 +137,15 @@ public class Dijkstra implements GraphAlgorithm {
 	}
 	
 	// find the vertex with the lowest weight
+	// first sort vertices asc, then check conditions
 	private Vertex getLowestVertex() {
-		Vertex lowest = null;
+		graph.sortVertices();
 		for (Vertex v : graph.getVertices()) {
-			if (!boxed.contains(v) && v.isLabeled() && (lowest == null || v.getLabel() < lowest.getLabel())) {
-				lowest = v;
+			if (!boxed.contains(v) && v.isLabeled()) {
+				return v;
 			}
 		}
-		return lowest;
+		return null;
 	}
 	
 	public static void main(String[] args) {

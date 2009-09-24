@@ -1,7 +1,7 @@
 package model;
 
 
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
 	private String name;
 	private int label = -1;
 	private Vertex origin;
@@ -50,5 +50,15 @@ public class Vertex {
 	
 	public String toString() {
 		return name;
+	}
+	
+	public int compareTo(Vertex v) {
+		if (getLabel() > v.getLabel()) {
+			return 1;
+		} else if (getLabel() < v.getLabel()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }

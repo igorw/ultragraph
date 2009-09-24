@@ -1,13 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class Graph {
 	private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-	private HashSet<Edge> edges = new HashSet<Edge>();
+	private ArrayList<Edge> edges = new ArrayList<Edge>();
 	
 	// add any number of vertices
 	public void add(Vertex... vertices) {
@@ -26,7 +27,7 @@ public class Graph {
 		return vertices;
 	}
 	
-	public HashSet<Edge> getEdges() {
+	public ArrayList<Edge> getEdges() {
 		return edges;
 	}
 	
@@ -58,6 +59,14 @@ public class Graph {
 	public Vertex getRandomVertex() {
 		int index = new Random().nextInt(vertices.size() - 1) + 1;
 		return vertices.get(index);
+	}
+	
+	public void sortVertices() {
+		Collections.sort(vertices);
+	}
+	
+	public void sortEdges() {
+		Collections.sort(edges);
 	}
 	
 	public static Edge getShortestEdge(Set<Edge> edges) {
