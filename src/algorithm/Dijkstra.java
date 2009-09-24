@@ -76,7 +76,7 @@ public class Dijkstra implements GraphAlgorithm {
 				// targeted vertex is already touched
 				// unless we can get a better deal, we skip labelling
 				// this also catches going back to parent vertices
-				if (de.getTarget().hasOrigin() && de.getEdge().getFullWeight(boxedVertex) >= de.getTarget().getLabel()) {
+				if (de.getTarget().isLabeled() && de.getEdge().getFullWeight(boxedVertex) >= de.getTarget().getLabel()) {
 					System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel() + " unprofitable");
 					continue;
 				}
@@ -140,7 +140,7 @@ public class Dijkstra implements GraphAlgorithm {
 	private Vertex getLowestVertex() {
 		Vertex lowest = null;
 		for (Vertex v : graph.getVertices()) {
-			if (!boxed.contains(v) && v.hasOrigin() && (lowest == null || v.getLabel() < lowest.getLabel())) {
+			if (!boxed.contains(v) && v.isLabeled() && (lowest == null || v.getLabel() < lowest.getLabel())) {
 				lowest = v;
 			}
 		}

@@ -53,12 +53,12 @@ public class Edge {
 	
 	// get the full relative weight
 	public int getFullWeight() {
-		return (v1.hasOrigin() ? v1.getLabel() : 0) + weight;
+		return (v1.isLabeled() ? v1.getLabel() : 0) + weight;
 	}
 	
 	// get full relative weight for alternate v1
 	public int getFullWeight(Vertex alternateOrigin) {
-		return (alternateOrigin.hasOrigin() ? alternateOrigin.getLabel() : 0) + weight;
+		return (alternateOrigin.isLabeled() ? alternateOrigin.getLabel() : 0) + weight;
 	}
 	
 	public String toString() {

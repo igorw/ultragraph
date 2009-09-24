@@ -28,8 +28,8 @@ public class Vertex {
 		this.label = weight;
 	}
 	
-	public boolean hasOrigin() {
-		return origin != null;
+	public boolean isLabeled() {
+		return label != -1;
 	}
 
 	public Vertex getOrigin() {
