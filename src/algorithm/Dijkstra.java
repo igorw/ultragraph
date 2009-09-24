@@ -62,30 +62,30 @@ public class Dijkstra implements GraphAlgorithm {
 			boxed.add(boxedVertex);
 			
 			// label all vertices
-			for (DirectedEdge e : graph.getVertexEdges(boxedVertex)) {
+			for (DirectedEdge de : graph.getVertexEdges(boxedVertex)) {
 				
 				// we don't want to go back to the origin
-				if (e.getTarget() == origin) {
+				if (de.getTarget() == origin) {
 					continue;
 				}
 				
 				// viz
-				e.getEdge().setColor("red");
+				de.getEdge().setColor("red");
 				viz.frame();
 				
 				// targeted vertex is already touched
 				// unless we can get a better deal, we skip labelling
 				// this also catches going back to parent vertices
-				if (e.getTarget().hasOrigin() && e.getEdge().getFullWeight(boxedVertex) >= e.getTarget().getLabel()) {
-					System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel() + " unprofitable");
+				if (de.getTarget().hasOrigin() && de.getEdge().getFullWeight(boxedVertex) >= de.getTarget().getLabel()) {
+					System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel() + " unprofitable");
 					continue;
 				}
 				
 				// set label
-				e.getTarget().setLabel(e.getEdge().getFullWeight());
-				e.getTarget().setOrigin(boxedVertex);
+				de.getTarget().setLabel(de.getEdge().getFullWeight());
+				de.getTarget().setOrigin(boxedVertex);
 				
-				System.out.println(boxedVertex + " " + e.getTarget() + " " + e.getTarget().getLabel());
+				System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel());
 			}
 			
 			// we found our target
