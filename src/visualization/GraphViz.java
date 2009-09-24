@@ -19,13 +19,9 @@ public class GraphViz {
 	private String name;
 	private int i = 0;
 	
-	private ArrayList<Vertex> vertices;
-	
 	public GraphViz(Graph graph, String name) {
 		this.graph = graph;
 		this.name = name;
-		
-		vertices = graph.getVertices();
 	}
 	
 	// snapshot a frame
@@ -68,13 +64,12 @@ public class GraphViz {
 	}
 	
 	public ArrayList<Vertex> getSortedVertices() {
-		ArrayList<Vertex> vertices = (ArrayList<Vertex>) this.vertices.clone();
+		ArrayList<Vertex> vertices = (ArrayList<Vertex>) graph.getVertices().clone();
 		Collections.sort(vertices, new Comparator<Vertex>() {
 			public int compare(Vertex v1, Vertex v2) {
 				return v1.getName().compareTo(v2.getName());
 			}
 		});
-		
 		return vertices;
 	}
 }
