@@ -38,10 +38,18 @@
 
 \newpage
 
+\section{Problem}
+
+Das Ziel des Dijkstra Algorithmus ist es, den kürzesten Weg zwischen zwei Punkten innerhalb eines gewichteten Grafens zu finden.
+
 \section{Algorithmus}
 
 \begin{enumerate}
-\item Dem Startknoten wird der Wert 0 zugewiesen. Dieser Knoten wird umrahmt.
+\item Dem Startknoten wird der Wert 0 zugewiesen. Dieser Knoten wird eingerahmt.
+\item All jene Knoten, die mit dem zuletzt eingerahmten Knoten verbunden sind, werden mit dem Wert des gerahmten Knoten plus dem Wert der verbindenden Kante temporär beschriftet. Ist der Knoten bereits beschriftet, wird er nur dann überschrieben, wenn der neue Wert tiefer wäre als der bestehende. Bereits eingerahmte Knoten können hierbei ignoriert werden.
+\item Von allen temporär beschrifteten, noch nicht eingerahmten Knoten wird derjenige eingerahmt, welcher den tiefsten Wert besitzt. Falls dieser Knoten dieser Knoten der Zielknoten ist, gehe zu 5.
+\item Zurück zu 2.
+\item Der schnellste Weg wurde gefunden.
 \end{enumerate}
 
 \end{document}
