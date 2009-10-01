@@ -64,8 +64,9 @@ public class Dijkstra implements GraphAlgorithm {
 			// label all vertices
 			for (DirectedEdge de : graph.getVertexEdges(boxedVertex)) {
 				
-				// we don't want to go back to the origin
-				if (de.getTarget() == origin) {
+				// targeted vertex is boxed
+				// we can skip it
+				if (boxed.contains(de.getTarget())) {
 					continue;
 				}
 				
@@ -157,22 +158,24 @@ public class Dijkstra implements GraphAlgorithm {
 		Vertex f = new Vertex("F");
 		Vertex g = new Vertex("G");
 		Vertex h = new Vertex("H");
+		Vertex i = new Vertex("I");
 		
 		Graph graph = new Graph();
-		graph.add(a, b, c, d, e, f, g, h);
-		graph.connect(a, b, 2);
-		graph.connect(a, g, 6);
-		graph.connect(b, c, 7);
-		graph.connect(b, e, 2);
-		graph.connect(g, e, 1);
-		graph.connect(g, h, 4);
-		graph.connect(e, f, 2);
-		graph.connect(f, c, 3);
-		graph.connect(f, h, 2);
-		graph.connect(c, d, 3);
-		graph.connect(h, d, 2);
+		graph.add(a, b, c, d, e, f, g, h, i);
 		
-		Dijkstra dijkstra = new Dijkstra(graph, a, d);
+		graph.connect(a, b, 2);
+		graph.connect(a, c, 1);
+		graph.connect(b, c, 3);
+		graph.connect(b, h, 3);
+		graph.connect(c, d, 10);
+		graph.connect(b, e, 1);
+		graph.connect(e, f, 2);
+		graph.connect(d, f, 2);
+		graph.connect(f, i, 6);
+		graph.connect(f, g, 7);
+		graph.connect(g, i, 1);
+		
+		Dijkstra dijkstra = new Dijkstra(graph, a, g);
 		dijkstra.execute();
 	}
 }

@@ -1,0 +1,47 @@
+\documentclass[a4paper,openany]{book}
+
+\usepackage[a4paper,left=20mm,right=20mm, top=15mm, bottom=2cm, includeheadfoot]{geometry}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[german]{babel}
+
+% Palatino font
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\linespread{1.05}         % Palatino needs more leading (space between lines)
+
+% section numbering
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{1}
+
+% section spacing
+\setlength{\parskip}{0.2cm}
+\setlength{\parindent}{0cm}
+
+% fancy headers
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+%\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyhead[L]{Dijkstra Spezifikation}
+\fancyhead[R]{\footnotesize \thepage}
+\fancyfoot{}
+
+\title{Dijkstra Spezifikation\\Projektkette Naturwissenschaften}
+\author{Adrian Boldi \and Igor Wiedler}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Algorithmus}
+
+\begin{enumerate}
+\item Dem Startknoten wird der Wert 0 zugewiesen. Dieser Knoten wird umrahmt.
+\end{enumerate}
+
+\end{document}
