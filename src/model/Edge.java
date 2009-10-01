@@ -51,14 +51,9 @@ public class Edge implements Comparable<Edge> {
 		this.color = color;
 	}
 	
-	// get the full relative weight
-	public int getFullWeight() {
-		return (v1.isLabeled() ? v1.getLabel() : 0) + weight;
-	}
-	
-	// get full relative weight for alternate v1
-	public int getFullWeight(Vertex alternateOrigin) {
-		return (alternateOrigin.isLabeled() ? alternateOrigin.getLabel() : 0) + weight;
+	// get full relative weight, must specify origin
+	public int getFullWeight(Vertex origin) {
+		return (origin.isLabeled() ? origin.getLabel() : 0) + weight;
 	}
 	
 	public String toString() {

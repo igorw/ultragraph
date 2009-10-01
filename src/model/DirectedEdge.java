@@ -22,4 +22,8 @@ public class DirectedEdge {
 	public Edge getEdge() {
 		return edge;
 	}
+	
+	public int getFullWeight() {
+		return edge.getFullWeight(origin);
+	}
 }

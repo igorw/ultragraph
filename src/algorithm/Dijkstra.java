@@ -82,7 +82,7 @@ public class Dijkstra implements GraphAlgorithm {
 				}
 				
 				// set label
-				de.getTarget().setLabel(de.getEdge().getFullWeight());
+				de.getTarget().setLabel(de.getFullWeight());
 				de.getTarget().setOrigin(boxedVertex);
 				
 				System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel());
