@@ -1,9 +1,12 @@
-\documentclass[a4paper,openany]{book}
+\documentclass[a4paper,titlepage]{article}
 
 \usepackage[a4paper,left=20mm,right=20mm, top=15mm, bottom=2cm, includeheadfoot]{geometry}
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
 \usepackage[german]{babel}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{url}
 
 % Palatino font
 \usepackage[T1]{fontenc}
@@ -11,8 +14,8 @@
 \linespread{1.05}         % Palatino needs more leading (space between lines)
 
 % section numbering
-\setcounter{secnumdepth}{-1}
-\setcounter{tocdepth}{1}
+%\setcounter{secnumdepth}{-1}
+%\setcounter{tocdepth}{1}
 
 % section spacing
 \setlength{\parskip}{0.2cm}
@@ -38,11 +41,15 @@
 
 \newpage
 
-\section{Problem}
-
-Das Ziel des Dijkstra Algorithmus ist es, den kürzesten Weg zwischen zwei Punkten innerhalb eines gewichteten Grafens zu finden.
-
 \section{Algorithmus}
+
+\subsection{Problem}
+
+Das Ziel des Dijkstra Algorithmus ist es, den kürzesten Weg zwischen zwei Punkten innerhalb eines gewichteten Graphes zu finden.
+
+Ein mögliches Szenario hierfür ist eine Reise zwischen zwei Städten A und B. Zwischen diesen Städten befinden sich weitere Städte, welche durch Hauptstrassen verbunden sind. Das befahren dieser Hauptstrassen dauert unterschiedlich lange, was jedoch nicht nur von der eigentlichen Distanz abhängen muss. Das Ziel ist es den schnellsten weg zwischen A und B zu finden.
+
+\subsection{Definition}
 
 \begin{enumerate}
 \item Dem Startknoten wird der Wert 0 zugewiesen. Dieser Knoten wird eingerahmt.
@@ -51,5 +58,85 @@ Das Ziel des Dijkstra Algorithmus ist es, den kürzesten Weg zwischen zwei Punkt
 \item Zurück zu 2.
 \item Der schnellste Weg wurde gefunden.
 \end{enumerate}
+
+\subsection{Beispiel}
+
+Hier soll der Algorithmus an einem einfachen Graphen gezeigt werden. Der Startknoten ist a, der Endknoten lautet f.
+
+\begin{wrapfigure}{l}{0.48\textwidth}
+\vspace{-5pt}
+\begin{center}
+	\includegraphics[width=4cm]{example.png}
+\end{center}
+\caption{Einfacher gewichteter Graph}
+\vspace{-60pt}
+\end{wrapfigure}
+
+Knoten den Wert 0 zuweisen und einrahmen. \\ Verbundene Knoten beschriften: \emph{b = 4, c = 1}.
+
+Tiefsten temporär beschrifteten Knoten einrahmen: \emph{c}. \\ Verbundene Knoten beschriften: \emph{b = 2, e = 10}.
+
+Tiefsten temporär beschrifteten Knoten einrahmen: \emph{b}. \\ Verbundene Knoten beschriften: \emph{d = 3}.
+
+Tiefsten temporär beschrifteten Knoten einrahmen: \emph{d}. \\ Verbundene Knoten beschriften: \emph{f = 12}.
+
+Tiefsten temporär beschrifteten Knoten einrahmen: \emph{e}. \\ Verbundene Knoten beschriften: \emph{f = 11}.
+
+Tiefsten temporär beschrifteten Knoten einrahmen: \emph{f}.
+
+Der schnellste Weg lautet: \emph{f, e, c, a}.
+
+\vspace{10pt}
+
+Wie man leicht erkennen kann, wird der schnellste Weg gefunden, indem der Pfad welcher zum Einrahmen der jeweiligen Knoten geführt hat, rückwärts durchquert wird. Bei bedarf lässt sich dieser spiegeln, damit er beim Anfangsknoten beginnt und beim Zielknoten endet.
+
+\section{Diagramme}
+
+\subsection{Programmablauf}
+
+\begin{wrapfigure}{lh!}{0.5\textwidth}
+\begin{center}
+	\includegraphics[width=7cm]{activity_diagram.png}
+\end{center}
+\caption{UML Aktivitätsdiagramm des Dijkstra}
+\vspace{-60pt}
+\end{wrapfigure}
+
+Dieses Diagramm beschreibt den Ablauf des Dijkstra Algorithmus. Es entspricht der obrigen Definition.
+
+\clearpage
+
+\subsection{Datenmodell}
+
+Es folgt ein Diagramm, welche die verwendeten Klassen, sowie deren Attribute und Beziehungen untereinander beschreibt. Diese Klassen definieren, welche Daten verwendet werden.
+
+\begin{figure}[h]
+\begin{center}
+	\includegraphics[width=0.7\textwidth]{model_diagram2.png}
+\end{center}
+\caption{UML Klassendiagramm des Modells}
+\end{figure}
+
+\newpage
+
+\section{Verwendete Mittel}
+
+\subsection{Programme}
+
+\begin{itemize}
+\item \emph{Eclipse:} Entwicklungsumgebung für Java - \url{www.eclipse.org}
+\item \emph{Gaphor:} UML Diagramm Tool - \url{gaphor.sourceforge.net}
+\item \emph{Graphviz:} Graphenvisualisierung - \url{www.graphviz.org}
+\item \emph{Gifsicle:} Animierte gifs erstellen - \url{www.lcdf.org/gifsicle}
+\end{itemize}
+
+\subsection{Quellen}
+
+\subsubsection{WWW}
+
+\begin{itemize}
+\item \emph{Dijkstra’s Algorithm:} {\small\texttt{ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/ \\ 15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}}
+\item \emph{Der Algorithmus von Dijkstra:} {\small\texttt{www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien\_inf/ \\ kommuniation\_kryptographie/routing/la3.pdf}}
+\end{itemize}
 
 \end{document}
