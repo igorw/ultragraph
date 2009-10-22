@@ -90,7 +90,7 @@ Der schnellste Weg lautet: \emph{f, e, c, a}.
 
 Wie man leicht erkennen kann, wird der schnellste Weg gefunden, indem der Pfad welcher zum Einrahmen der jeweiligen Knoten geführt hat, rückwärts durchquert wird. Bei bedarf lässt sich dieser spiegeln, damit er beim Anfangsknoten beginnt und beim Zielknoten endet.
 
-\section{Modell}
+\section{Design}
 
 \subsection{Programmablauf}
 
@@ -103,6 +103,18 @@ Wie man leicht erkennen kann, wird der schnellste Weg gefunden, indem der Pfad w
 \end{wrapfigure}
 
 Dieses Diagramm beschreibt den Ablauf des Dijkstra Algorithmus. Es entspricht der obrigen Definition.
+
+\subsubsection*{Begriffe}
+
+\begin{description}
+\item[vertex] Knoten
+\item[label] temporäre Beschriftung eines Knotens
+\item[origin] Ursprung; der Ursprungsknoten des Algorithmus
+\item[target] Ziel; der Zielknoten des Algorithmus
+\item[boxed] permanent eingerahmt
+\item[unprofitable] Vertex ist bereits temporär beschriftet, neuer Wert wäre jedoch höher oder gleich dem bestehenden
+\item[lowest] der/die/das tiefste
+\end{description}
 
 \clearpage
 
@@ -141,7 +153,41 @@ Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für 
 
 \subsubsection{Vertex}
 
-% ...
+Die Tokens des Typs \emph{Vertex} sind wie folgt.
+
+\begin{description}
+\item[Name] Der Name des Knotens
+\item[Position x] Die x-Koordinate
+\item[Position y] Die y-Koordinate
+\end{description}
+
+\subsubsection{Edge}
+
+Die Tokens des Typs \emph{Edge} sind wie folgt.
+
+\begin{description}
+\item[Von] Der Name des Ursprungsknotens
+\item[Nach] Der Name des Zielknotens
+\item[Gewichtung] Die Gewichtung der Kante
+\end{description}
+
+\subsection{Beispiel}
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tabular}{| l r r r |}
+\hline
+\emph{v} & a & 5 & 5 \\
+\emph{v} & b & 5 & 10 \\
+\emph{v} & c & 10 & 5 \\
+\emph{e} & a & b & 3 \\
+\emph{e} & b & c & 4 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Beispiel eines einfachen Grafs}
+\end{figure}
+
 
 \newpage
 
@@ -153,7 +199,7 @@ Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für 
 
 \newpage
 
-\section{Reflexion}
+\section{Projektablauf}
 
 \newpage
 
@@ -166,6 +212,7 @@ Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für 
 \item \emph{\href{http://gaphor.sourceforge.net}{Gaphor}:} UML Diagramm Tool
 \item \emph{\href{http://graphviz.org}{Graphviz}:} Graphenvisualisierung
 \item \emph{\href{http://www.lcdf.org/gifsicle}{Gifsicle}:} Animierte gifs erstellen
+\item \href{http://www.latex-project.org}{\LaTeX}: Textsatz-Software
 \end{itemize}
 
 \subsection{Quellen}
@@ -175,12 +222,13 @@ Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für 
 \begin{itemize}
 \item \emph{\href{http://ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}{Dijkstra’s Algorithm (PDF)}}
 \item \emph{\href{http://www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien_inf/kommuniation_kryptographie/routing/la3.pdf}{Der Algorithmus von Dijkstra (PDF)}}
-\item \emph{\href{http://en.wikipedia.org/wiki/ASCII}{ASCII - Wikipedia}}
+\item \emph{\href{http://en.wikipedia.org/wiki/ASCII}{ASCII -- Wikipedia}}
+\item \emph{\href{http://en.wikibooks.org/wiki/LaTeX}{LaTeX -- Wikibooks}}
 \end{itemize}
 
 \subsubsection{Literatur}
 \begin{itemize}
-\item \emph{Networks - Student text and unit guide, Cambridge 2000}
+\item \emph{Networks -- Student text and unit guide, Cambridge 2000}
 \item andere Unterlagen aus dem Unterricht
 \end{itemize}
 
