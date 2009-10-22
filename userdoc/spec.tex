@@ -6,7 +6,7 @@
 \usepackage[german]{babel}
 \usepackage{graphicx}
 \usepackage{wrapfig}
-\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
 
 % Palatino font
 \usepackage[T1]{fontenc}
@@ -90,7 +90,7 @@ Der schnellste Weg lautet: \emph{f, e, c, a}.
 
 Wie man leicht erkennen kann, wird der schnellste Weg gefunden, indem der Pfad welcher zum Einrahmen der jeweiligen Knoten geführt hat, rückwärts durchquert wird. Bei bedarf lässt sich dieser spiegeln, damit er beim Anfangsknoten beginnt und beim Zielknoten endet.
 
-\section{Diagramme}
+\section{Modell}
 
 \subsection{Programmablauf}
 
@@ -119,9 +119,29 @@ Es folgt ein Diagramm, welche die verwendeten Klassen, sowie deren Attribute und
 
 \newpage
 
-\section{Datenformat}
+\section{Dateiformat}
 
-% gespeicherte daten
+\subsection{Allgemein}
+
+Damit es möglich ist Graphen in das Programm zu laden, braucht es ein Dateiformat. Der Einfachheit halber wird hier ein ASCII basiertes Format verwendet. Eine Zeile in der Datei kann hierbei entweder einen Knoten oder eine Kante beschreiben.
+
+Die Zeilen werden mittels Linefeed (\emph{ASCII 10}) getrennt. Pro Zeile gibt es Tokens, die via Tab (\emph{ASCII 9}) getrennt werden. Dies gleicht einem CSV-Format mit Tab Delimiter.
+
+\begin{figure}[hb]
+\begin{tabbing}
+	\hspace*{3em} \= \hspace{2.7em} \= \hspace{3.7em} \= \hspace{2.7em} \= \hspace{4.8em} \= \kill
+	[typ] \> \fbox{tab} \> [token] \> \fbox{tab} \> [token\_n] \> \fbox{linefeed}
+\end{tabbing}
+\caption{Grundgerüst des Dateiformats}
+\end{figure}
+
+\subsection{Typen}
+
+Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für eine Kante (\emph{Edge}). Je nach Typ gibt es verschiedene Tokens.
+
+\subsubsection{Vertex}
+
+% ...
 
 \newpage
 
@@ -142,10 +162,10 @@ Es folgt ein Diagramm, welche die verwendeten Klassen, sowie deren Attribute und
 \subsection{Programme}
 
 \begin{itemize}
-\item \emph{Eclipse:} Entwicklungsumgebung für Java - \url{www.eclipse.org}
-\item \emph{Gaphor:} UML Diagramm Tool - \url{gaphor.sourceforge.net}
-\item \emph{Graphviz:} Graphenvisualisierung - \url{www.graphviz.org}
-\item \emph{Gifsicle:} Animierte gifs erstellen - \url{www.lcdf.org/gifsicle}
+\item \emph{\href{http://www.eclipse.org}{Eclipse}:} Entwicklungsumgebung für Java
+\item \emph{\href{http://gaphor.sourceforge.net}{Gaphor}:} UML Diagramm Tool
+\item \emph{\href{http://graphviz.org}{Graphviz}:} Graphenvisualisierung
+\item \emph{\href{http://www.lcdf.org/gifsicle}{Gifsicle}:} Animierte gifs erstellen
 \end{itemize}
 
 \subsection{Quellen}
@@ -153,10 +173,15 @@ Es folgt ein Diagramm, welche die verwendeten Klassen, sowie deren Attribute und
 \subsubsection{WWW}
 
 \begin{itemize}
-\item \emph{Dijkstra’s Algorithm:} {\small\texttt{ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/ \\ 15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}}
-\item \emph{Der Algorithmus von Dijkstra:} {\small\texttt{www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien\_inf/ \\ kommuniation\_kryptographie/routing/la3.pdf}}
+\item \emph{\href{http://ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}{Dijkstra’s Algorithm (PDF)}}
+\item \emph{\href{http://www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien_inf/kommuniation_kryptographie/routing/la3.pdf}{Der Algorithmus von Dijkstra (PDF)}}
+\item \emph{\href{http://en.wikipedia.org/wiki/ASCII}{ASCII - Wikipedia}}
 \end{itemize}
 
 \subsubsection{Literatur}
+\begin{itemize}
+\item \emph{Networks - Student text and unit guide, Cambridge 2000}
+\item andere Unterlagen aus dem Unterricht
+\end{itemize}
 
 \end{document}

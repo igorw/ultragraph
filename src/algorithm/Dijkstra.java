@@ -159,9 +159,10 @@ public class Dijkstra implements GraphAlgorithm {
 		Vertex g = new Vertex("G");
 		Vertex h = new Vertex("H");
 		Vertex i = new Vertex("I");
+		Vertex j = new Vertex("J");
 		
 		Graph graph = new Graph();
-		graph.add(a, b, c, d, e, f, g, h, i);
+		graph.add(a, b, c, d, e, f, g, h, i, j);
 		
 		graph.connect(a, b, 2);
 		graph.connect(a, c, 1);
@@ -174,8 +175,9 @@ public class Dijkstra implements GraphAlgorithm {
 		graph.connect(f, i, 6);
 		graph.connect(f, g, 7);
 		graph.connect(g, i, 1);
+		graph.connect(g, j, 5);
 		
-		Dijkstra dijkstra = new Dijkstra(graph, a, g);
+		Dijkstra dijkstra = new Dijkstra(graph, a, f);
 		dijkstra.execute();
 	}
 }
