@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\usepackage{listings}
 
 % Palatino font
 \usepackage[T1]{fontenc}
@@ -122,12 +123,41 @@ Dieses Diagramm beschreibt den Ablauf des Dijkstra Algorithmus. Es entspricht de
 
 Es folgt ein Diagramm, welche die verwendeten Klassen, sowie deren Attribute und Beziehungen untereinander beschreibt. Diese Klassen definieren, welche Daten verwendet werden.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
-	\includegraphics[width=0.7\textwidth]{model_diagram2.png}
+\includegraphics[width=0.7\textwidth]{model_diagram2.png}
 \end{center}
 \caption{UML Klassendiagramm des Modells}
 \end{figure}
+
+\subsubsection*{Beschreibung}
+
+\begin{description}
+\item[Graph] ein Graph beinhaltet Knoten und Kanten
+\item[Vertex] ein Knoten
+\item[Edge] eine gewichtete Kante zwischen zwei Knoten
+\item[DirectedEdge] eine Kante, bei der die Richtung bekannt ist
+\end{description}
+
+\subsection{Anwendungsfälle}
+
+Anwendungsfälle beschreiben die Funktionalitäten, die das Programm dem Benutzer bietet.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{usecases.png}
+\end{center}
+\caption{UML Anwendungsfall Diagramm}
+\end{figure}
+
+\subsubsection*{Beschreibung}
+
+\begin{description}
+\item[User] der Benutzer des Programms
+\item[Graph laden] Graphen können aus einer Datei geladen werden
+\item[Algorithmus ausführen] dies ist die Hauptfunktion
+\item[Knoten auswählen] bei manchen Algorithmen (zum Beispiel Dijkstra) wird ein Start- und/oder Zielknoten benötigt, dieser soll ausgewählt werden können
+\end{description}
 
 \newpage
 
@@ -140,36 +170,35 @@ Damit es möglich ist Graphen in das Programm zu laden, braucht es ein Dateiform
 Die Zeilen werden mittels Linefeed (\emph{ASCII 10}) getrennt. Pro Zeile gibt es Tokens, die via Tab (\emph{ASCII 9}) getrennt werden. Dies gleicht einem CSV-Format mit Tab Delimiter.
 
 \begin{figure}[hb]
-\begin{tabbing}
-	\hspace*{3em} \= \hspace{2.7em} \= \hspace{3.7em} \= \hspace{2.7em} \= \hspace{4.8em} \= \kill
-	[typ] \> \fbox{tab} \> [token] \> \fbox{tab} \> [token\_n] \> \fbox{linefeed}
-\end{tabbing}
-\caption{Grundgerüst des Dateiformats}
+	\centering
+	[typ] \hspace*{3em} \fbox{tab} \hspace{2.7em} [token] \hspace{3.4em} \fbox{tab} \hspace{2.7em} [token\_n] \hspace{3.7em} \fbox{linefeed}
+	\caption{Grundgerüst des Dateiformats}
 \end{figure}
 
 \subsection{Typen}
 
 Ein \emph{v} als Typ steht für einen Knoten (\emph{Vertex}), ein \emph{e} für eine Kante (\emph{Edge}). Je nach Typ gibt es verschiedene Tokens.
 
-\subsubsection{Vertex}
+\vspace*{14pt}
 
-Die Tokens des Typs \emph{Vertex} sind wie folgt.
+\begin{minipage}{0.5\textwidth}
+	\subsubsection{Vertex}
 
-\begin{description}
-\item[Name] Der Name des Knotens
-\item[Position x] Die x-Koordinate
-\item[Position y] Die y-Koordinate
-\end{description}
+	\begin{description}
+	\item[Name] Der Name des Knotens
+	\item[Position x] Die x-Koordinate
+	\item[Position y] Die y-Koordinate
+	\end{description}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\subsubsection{Edge}
 
-\subsubsection{Edge}
-
-Die Tokens des Typs \emph{Edge} sind wie folgt.
-
-\begin{description}
-\item[Von] Der Name des Ursprungsknotens
-\item[Nach] Der Name des Zielknotens
-\item[Gewichtung] Die Gewichtung der Kante
-\end{description}
+	\begin{description}
+	\item[Von] Der Name des Ursprungsknotens
+	\item[Nach] Der Name des Zielknotens
+	\item[Gewichtung] Die Gewichtung der Kante
+	\end{description}
+\end{minipage}
 
 \subsection{Beispiel}
 
@@ -188,14 +217,69 @@ Die Tokens des Typs \emph{Edge} sind wie folgt.
 \caption{Beispiel eines einfachen Grafs}
 \end{figure}
 
+\subsection{Dateiendung}
+
+Der einfachheit halber wird keine Dateiendung benötigt. Aus Kompatibilitätsgründen (Windows) ist es jedoch möglich eine \emph{txt} Endung zu verwenden.
 
 \newpage
 
 \section{Pseudocode}
 
+\begin{lstlisting}
+// eingabe entgegennehmen
+input: vertices, origin, target
+
+// initialisation
+boxed = []
+
+// origin vorbereiten
+origin.label = 0
+boxedVertex = origin
+
+// endlosschlaufe
+while true
+	boxed += boxedVertex
+	foreach getVertexEdges(boxedVertex) as edge
+		// ueberspringen falls boxed
+		// ueberspringen falls unprofitabel (nicht ueberschreibbar)
+		if !boxed.contains(edge.target) ||
+			(edge.target.label && edge.fullweight >= edge.target.label)
+
+			edge.target.label = edge.fullweight
+			edge.target.origin = boxedVertex
+
+			if boxedVertex == target
+				// ziel erreicht
+				break
+
+			// vertices nach label aufsteigend sortieren
+			// tiefsten selektieren
+			vertices.sort()
+			foreach vertices as vertex
+				if !boxed.contains(vertex) && vertex.label
+					boxedVertex = vertex
+					break
+
+// auswertung
+result = []
+
+vertex = target
+result += vertex
+
+while vertex != origin
+	vertex = vertex.origin
+	result += vertex
+
+output: result
+\end{lstlisting}
+
 \newpage
 
 \section{Programmdokumentation}
+
+\subsection{Generell}
+
+Die Applikation \emph{Boldi--Wiedler--Graph} wurde in Java realisiert.
 
 \newpage
 
