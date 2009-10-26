@@ -18,9 +18,6 @@ public class Dijkstra implements GraphAlgorithm {
 	// boxed means all edges were traversed
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
 	
-	// the currently selected vertex
-	private Vertex boxedVertex;
-	
 	// visualization
 	private GraphViz viz;
 	
@@ -45,63 +42,21 @@ public class Dijkstra implements GraphAlgorithm {
 		origin.setLabel(0);
 		
 		// box initial vertex
-		boxedVertex = origin;
-		
-		boxedVertex.setColor("red");
-		viz.frame();
+		boxVertex(origin);
 
 		// loop through all vertices
-		while (true) {
-			
-			System.out.println(boxedVertex);
-			
-			boxedVertex.setColor("red");
-			viz.frame();
-			
-			// add newly boxed vertex to boxed array
-			boxed.add(boxedVertex);
-			
-			// label all vertices
-			for (DirectedEdge de : graph.getVertexEdges(boxedVertex)) {
-				
-				// targeted vertex is boxed
-				// we can skip it
-				if (boxed.contains(de.getTarget())) {
-					continue;
-				}
-				
-				// viz
-				de.getEdge().setColor("red");
-				viz.frame();
-				
-				// targeted vertex is already touched
-				// unless we can get a better deal, we skip labelling
-				// this also catches going back to parent vertices
-				if (de.getTarget().isLabeled() && de.getEdge().getFullWeight(boxedVertex) >= de.getTarget().getLabel()) {
-					System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel() + " unprofitable");
-					continue;
-				}
-				
-				// set label
-				de.getTarget().setLabel(de.getFullWeight());
-				de.getTarget().setOrigin(boxedVertex);
-				
-				System.out.println(boxedVertex + " " + de.getTarget() + " " + de.getTarget().getLabel());
-			}
-			
-			// we found our target
-			if (boxedVertex == target) {
+		Vertex boxedVertex;
+		while (null != (boxedVertex = getLowestVertex())) {
+			if (boxVertex(boxedVertex)) {
+				// found shortest path
 				break;
 			}
-			
-			// find next vertex for boxing
-			boxedVertex = getLowestVertex();
-			
-			// vertex not found, some error
-			if (boxedVertex == null) {
-				System.out.println("Error - no vertex found for boxing");
-				return;
-			}
+		}
+		
+		// vertex not found, some error
+		if (boxedVertex == null) {
+			System.out.println("Error - no vertex found for boxing");
+			return;
 		}
 		
 		System.out.println("-----");
@@ -135,6 +90,52 @@ public class Dijkstra implements GraphAlgorithm {
 		
 		// save visualization
 		viz.save();
+	}
+	
+	// returns whether boxed is target
+	private boolean boxVertex(Vertex v) {
+		System.out.println(v);
+		
+		v.setColor("red");
+		viz.frame();
+		
+		// add newly boxed vertex to boxed array
+		boxed.add(v);
+		
+		// we found our target
+		if (v == target) {
+			return true;
+		}
+		
+		// label all vertices
+		for (DirectedEdge de : graph.getVertexEdges(v)) {
+			
+			// targeted vertex is boxed
+			// we can skip it
+			if (boxed.contains(de.getTarget())) {
+				continue;
+			}
+			
+			// viz
+			de.getEdge().setColor("red");
+			viz.frame();
+			
+			// targeted vertex is already touched
+			// unless we can get a better deal, we skip labelling
+			// this also catches going back to parent vertices
+			if (de.getTarget().isLabeled() && de.getEdge().getFullWeight(v) >= de.getTarget().getLabel()) {
+				System.out.println(v + " " + de.getTarget() + " " + de.getTarget().getLabel() + " unprofitable");
+				continue;
+			}
+			
+			// set label
+			de.getTarget().setLabel(de.getFullWeight());
+			de.getTarget().setOrigin(v);
+			
+			System.out.println(v + " " + de.getTarget() + " " + de.getTarget().getLabel());
+		}
+		
+		return false;
 	}
 	
 	// find the vertex with the lowest weight

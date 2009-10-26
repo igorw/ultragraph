@@ -239,6 +239,11 @@ boxedVertex = origin
 // endlosschlaufe
 while true
 	boxed += boxedVertex
+
+	if boxedVertex == target
+		// ziel erreicht
+		break
+
 	foreach getVertexEdges(boxedVertex) as edge
 		// ueberspringen falls boxed
 		// ueberspringen falls unprofitabel (nicht ueberschreibbar)
@@ -247,10 +252,6 @@ while true
 
 			edge.target.label = edge.fullweight
 			edge.target.origin = boxedVertex
-
-			if boxedVertex == target
-				// ziel erreicht
-				break
 
 			// vertices nach label aufsteigend sortieren
 			// tiefsten selektieren
