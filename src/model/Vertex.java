@@ -1,15 +1,26 @@
 package model;
 
+import java.awt.Color;
+
 
 public class Vertex implements Comparable<Vertex> {
 	private String name;
 	private int label = -1;
 	private Vertex origin;
 	
-	private String color = "black";
+	private Color color = Color.black;
+	
+	private int posX = 0;
+	private int posY = 0;
 	
 	public Vertex(String name) {
 		setName(name);
+	}
+	
+	public Vertex(String name, int posX, int posY) {
+		this(name);
+		setPosX(posX);
+		setPosY(posY);
 	}
 
 	public String getName() {
@@ -40,12 +51,28 @@ public class Vertex implements Comparable<Vertex> {
 		this.origin = origin;
 	}
 	
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
 	
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public int getPosX() {
+		return posX;
+	}
+	
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+	
+	public int getPosY() {
+		return posY;
+	}
+	
+	public void setPosY(int posY) {
+		this.posY = posY;
 	}
 	
 	public String toString() {

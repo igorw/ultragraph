@@ -1,21 +1,20 @@
 package algorithm;
 
+import java.awt.Color;
+
 import model.Edge;
 import model.Forest;
 import model.Graph;
 import model.Vertex;
-import visualization.GraphViz;
 
 // kruskal's algorithm
 // get a minimal spanning tree
 public class Kruskal implements GraphAlgorithm {
 	private Graph graph;
 	private Forest forest = new Forest();
-	private GraphViz viz;
 	
 	public Kruskal(Graph graph) {
 		this.graph = graph;
-		this.viz = new GraphViz(graph, "kruskal");
 		
 		this.graph.sortEdges();
 	}
@@ -24,11 +23,8 @@ public class Kruskal implements GraphAlgorithm {
 		
 		// prepare edges for display
 		for (Edge e : graph.getEdges()) {
-			e.setColor("grey");
+			e.setColor(Color.gray);
 		}
-		
-		// initial image
-		viz.frame();
 		
 		while (true) {
 			Edge shortestEdge = getShortestEdge();
@@ -41,10 +37,9 @@ public class Kruskal implements GraphAlgorithm {
 			System.out.println("shortest found: " + shortestEdge);
 			
 			// select vertices and edge
-			shortestEdge.getV1().setColor("red");
-			shortestEdge.getV2().setColor("red");
-			shortestEdge.setColor("red");
-			viz.frame();
+			shortestEdge.getV1().setColor(Color.red);
+			shortestEdge.getV2().setColor(Color.red);
+			shortestEdge.setColor(Color.red);
 			
 			forest.add(shortestEdge);
 			
@@ -54,8 +49,6 @@ public class Kruskal implements GraphAlgorithm {
 		}
 		
 		System.out.println("done");
-
-		viz.save();
 	}
 	
 	// get shortest edge that does not complete a circuit

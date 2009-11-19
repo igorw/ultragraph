@@ -1,14 +1,14 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Vector;
 
 public class Graph {
-	private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-	private ArrayList<Edge> edges = new ArrayList<Edge>();
+	private Vector<Vertex> vertices = new Vector<Vertex>();
+	private Vector<Edge> edges = new Vector<Edge>();
 	
 	// add any number of vertices
 	public void add(Vertex... vertices) {
@@ -23,11 +23,11 @@ public class Graph {
 		return e;
 	}
 	
-	public ArrayList<Vertex> getVertices() {
+	public Vector<Vertex> getVertices() {
 		return vertices;
 	}
 	
-	public ArrayList<Edge> getEdges() {
+	public Vector<Edge> getEdges() {
 		return edges;
 	}
 	

@@ -1,11 +1,13 @@
 package model;
 
+import java.awt.Color;
+
 public class Edge implements Comparable<Edge> {
 	private Vertex v1;
 	private Vertex v2;
 	private int weight;
 	
-	private String color = "black";
+	private Color color = Color.black;
 	
 	public Edge(Vertex origin, Vertex target, int weight) {
 		setV1(origin);
@@ -43,11 +45,11 @@ public class Edge implements Comparable<Edge> {
 		this.weight = weight;
 	}
 	
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
 	
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 	

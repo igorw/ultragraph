@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.awt.Color;
 import java.util.HashSet;
 
 import model.DirectedEdge;
@@ -7,29 +8,23 @@ import model.Edge;
 import model.Graph;
 import model.Tree;
 import model.Vertex;
-import visualization.GraphViz;
 
 // prim's algorithm
 // get a minimal spanning tree
 public class Prim implements GraphAlgorithm {
 	private Graph graph;
 	private Tree tree = new Tree();
-	private GraphViz viz;
 	
 	public Prim(Graph graph) {
 		this.graph = graph;
-		this.viz = new GraphViz(graph, "prim");
 	}
 	
 	public void execute() {
 		
 		// prepare edges for display
 		for (Edge e : graph.getEdges()) {
-			e.setColor("grey");
+			e.setColor(Color.gray);
 		}
-		
-		// initial image
-		viz.frame();
 		
 		Edge shortestEdge;
 		Vertex randomVertex = graph.getRandomVertex();
@@ -38,14 +33,12 @@ public class Prim implements GraphAlgorithm {
 		shortestEdge = getShortestEdge(randomVertex);
 		
 		// select vertex
-		randomVertex.setColor("red");
-		viz.frame();
+		randomVertex.setColor(Color.red);
 		
 		// select vertices and edge
-		shortestEdge.getV1().setColor("red");
-		shortestEdge.getV2().setColor("red");
-		shortestEdge.setColor("red");
-		viz.frame();
+		shortestEdge.getV1().setColor(Color.red);
+		shortestEdge.getV2().setColor(Color.red);
+		shortestEdge.setColor(Color.red);
 		
 		// add initial edge to tree
 		tree.add(shortestEdge);
@@ -63,10 +56,9 @@ public class Prim implements GraphAlgorithm {
 			System.out.println(shortestEdge.getV1() + " " + shortestEdge.getV2());
 			
 			// select vertices and edge
-			shortestEdge.getV1().setColor("red");
-			shortestEdge.getV2().setColor("red");
-			shortestEdge.setColor("red");
-			viz.frame();
+			shortestEdge.getV1().setColor(Color.red);
+			shortestEdge.getV2().setColor(Color.red);
+			shortestEdge.setColor(Color.red);
 			
 			// add shortest edge to tree
 			tree.add(shortestEdge);
@@ -78,8 +70,6 @@ public class Prim implements GraphAlgorithm {
 		}
 		
 		// we're done
-
-		viz.save();
 	}
 
 	// get shortest edge for a vertex
