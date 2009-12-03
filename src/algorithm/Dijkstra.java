@@ -147,18 +147,34 @@ public class Dijkstra implements GraphAlgorithm {
 	}
 	
 	public static void main(String[] args) {
-		Vertex a = new Vertex("A", 15, 15);
+		Vertex a = new Vertex("A", 15, 25);
 		Vertex b = new Vertex("B", 50, 50);
 		Vertex c = new Vertex("C", 15, 50);
+		Vertex d = new Vertex("D", 50, 75);
+		Vertex e = new Vertex("E", 80, 60);
+		Vertex f = new Vertex("F", 50, 20);
+		Vertex g = new Vertex("G", 30, 10);
+		Vertex h = new Vertex("H", 75, 75);
+		Vertex i = new Vertex("I", 30, 20);
+		Vertex j = new Vertex("J", 75, 10);
 		
 		Graph graph = new Graph();
-		graph.add(a, b, c);
+		graph.add(a, b, c, d, e, f, g, h, i, j);
 		
 		graph.connect(a, b, 2);
 		graph.connect(a, c, 1);
 		graph.connect(b, c, 3);
+		graph.connect(b, h, 3);
+		graph.connect(c, d, 10);
+		graph.connect(b, e, 1);
+		graph.connect(e, f, 2);
+		graph.connect(d, f, 2);
+		graph.connect(f, i, 6);
+		graph.connect(f, g, 7);
+		graph.connect(g, i, 1);
+		graph.connect(g, j, 5);
 		
-		Dijkstra dijkstra = new Dijkstra(graph, a, c);
+		Dijkstra dijkstra = new Dijkstra(graph, a, f);
 		dijkstra.execute();
 	}
 }
