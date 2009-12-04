@@ -19,15 +19,17 @@ import javax.swing.UIManager;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
+import algorithm.GraphAlgorithm;
+import file.Reader;
 
-public class DijkstraGUI {
-	private Graph graph;
-	private JFrame frame = new JFrame("Dijkstra");
+public class GraphGUI {
+	private GraphAlgorithm algo;
+	private JFrame frame = new JFrame("Graphobia Pro");
 	private Canvas canvas;
 	
-	public DijkstraGUI(Graph graph) {
-		this.graph = graph;
-		canvas = new GraphCanvas(graph);
+	public GraphGUI(GraphAlgorithm algo) {
+		this.algo = algo;
+		canvas = new GraphCanvas(this.algo.getGraph());
 	}
 	
 	public void init() {
@@ -36,6 +38,11 @@ public class DijkstraGUI {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		if (System.getProperty("os.name").contains("Mac")) {
+			// add menubar to os x
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		}
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,21 +54,19 @@ public class DijkstraGUI {
 		canvas.setBackground(Color.white);
 		canvas.setSize(450, 350);
 		
-		// prepare edges for display
-		for (Edge e : graph.getEdges()) {
-			e.setColor(Color.gray);
-		}
-		
 		// menu
 		JMenuBar menuBar = new JMenuBar();
 		
-		JMenu menuFile = new JMenu("File");
-		menuBar.add(menuFile);
+		JMenu menuGraph = new JMenu("Graph");
+		menuBar.add(menuGraph);
 		JMenuItem menuFileNew = new JMenuItem("New");
-		//menuFileNew.addActionListener(actionListener);
-		menuFile.add(menuFileNew);
-		JMenuItem menuFileOpen = new JMenuItem("Open");
-		menuFileOpen.addActionListener(new ActionListener() {
+		menuFileNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuGraph.add(menuFileNew);
+		JMenuItem menuGraphOpen = new JMenuItem("Open");
+		menuGraphOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				
@@ -70,30 +75,37 @@ public class DijkstraGUI {
 					return;
 				}
 				
-				System.out.println("File opened: " + chooser.getSelectedFile().getName());
+				System.out.println("Graph opened: " + chooser.getSelectedFile().getName());
+				
+				Reader r = new Reader();
+				algo.setGraph(r.getGraph(chooser.getSelectedFile()));
+				repaint();
 			}
 		});
-		menuFile.add(menuFileOpen);
-		JMenuItem menuFileSave = new JMenuItem("Save");
-		menuFileSave.addActionListener(new ActionListener() {
+		menuGraph.add(menuGraphOpen);
+		JMenuItem menuGraphSave = new JMenuItem("Save");
+		menuGraphSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		menuFile.add(menuFileSave);
+		menuGraph.add(menuGraphSave);
 		
 		JMenu menuVertex = new JMenu("Vertex");
 		menuBar.add(menuVertex);
 		JMenuItem menuVertexAdd = new JMenuItem("Add");
-		//menuFileNew.addActionListener(actionListener);
+		menuVertexAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		menuVertex.add(menuVertexAdd);
 		JMenuItem menuVertexEdit = new JMenuItem("Edit");
-		menuFileOpen.addActionListener(new ActionListener() {
+		menuVertexEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		menuVertex.add(menuVertexEdit);
 		JMenuItem menuVertexRemove = new JMenuItem("Remove");
-		menuFileSave.addActionListener(new ActionListener() {
+		menuVertexRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -102,20 +114,52 @@ public class DijkstraGUI {
 		JMenu menuEdge = new JMenu("Edge");
 		menuBar.add(menuEdge);
 		JMenuItem menuEdgeAdd = new JMenuItem("Add");
-		//menuFileNew.addActionListener(actionListener);
+		menuEdgeAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		menuEdge.add(menuEdgeAdd);
 		JMenuItem menuEdgeEdit = new JMenuItem("Edit");
-		menuFileOpen.addActionListener(new ActionListener() {
+		menuEdgeEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		menuEdge.add(menuEdgeEdit);
 		JMenuItem menuEdgeRemove = new JMenuItem("Remove");
-		menuFileSave.addActionListener(new ActionListener() {
+		menuEdgeRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		menuEdge.add(menuEdgeRemove);
+		
+		JMenu menuAlgo = new JMenu("Algorithm");
+		menuBar.add(menuAlgo);
+		JMenuItem menuAlgoSettings = new JMenuItem("Settings");
+		menuAlgoSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				algo.settingsFrame(frame);
+			}
+		});
+		menuAlgo.add(menuAlgoSettings);
+		JMenuItem menuAlgoStart = new JMenuItem("Start");
+		menuAlgoStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				algo.execute();
+			}
+		});
+		menuAlgo.add(menuAlgoStart);
+		JMenuItem menuAlgoStop = new JMenuItem("Pause");
+		menuAlgoStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuAlgo.add(menuAlgoStop);
+		JMenuItem menuAlgoStep = new JMenuItem("Next Step");
+		menuAlgoStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuAlgo.add(menuAlgoStep);
 		
 		frame.setJMenuBar(menuBar);
 		

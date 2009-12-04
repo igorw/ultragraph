@@ -2,10 +2,13 @@ package algorithm;
 
 import java.awt.Color;
 
+import javax.swing.JFrame;
+
 import model.Edge;
 import model.Forest;
 import model.Graph;
 import model.Vertex;
+import view.GraphGUI;
 
 // kruskal's algorithm
 // get a minimal spanning tree
@@ -68,6 +71,22 @@ public class Kruskal implements GraphAlgorithm {
 			return e;
 		}
 		return null;
+	}
+	
+	// graph getter
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	// graph setter
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
+	
+	public void setGUI(GraphGUI gui) {
+	}
+	
+	public void settingsFrame(JFrame parent) {
 	}
 	
 	public static void main(String[] args) {

@@ -1,13 +1,22 @@
 package algorithm;
 
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import model.DirectedEdge;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
-import view.DijkstraGUI;
+import view.GraphGUI;
 
 // dijkstra's algorithm
 // find shortest path between two vertices
@@ -20,18 +29,20 @@ public class Dijkstra implements GraphAlgorithm {
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
 	
 	// visualization
-	private DijkstraGUI gui;
+	private GraphGUI gui;
 	
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
 		this.graph = graph;
 		this.origin = origin;
 		this.target = target;
-		this.gui = new DijkstraGUI(graph);
 	}
 	
 	public void execute() {
-		// initialise gui
-		gui.init();
+		
+		// prepare edges for display
+		for (Edge e : graph.getEdges()) {
+			e.setColor(Color.gray);
+		}
 		
 		// set initial label
 		origin.setLabel(0);
@@ -146,8 +157,54 @@ public class Dijkstra implements GraphAlgorithm {
 		return null;
 	}
 	
+	// graph getter
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	// graph setter
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
+	
+	public void setGUI(GraphGUI gui) {
+		gui = new GraphGUI(this);
+		gui.init();
+	}
+	
+	public void settingsFrame(JFrame parent) {
+		final JDialog dialog = new JDialog(parent, "Settings");
+		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		dialog.setModal(true);
+		dialog.setSize(300, 150);
+		
+		dialog.getContentPane().setLayout(new GridLayout(0, 2));
+
+		dialog.getContentPane().add(new JLabel("Start Vertex"));
+		final JComboBox originVertexBox = new JComboBox(graph.getVertices());
+		dialog.getContentPane().add(originVertexBox);
+
+		dialog.getContentPane().add(new JLabel("Target Vertex"));
+		final JComboBox targetVertexBox = new JComboBox(graph.getVertices());
+		dialog.getContentPane().add(targetVertexBox);
+
+		dialog.getContentPane().add(new JLabel(""));
+		JButton saveButton = new JButton("Okay");
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				origin = (Vertex) originVertexBox.getSelectedItem();
+				target = (Vertex) targetVertexBox.getSelectedItem();
+				dialog.dispose();
+				System.out.println("options saved");
+			}
+		});
+		dialog.getContentPane().add(saveButton);
+		
+		dialog.setVisible(true);
+	}
+	
 	public static void main(String[] args) {
-		Vertex a = new Vertex("A", 15, 25);
+		/*Vertex a = new Vertex("A", 15, 25);
 		Vertex b = new Vertex("B", 50, 50);
 		Vertex c = new Vertex("C", 15, 50);
 		Vertex d = new Vertex("D", 50, 75);
@@ -172,9 +229,9 @@ public class Dijkstra implements GraphAlgorithm {
 		graph.connect(f, i, 6);
 		graph.connect(f, g, 7);
 		graph.connect(g, i, 1);
-		graph.connect(g, j, 5);
+		graph.connect(g, j, 5);*/
 		
-		Dijkstra dijkstra = new Dijkstra(graph, a, f);
-		dijkstra.execute();
+		Dijkstra dijkstra = new Dijkstra(new Graph(), null, null);
+		dijkstra.setGUI(new GraphGUI(dijkstra));
 	}
 }

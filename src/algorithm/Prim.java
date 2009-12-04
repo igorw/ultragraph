@@ -3,6 +3,10 @@ package algorithm;
 import java.awt.Color;
 import java.util.HashSet;
 
+import javax.swing.JFrame;
+
+import view.GraphGUI;
+
 import model.DirectedEdge;
 import model.Edge;
 import model.Graph;
@@ -112,6 +116,16 @@ public class Prim implements GraphAlgorithm {
 		return shortest;
 	}
 	
+	// graph getter
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	// graph setter
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
+	
 	// edge touches existing tree only at one end
 	private boolean touchesTreeExclusive(Edge edge) {
 		int matches = 0;
@@ -133,6 +147,12 @@ public class Prim implements GraphAlgorithm {
 			vertices.add(e.getV2());
 		}
 		return vertices;
+	}
+	
+	public void setGUI(GraphGUI gui) {
+	}
+	
+	public void settingsFrame(JFrame parent) {
 	}
 	
 	public static void main(String[] args) {
