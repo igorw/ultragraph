@@ -168,7 +168,7 @@ public class Dijkstra implements GraphAlgorithm {
 	}
 	
 	public void setGUI(GraphGUI gui) {
-		gui = new GraphGUI(this);
+		this.gui = gui;
 		gui.init();
 	}
 	
