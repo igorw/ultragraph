@@ -25,7 +25,7 @@ import file.Reader;
 public class GraphGUI {
 	private GraphAlgorithm algo;
 	private JFrame frame = new JFrame("Graphobia Pro");
-	private Canvas canvas;
+	private GraphCanvas canvas;
 	
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
@@ -79,7 +79,9 @@ public class GraphGUI {
 				
 				Reader r = new Reader();
 				algo.setGraph(r.getGraph(chooser.getSelectedFile()));
-				repaint();
+				
+				canvas.setGraph(algo.getGraph());
+				canvas.repaint();
 			}
 		});
 		menuGraph.add(menuGraphOpen);
@@ -167,13 +169,6 @@ public class GraphGUI {
 	}
 	
 	public void repaint() {
-		try {
-			// wait 2 seconds
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 		canvas.repaint();
 	}
 	
@@ -186,6 +181,10 @@ public class GraphGUI {
 		public GraphCanvas(Graph graph) {
 			super();
 			
+			setGraph(graph);
+		}
+		
+		public void setGraph(Graph graph) {
 			this.graph = graph;
 		}
 		
