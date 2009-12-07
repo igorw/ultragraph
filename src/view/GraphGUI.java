@@ -24,7 +24,7 @@ import file.Reader;
 
 public class GraphGUI {
 	private GraphAlgorithm algo;
-	private JFrame frame = new JFrame("Graphobia Pro");
+	private JFrame frame = new JFrame("UltraGraph");
 	private GraphCanvas canvas;
 	
 	public GraphGUI(GraphAlgorithm algo) {
