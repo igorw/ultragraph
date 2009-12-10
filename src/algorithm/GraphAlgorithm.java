@@ -11,4 +11,5 @@ public interface GraphAlgorithm {
 	public void setGraph(Graph graph);
 	public void setGUI(GraphGUI gui);
 	public void settingsFrame(JFrame parent);
+	public void reset();
 }

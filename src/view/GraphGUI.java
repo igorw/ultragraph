@@ -187,14 +187,6 @@ public class GraphGUI {
 		
 		JMenu menuAlgo = new JMenu("Algorithm");
 		menuBar.add(menuAlgo);
-		JMenuItem menuAlgoSettings = new JMenuItem("Settings");
-		menuAlgoSettings.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				isConfigured = true;
-				algo.settingsFrame(frame);
-			}
-		});
-		menuAlgo.add(menuAlgoSettings);
 		JMenuItem menuAlgoStart = new JMenuItem("Start");
 		menuAlgoStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -202,6 +194,7 @@ public class GraphGUI {
 					isConfigured = true;
 					algo.settingsFrame(frame);
 				}
+				algo.reset();
 				algo.execute();
 			}
 		});
@@ -218,6 +211,14 @@ public class GraphGUI {
 			}
 		});
 		menuAlgo.add(menuAlgoStep);
+		JMenuItem menuAlgoSettings = new JMenuItem("Settings");
+		menuAlgoSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				isConfigured = true;
+				algo.settingsFrame(frame);
+			}
+		});
+		menuAlgo.add(menuAlgoSettings);
 		
 		JMenu menuDebug = new JMenu("Debug");
 		menuBar.add(menuDebug);

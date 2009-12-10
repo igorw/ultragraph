@@ -155,6 +155,10 @@ public class Prim implements GraphAlgorithm {
 	public void settingsFrame(JFrame parent) {
 	}
 	
+	// reset to a neutral state
+	public void reset() {
+	}
+	
 	public static void main(String[] args) {
 		Vertex a = new Vertex("A");
 		Vertex b = new Vertex("B");

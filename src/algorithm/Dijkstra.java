@@ -172,6 +172,7 @@ public class Dijkstra implements GraphAlgorithm {
 		gui.init();
 	}
 	
+	// settings of graph
 	public void settingsFrame(JFrame parent) {
 		final JDialog dialog = new JDialog(parent, "Settings");
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -183,10 +184,18 @@ public class Dijkstra implements GraphAlgorithm {
 		dialog.getContentPane().add(new JLabel("Start Vertex"));
 		final JComboBox originVertexBox = new JComboBox(graph.getVertices());
 		dialog.getContentPane().add(originVertexBox);
+		
+		if (origin != null) {
+			originVertexBox.setSelectedItem(origin);
+		}
 
 		dialog.getContentPane().add(new JLabel("Target Vertex"));
 		final JComboBox targetVertexBox = new JComboBox(graph.getVertices());
 		dialog.getContentPane().add(targetVertexBox);
+		
+		if (target != null) {
+			targetVertexBox.setSelectedItem(target);
+		}
 
 		dialog.getContentPane().add(new JLabel(""));
 		JButton saveButton = new JButton("Okay");
@@ -201,6 +210,14 @@ public class Dijkstra implements GraphAlgorithm {
 		dialog.getContentPane().add(saveButton);
 		
 		dialog.setVisible(true);
+	}
+	
+	// reset to a neutral state
+	public void reset() {
+		graph.reset();
+		boxed.clear();
+		
+		gui.repaint();
 	}
 	
 	public static void main(String[] args) {

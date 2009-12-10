@@ -57,6 +57,11 @@ public class Edge implements Comparable<Edge> {
 	public int getFullWeight(Vertex origin) {
 		return (origin.isLabeled() ? origin.getLabel() : 0) + weight;
 	}
+
+	// reset to a neutral state
+	public void reset() {
+		color = Color.black;
+	}
 	
 	public String toString() {
 		return getV1() + " " + getV2() + " " + getWeight();

@@ -74,6 +74,13 @@ public class Vertex implements Comparable<Vertex> {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
+
+	// reset to a neutral state
+	public void reset() {
+		color = Color.black;
+		label = -1;
+		origin = null;
+	}
 	
 	public String toString() {
 		return name;

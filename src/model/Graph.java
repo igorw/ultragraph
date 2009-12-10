@@ -69,6 +69,16 @@ public class Graph {
 		Collections.sort(edges);
 	}
 	
+	// reset to a neutral state
+	public void reset() {
+		for (Vertex v : vertices) {
+			v.reset();
+		}
+		for (Edge e : edges) {
+			e.reset();
+		}
+	}
+	
 	public static Edge getShortestEdge(Set<Edge> edges) {
 		Edge shortest = null;
 		for (Edge e : edges) {
