@@ -67,6 +67,12 @@ public class Dijkstra implements GraphAlgorithm {
 	 */
 	public void execute() {
 		
+		// prequisites
+		if (origin == null || target == null) {
+			System.out.println("origin or target is null, cannot run algorithm");
+			return;
+		}
+		
 		// prepare edges for display
 		for (Edge e : graph.getEdges()) {
 			e.setColor(Color.gray);
