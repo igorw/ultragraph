@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import model.Edge;
 import model.Graph;
 import model.Vertex;
 import algorithm.GraphAlgorithm;
@@ -131,7 +132,6 @@ public class GraphGUI {
 			private Vertex selectedVertex = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				
 				final VertexSelectWindow s = new VertexSelectWindow(frame, algo.getGraph());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -159,7 +159,25 @@ public class GraphGUI {
 		menuVertex.add(menuVertexEdit);
 		JMenuItem menuVertexRemove = new JMenuItem("Remove");
 		menuVertexRemove.addActionListener(new ActionListener() {
+			private Vertex selectedVertex = null;
+			
 			public void actionPerformed(ActionEvent e) {
+				final VertexSelectWindow s = new VertexSelectWindow(frame, algo.getGraph());
+				s.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedVertex = s.getVertex();
+					}
+				});
+				s.setVisible(true);
+				
+				if (selectedVertex == null) {
+					System.out.println("no vertex selected");
+					return;
+				}
+				
+				algo.getGraph().removeVertex(selectedVertex);
+				canvas.repaint();
+				System.out.println("vertex removed");
 			}
 		});
 		menuVertex.add(menuVertexRemove);
@@ -169,18 +187,71 @@ public class GraphGUI {
 		JMenuItem menuEdgeAdd = new JMenuItem("Add");
 		menuEdgeAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				final EdgeEditWindow w = new EdgeEditWindow(frame, "Add Edge", algo.getGraph());
+				
+				w.addSaveListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						algo.getGraph().connect(w.getEdge().getV1(), w.getEdge().getV2(), w.getEdge().getWeight());
+						canvas.repaint();
+						System.out.println("edge added");
+					}
+				});
+				
+				w.setVisible(true);
 			}
 		});
 		menuEdge.add(menuEdgeAdd);
 		JMenuItem menuEdgeEdit = new JMenuItem("Edit");
 		menuEdgeEdit.addActionListener(new ActionListener() {
+			private Edge selectedEdge = null;
+			
 			public void actionPerformed(ActionEvent e) {
+				final EdgeSelectWindow s = new EdgeSelectWindow(frame, algo.getGraph());
+				s.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedEdge = s.getEdge();
+					}
+				});
+				s.setVisible(true);
+				
+				if (selectedEdge == null) {
+					System.out.println("no edge selected");
+					return;
+				}
+				
+				final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", algo.getGraph(), selectedEdge);
+				w.addSaveListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						w.save();
+						canvas.repaint();
+						System.out.println("edge edited");
+					}
+				});
+				w.setVisible(true);
 			}
 		});
 		menuEdge.add(menuEdgeEdit);
 		JMenuItem menuEdgeRemove = new JMenuItem("Remove");
 		menuEdgeRemove.addActionListener(new ActionListener() {
+			private Edge selectedEdge = null;
+			
 			public void actionPerformed(ActionEvent e) {
+				final EdgeSelectWindow s = new EdgeSelectWindow(frame, algo.getGraph());
+				s.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedEdge = s.getEdge();
+					}
+				});
+				s.setVisible(true);
+				
+				if (selectedEdge == null) {
+					System.out.println("no edge selected");
+					return;
+				}
+				
+				algo.getGraph().removeEdge(selectedEdge);
+				canvas.repaint();
+				System.out.println("edge removed");
 			}
 		});
 		menuEdge.add(menuEdgeRemove);
@@ -220,7 +291,7 @@ public class GraphGUI {
 		});
 		menuAlgo.add(menuAlgoSettings);
 		
-		JMenu menuDebug = new JMenu("Debug");
+		/*JMenu menuDebug = new JMenu("Debug");
 		menuBar.add(menuDebug);
 		JMenuItem menuDebugVertices = new JMenuItem("List Vertices");
 		menuDebugVertices.addActionListener(new ActionListener() {
@@ -232,7 +303,7 @@ public class GraphGUI {
 				System.out.println("----------");
 			}
 		});
-		menuDebug.add(menuDebugVertices);
+		menuDebug.add(menuDebugVertices);*/
 		
 		frame.setJMenuBar(menuBar);
 		

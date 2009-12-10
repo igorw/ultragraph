@@ -31,6 +31,22 @@ public class Graph {
 		return edges;
 	}
 	
+	public void removeVertex(Vertex v) {
+		HashSet<Edge> removeEdges = new HashSet<Edge>();
+		for (Edge e : edges) {
+			if (e.getV1() == v || e.getV2() == v) {
+				removeEdges.add(e);
+			}
+		}
+		edges.removeAll(removeEdges);
+		
+		vertices.remove(v);
+	}
+	
+	public void removeEdge(Edge e) {
+		edges.remove(e);
+	}
+	
 	// returns set of directed edges from vertex v
 	public HashSet<DirectedEdge> getVertexEdges(Vertex v) {
 		HashSet<DirectedEdge> vEdges = new HashSet<DirectedEdge>();
