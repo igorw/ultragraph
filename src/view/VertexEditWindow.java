@@ -45,6 +45,7 @@ public class VertexEditWindow extends JDialog {
 		getContentPane().add(new JLabel(""));
 		saveButton = new JButton("Save");
 		getContentPane().add(saveButton);
+		getRootPane().setDefaultButton(saveButton);
 
 		// close on okay
 		addSaveListener(new ActionListener() {

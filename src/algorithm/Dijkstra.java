@@ -31,12 +31,14 @@ public class Dijkstra implements GraphAlgorithm {
 	// visualization
 	private GraphGUI gui;
 	
+	// constructor
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
 		this.graph = graph;
 		this.origin = origin;
 		this.target = target;
 	}
 	
+	// execute the algorithm
 	public void execute() {
 		
 		// prepare edges for display
@@ -172,15 +174,18 @@ public class Dijkstra implements GraphAlgorithm {
 		gui.init();
 	}
 	
-	// settings of graph
+	// window displaying settings of the algorithm
 	public void settingsFrame(JFrame parent) {
+		// create new dialog window
 		final JDialog dialog = new JDialog(parent, "Settings");
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		dialog.setModal(true);
 		dialog.setSize(300, 150);
 		
+		// layout
 		dialog.getContentPane().setLayout(new GridLayout(0, 2));
-
+		
+		// origin selector
 		dialog.getContentPane().add(new JLabel("Start Vertex"));
 		final JComboBox originVertexBox = new JComboBox(graph.getVertices());
 		dialog.getContentPane().add(originVertexBox);
@@ -188,7 +193,8 @@ public class Dijkstra implements GraphAlgorithm {
 		if (origin != null) {
 			originVertexBox.setSelectedItem(origin);
 		}
-
+		
+		// target selector
 		dialog.getContentPane().add(new JLabel("Target Vertex"));
 		final JComboBox targetVertexBox = new JComboBox(graph.getVertices());
 		dialog.getContentPane().add(targetVertexBox);
@@ -196,7 +202,8 @@ public class Dijkstra implements GraphAlgorithm {
 		if (target != null) {
 			targetVertexBox.setSelectedItem(target);
 		}
-
+		
+		// okay button
 		dialog.getContentPane().add(new JLabel(""));
 		JButton saveButton = new JButton("Okay");
 		saveButton.addActionListener(new ActionListener() {
@@ -208,6 +215,7 @@ public class Dijkstra implements GraphAlgorithm {
 			}
 		});
 		dialog.getContentPane().add(saveButton);
+		dialog.getRootPane().setDefaultButton(saveButton);
 		
 		dialog.setVisible(true);
 	}

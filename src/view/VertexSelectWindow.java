@@ -36,6 +36,7 @@ public class VertexSelectWindow extends JDialog {
 		getContentPane().add(new JLabel(""));
 		saveButton = new JButton("Okay");
 		getContentPane().add(saveButton);
+		getRootPane().setDefaultButton(saveButton);
 
 		// close on okay
 		addActionListener(new ActionListener() {
