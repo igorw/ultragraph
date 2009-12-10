@@ -1,12 +1,10 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -16,16 +14,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import model.Edge;
 import model.Graph;
 import model.Vertex;
 import algorithm.GraphAlgorithm;
 import file.Reader;
+import file.Writer;
 
 public class GraphGUI {
 	private GraphAlgorithm algo;
 	private JFrame frame = new JFrame("UltraGraph");
 	private GraphCanvas canvas;
+	
+	private boolean isConfigured = false;
 	
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
@@ -62,6 +62,9 @@ public class GraphGUI {
 		JMenuItem menuFileNew = new JMenuItem("New");
 		menuFileNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				updateGraph(new Graph());
+				
+				System.out.println("New graph created");
 			}
 		});
 		menuGraph.add(menuFileNew);
@@ -75,19 +78,31 @@ public class GraphGUI {
 					return;
 				}
 				
-				System.out.println("Graph opened: " + chooser.getSelectedFile().getName());
-				
 				Reader r = new Reader();
-				algo.setGraph(r.getGraph(chooser.getSelectedFile()));
+				updateGraph(r.getGraph(chooser.getSelectedFile()));
 				
-				canvas.setGraph(algo.getGraph());
-				canvas.repaint();
+				System.out.println("Graph opened: " + chooser.getSelectedFile().getName());
 			}
 		});
 		menuGraph.add(menuGraphOpen);
 		JMenuItem menuGraphSave = new JMenuItem("Save");
 		menuGraphSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				
+				int returnVal = chooser.showSaveDialog(frame);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				
+				try {
+					final Writer w = new Writer(algo.getGraph(), chooser.getSelectedFile());
+					w.getClass(); // dummy
+				} catch (IOException e1) {
+					System.out.println("Save failed");
+				}
+				
+				System.out.println("Graph saved: " + chooser.getSelectedFile().getName());
 			}
 		});
 		menuGraph.add(menuGraphSave);
@@ -97,12 +112,48 @@ public class GraphGUI {
 		JMenuItem menuVertexAdd = new JMenuItem("Add");
 		menuVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				final VertexAddWindow w = new VertexAddWindow(frame);
+				
+				w.addSaveListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						algo.getGraph().add(w.getVertex());
+						canvas.repaint();
+						System.out.println("vertex added");
+					}
+				});
+				
+				w.setVisible(true);
 			}
 		});
 		menuVertex.add(menuVertexAdd);
 		JMenuItem menuVertexEdit = new JMenuItem("Edit");
 		menuVertexEdit.addActionListener(new ActionListener() {
+			private Vertex selectedVertex = null;
+			
 			public void actionPerformed(ActionEvent e) {
+				
+				final VertexSelectWindow s = new VertexSelectWindow(frame, algo.getGraph());
+				s.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedVertex = s.getVertex();
+					}
+				});
+				s.setVisible(true);
+				
+				if (selectedVertex == null) {
+					System.out.println("no vertex selected");
+					return;
+				}
+				
+				final VertexEditWindow w = new VertexEditWindow(frame, selectedVertex);
+				w.addSaveListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						w.save();
+						canvas.repaint();
+						System.out.println("vertex edited");
+					}
+				});
+				w.setVisible(true);
 			}
 		});
 		menuVertex.add(menuVertexEdit);
@@ -139,6 +190,7 @@ public class GraphGUI {
 		JMenuItem menuAlgoSettings = new JMenuItem("Settings");
 		menuAlgoSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				isConfigured = true;
 				algo.settingsFrame(frame);
 			}
 		});
@@ -146,6 +198,10 @@ public class GraphGUI {
 		JMenuItem menuAlgoStart = new JMenuItem("Start");
 		menuAlgoStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (!isConfigured) {
+					isConfigured = true;
+					algo.settingsFrame(frame);
+				}
 				algo.execute();
 			}
 		});
@@ -163,6 +219,20 @@ public class GraphGUI {
 		});
 		menuAlgo.add(menuAlgoStep);
 		
+		JMenu menuDebug = new JMenu("Debug");
+		menuBar.add(menuDebug);
+		JMenuItem menuDebugVertices = new JMenuItem("List Vertices");
+		menuDebugVertices.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("----------");
+				for (Vertex v : algo.getGraph().getVertices()) {
+					System.out.println(v);
+				}
+				System.out.println("----------");
+			}
+		});
+		menuDebug.add(menuDebugVertices);
+		
 		frame.setJMenuBar(menuBar);
 		
 		frame.setVisible(true);
@@ -172,63 +242,9 @@ public class GraphGUI {
 		canvas.repaint();
 	}
 	
-	private class GraphCanvas extends Canvas {
-		private static final long serialVersionUID = 1L;
-		private Graph graph;
-		
-		private int STEP = 4;
-		
-		public GraphCanvas(Graph graph) {
-			super();
-			
-			setGraph(graph);
-		}
-		
-		public void setGraph(Graph graph) {
-			this.graph = graph;
-		}
-		
-		public void paint(Graphics g) {
-			super.paint(g);
-			
-			// draw edges
-			for (Edge e : graph.getEdges()) {
-				g.setColor(e.getColor());
-				g.drawLine(e.getV1().getPosX() * STEP + 8, e.getV1().getPosY() * STEP + 8, e.getV2().getPosX() * STEP + 8, e.getV2().getPosY() * STEP + 8);
-				
-				// get mid coordinates
-				int x = (e.getV1().getPosX() + e.getV2().getPosX()) / 2;
-				int y = (e.getV1().getPosY() + e.getV2().getPosY()) / 2;
-				
-				g.setColor(Color.black);
-				g.setFont(new Font(null, Font.PLAIN, 10));
-				g.drawString(String.valueOf(e.getWeight()),
-					x * STEP,
-					y * STEP);
-			}
-			
-			// draw vertices
-			for (Vertex v : graph.getVertices()) {
-				// fill background white
-				g.setColor(Color.white);
-				g.fillOval(v.getPosX() * STEP, v.getPosY() * STEP, 15, 15);
-				
-				// draw circle
-				g.setColor(v.getColor());
-				g.drawOval(v.getPosX() * STEP, v.getPosY() * STEP, 15, 15);
-				
-				// vertex name
-				g.setColor(Color.black);
-				g.setFont(new Font(null, Font.PLAIN, 10));
-				g.drawString(v.getName(), v.getPosX() * STEP + 5, v.getPosY() * STEP + 11);
-				
-				// vertex label
-				if (v.isLabeled()) {
-					g.setColor(Color.gray);
-					g.setFont(new Font(null, Font.PLAIN, 10));
-					g.drawString(String.valueOf(v.getLabel()), v.getPosX() * STEP + 20, v.getPosY() * STEP + 11);
-				}
-			}
-		}
+	private void updateGraph(Graph graph) {
+		algo.setGraph(graph);
+		canvas.setGraph(algo.getGraph());
+		canvas.repaint();
 	}
 }

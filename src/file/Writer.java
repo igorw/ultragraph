@@ -10,8 +10,8 @@ import model.Vertex;
 
 public class Writer {
 	
-	public Writer(Graph g, String name) throws IOException{
-		FileWriter file = new FileWriter(new File(name+".txt"));
+	public Writer(Graph g, File f) throws IOException{
+		FileWriter file = new FileWriter(f);
 		for(Vertex v : g.getVertices()){
 			file.write("v\t");
 			file.write(v.getName()+"\t");
