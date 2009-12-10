@@ -96,7 +96,7 @@ public class GraphGUI {
 				}
 				
 				try {
-					final Writer w = new Writer(algo.getGraph(), chooser.getSelectedFile());
+					Writer w = new Writer(algo.getGraph(), chooser.getSelectedFile());
 					w.getClass(); // dummy
 				} catch (IOException e1) {
 					System.out.println("Save failed");
@@ -112,7 +112,7 @@ public class GraphGUI {
 		JMenuItem menuVertexAdd = new JMenuItem("Add");
 		menuVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final VertexAddWindow w = new VertexAddWindow(frame);
+				final VertexEditWindow w = new VertexEditWindow(frame, "Add Vertex");
 				
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class GraphGUI {
 					return;
 				}
 				
-				final VertexEditWindow w = new VertexEditWindow(frame, selectedVertex);
+				final VertexEditWindow w = new VertexEditWindow(frame, "Edit Vertex", selectedVertex);
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						w.save();

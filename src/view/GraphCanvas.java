@@ -33,6 +33,7 @@ public class GraphCanvas extends Canvas {
 				selectedVertex = null;
 			}
 			public void mousePressed(MouseEvent e) {
+				// find the vertex for moving
 				for (Vertex v : getGraph().getVertices()) {
 					if (v.getPosX() * STEP < e.getX() && v.getPosX() * STEP + 15 > e.getX() && v.getPosY() * STEP < e.getY() && v.getPosY() * STEP + 15 > e.getY()) {
 						selectedVertex = v;
@@ -46,8 +47,10 @@ public class GraphCanvas extends Canvas {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				if (selectedVertex != null) {
-					selectedVertex.setPosX(e.getX() / STEP);
-					selectedVertex.setPosY(e.getY() / STEP);
+					// move using the center of the mouse
+					// therefore substract 15/2 = 7
+					selectedVertex.setPosX((e.getX() - 7) / STEP);
+					selectedVertex.setPosY((e.getY() - 7) / STEP);
 					repaint();
 				}
 			}

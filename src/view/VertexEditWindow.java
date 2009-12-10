@@ -21,11 +21,8 @@ public class VertexEditWindow extends JDialog {
 
 	private Vertex vertex;
 	
-	public VertexEditWindow(Frame parent, Vertex v) {
-		super(parent, "Edit Vertex");
-		
-		// set temp vars
-		vertex = v;
+	public VertexEditWindow(Frame parent, String title) {
+		super(parent, title);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setModal(true);
@@ -34,15 +31,15 @@ public class VertexEditWindow extends JDialog {
 		getContentPane().setLayout(new GridLayout(0, 2));
 		
 		getContentPane().add(new JLabel("Vertex"));
-		nameField = new JTextField(vertex.getName());
+		nameField = new JTextField();
 		getContentPane().add(nameField);
 	
 		getContentPane().add(new JLabel("Position X"));
-		xField = new JTextField(String.valueOf(vertex.getPosX()));
+		xField = new JTextField();
 		getContentPane().add(xField);
 	
 		getContentPane().add(new JLabel("Position Y"));
-		yField = new JTextField(String.valueOf(vertex.getPosY()));
+		yField = new JTextField();
 		getContentPane().add(yField);
 	
 		getContentPane().add(new JLabel(""));
@@ -55,6 +52,18 @@ public class VertexEditWindow extends JDialog {
 				dispose();
 			}
 		});
+	}
+	
+	public VertexEditWindow(Frame parent, String title, Vertex v) {
+		this(parent, title);
+		
+		// set vertex
+		vertex = v;
+		
+		// set text fields
+		nameField.setText(vertex.getName());
+		xField.setText(String.valueOf(vertex.getPosX()));
+		yField.setText(String.valueOf(vertex.getPosY()));
 	}
 	
 	public void addSaveListener(ActionListener l) {
@@ -70,5 +79,13 @@ public class VertexEditWindow extends JDialog {
 		vertex.setName(nameField.getText());
 		vertex.setPosX(Integer.valueOf(xField.getText()));
 		vertex.setPosY(Integer.valueOf(yField.getText()));
+	}
+	
+	public Vertex getVertex() {
+		if (vertex == null) {
+			vertex = new Vertex(nameField.getText(), Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
+		}
+		
+		return vertex;
 	}
 }
