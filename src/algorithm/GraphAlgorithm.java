@@ -47,4 +47,11 @@ public interface GraphAlgorithm {
 	 * reset algorithm to a neutral state
 	 */
 	public void reset();
+	
+	/**
+	 * string representation of graph
+	 * 
+	 * @return graph name
+	 */
+	public String toString();
 }

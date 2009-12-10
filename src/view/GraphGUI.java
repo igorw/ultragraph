@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -12,12 +13,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
 import model.Edge;
 import model.Graph;
 import model.Vertex;
+import algorithm.Dijkstra;
 import algorithm.GraphAlgorithm;
+import algorithm.Kruskal;
+import algorithm.Prim;
 import file.Reader;
 import file.Writer;
 
@@ -28,9 +33,20 @@ public class GraphGUI {
 	
 	private boolean isConfigured = false;
 	
+	private Vector<GraphAlgorithm> algorithms = new Vector<GraphAlgorithm>();
+	
+	private Graph graph = new Graph();
+	
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
-		canvas = new GraphCanvas(this.algo.getGraph());
+		
+		canvas = new GraphCanvas(graph);
+
+		algorithms.add(new Dijkstra(graph, null, null));
+		algorithms.add(new Prim(graph));
+		algorithms.add(new Kruskal(graph));
+		
+		algo.setGUI(this);
 	}
 	
 	public void init() {
@@ -63,7 +79,7 @@ public class GraphGUI {
 		JMenuItem menuFileNew = new JMenuItem("New");
 		menuFileNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateGraph(new Graph());
+				setGraph(new Graph());
 				
 				System.out.println("New graph created");
 			}
@@ -80,7 +96,7 @@ public class GraphGUI {
 				}
 				
 				Reader r = new Reader();
-				updateGraph(r.getGraph(chooser.getSelectedFile()));
+				setGraph(r.getGraph(chooser.getSelectedFile()));
 				
 				System.out.println("Graph opened: " + chooser.getSelectedFile().getName());
 			}
@@ -97,7 +113,7 @@ public class GraphGUI {
 				}
 				
 				try {
-					Writer w = new Writer(algo.getGraph(), chooser.getSelectedFile());
+					Writer w = new Writer(graph, chooser.getSelectedFile());
 					w.getClass(); // dummy
 				} catch (IOException e1) {
 					System.out.println("Save failed");
@@ -117,8 +133,8 @@ public class GraphGUI {
 				
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						algo.getGraph().add(w.getVertex());
-						canvas.repaint();
+						graph.add(w.getVertex());
+						repaint();
 						System.out.println("vertex added");
 					}
 				});
@@ -132,7 +148,7 @@ public class GraphGUI {
 			private Vertex selectedVertex = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", algo.getGraph().getVertices());
+				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", graph.getVertices());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedVertex = s.getItem();
@@ -149,7 +165,7 @@ public class GraphGUI {
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						w.save();
-						canvas.repaint();
+						repaint();
 						System.out.println("vertex edited");
 					}
 				});
@@ -162,7 +178,7 @@ public class GraphGUI {
 			private Vertex selectedVertex = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", algo.getGraph().getVertices());
+				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", graph.getVertices());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedVertex = s.getItem();
@@ -175,8 +191,8 @@ public class GraphGUI {
 					return;
 				}
 				
-				algo.getGraph().removeVertex(selectedVertex);
-				canvas.repaint();
+				graph.removeVertex(selectedVertex);
+				repaint();
 				System.out.println("vertex removed");
 			}
 		});
@@ -187,12 +203,12 @@ public class GraphGUI {
 		JMenuItem menuEdgeAdd = new JMenuItem("Add");
 		menuEdgeAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final EdgeEditWindow w = new EdgeEditWindow(frame, "Add Edge", algo.getGraph());
+				final EdgeEditWindow w = new EdgeEditWindow(frame, "Add Edge", graph);
 				
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						algo.getGraph().connect(w.getEdge().getV1(), w.getEdge().getV2(), w.getEdge().getWeight());
-						canvas.repaint();
+						graph.connect(w.getEdge().getV1(), w.getEdge().getV2(), w.getEdge().getWeight());
+						repaint();
 						System.out.println("edge added");
 					}
 				});
@@ -206,7 +222,7 @@ public class GraphGUI {
 			private Edge selectedEdge = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", algo.getGraph().getEdges());
+				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", graph.getEdges());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedEdge = s.getItem();
@@ -219,11 +235,11 @@ public class GraphGUI {
 					return;
 				}
 				
-				final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", algo.getGraph(), selectedEdge);
+				final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", graph, selectedEdge);
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						w.save();
-						canvas.repaint();
+						repaint();
 						System.out.println("edge edited");
 					}
 				});
@@ -236,7 +252,7 @@ public class GraphGUI {
 			private Edge selectedEdge = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", algo.getGraph().getEdges());
+				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", graph.getEdges());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedEdge = s.getItem();
@@ -249,8 +265,8 @@ public class GraphGUI {
 					return;
 				}
 				
-				algo.getGraph().removeEdge(selectedEdge);
-				canvas.repaint();
+				graph.removeEdge(selectedEdge);
+				repaint();
 				System.out.println("edge removed");
 			}
 		});
@@ -290,6 +306,33 @@ public class GraphGUI {
 			}
 		});
 		menuAlgo.add(menuAlgoSettings);
+
+		menuAlgo.add(new JSeparator());
+		
+		JMenuItem menuAlgoSelect = new JMenuItem("Select algorithm");
+		menuAlgoSelect.addActionListener(new ActionListener() {
+			private GraphAlgorithm selectedAlgo = null;
+			
+			public void actionPerformed(ActionEvent e) {
+				final ItemSelectWindow<GraphAlgorithm> s = new ItemSelectWindow<GraphAlgorithm>(frame, "Select algorithm", "Algorithm", algorithms, algo);
+				s.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedAlgo = s.getItem();
+					}
+				});
+				s.setVisible(true);
+				
+				if (selectedAlgo == null) {
+					System.out.println("no algo selected");
+					return;
+				}
+				
+				setAlgorithm(selectedAlgo);
+				System.out.println("algorithm " + selectedAlgo + " selected");
+				
+			}
+		});
+		menuAlgo.add(menuAlgoSelect);
 		
 		/*JMenu menuDebug = new JMenu("Debug");
 		menuBar.add(menuDebug);
@@ -297,7 +340,7 @@ public class GraphGUI {
 		menuDebugVertices.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("----------");
-				for (Vertex v : algo.getGraph().getVertices()) {
+				for (Vertex v : graph.getVertices()) {
 					System.out.println(v);
 				}
 				System.out.println("----------");
@@ -314,14 +357,18 @@ public class GraphGUI {
 		canvas.repaint();
 	}
 	
-	private void updateGraph(Graph graph) {
+	public void setAlgorithm(GraphAlgorithm algo) {
+		this.algo = algo;
 		algo.setGraph(graph);
-		canvas.setGraph(algo.getGraph());
-		canvas.repaint();
+		algo.setGUI(this);
+		
+		isConfigured = false;
 	}
 	
-	private void updateGraph() {
-		canvas.setGraph(algo.getGraph());
-		canvas.repaint();
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+		algo.setGraph(graph);
+		canvas.setGraph(graph);
+		repaint();
 	}
 }

@@ -159,6 +159,15 @@ public class Prim implements GraphAlgorithm {
 	public void reset() {
 	}
 	
+	/**
+	 * string representation of graph
+	 * 
+	 * @return graph name
+	 */
+	public String toString() {
+		return getClass().getName();
+	}
+	
 	public static void main(String[] args) {
 		Vertex a = new Vertex("A");
 		Vertex b = new Vertex("B");

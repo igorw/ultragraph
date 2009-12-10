@@ -220,7 +220,6 @@ public class Dijkstra implements GraphAlgorithm {
 	 */
 	public void setGUI(GraphGUI gui) {
 		this.gui = gui;
-		gui.init();
 	}
 	
 	/**
@@ -283,6 +282,15 @@ public class Dijkstra implements GraphAlgorithm {
 		gui.repaint();
 	}
 	
+	/**
+	 * string representation of graph
+	 * 
+	 * @return graph name
+	 */
+	public String toString() {
+		return getClass().getName();
+	}
+	
 	public static void main(String[] args) {
 		/*Vertex a = new Vertex("A", 15, 25);
 		Vertex b = new Vertex("B", 50, 50);
@@ -312,6 +320,8 @@ public class Dijkstra implements GraphAlgorithm {
 		graph.connect(g, j, 5);*/
 		
 		Dijkstra dijkstra = new Dijkstra(new Graph(), null, null);
-		dijkstra.setGUI(new GraphGUI(dijkstra));
+		GraphGUI gui = new GraphGUI(dijkstra);
+		gui.init();
+		gui.getClass(); // dummy
 	}
 }

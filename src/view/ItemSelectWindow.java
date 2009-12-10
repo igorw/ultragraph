@@ -19,7 +19,7 @@ public class ItemSelectWindow<E> extends JDialog {
 	private JButton selectButton;
 	
 	public ItemSelectWindow(Frame parent, String title, String label, Vector<E> items) {
-		super(parent, "Select Edge");
+		super(parent, title);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setModal(true);
@@ -27,7 +27,7 @@ public class ItemSelectWindow<E> extends JDialog {
 		
 		getContentPane().setLayout(new GridLayout(0, 2));
 		
-		getContentPane().add(new JLabel("Edge"));
+		getContentPane().add(new JLabel(label));
 		itemBox = new JComboBox(items);
 		getContentPane().add(itemBox);
 	
@@ -42,6 +42,12 @@ public class ItemSelectWindow<E> extends JDialog {
 				dispose();
 			}
 		});
+	}
+	
+	public ItemSelectWindow(Frame parent, String title, String label, Vector<E> items, E selected) {
+		this(parent, title, label, items);
+		
+		itemBox.setSelectedItem(selected);
 	}
 	
 	public void addActionListener(ActionListener l) {

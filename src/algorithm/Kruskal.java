@@ -34,7 +34,7 @@ public class Kruskal implements GraphAlgorithm {
 			
 			if (shortestEdge == null) {
 				System.out.println("no shortest edge found");
-				System.exit(0);
+				return;
 			}
 			
 			System.out.println("shortest found: " + shortestEdge);
@@ -91,6 +91,15 @@ public class Kruskal implements GraphAlgorithm {
 	
 	// reset to a neutral state
 	public void reset() {
+	}
+	
+	/**
+	 * string representation of graph
+	 * 
+	 * @return graph name
+	 */
+	public String toString() {
+		return getClass().getName();
 	}
 	
 	public static void main(String[] args) {
