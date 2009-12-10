@@ -18,27 +18,53 @@ import model.Graph;
 import model.Vertex;
 import view.GraphGUI;
 
-// dijkstra's algorithm
-// find shortest path between two vertices
+/**
+ * dijkstra's algorithm
+ * find shortest path between two vertices
+ */
 public class Dijkstra implements GraphAlgorithm {
+	/**
+	 * the graph used for calculation
+	 */
 	private Graph graph;
+	
+	/**
+	 * the starting point vertex
+	 */
 	private Vertex origin;
+	
+	/**
+	 * the ending point vertex
+	 */
 	private Vertex target;
 	
-	// boxed means all edges were traversed
+	/**
+	 * list of boxed vertexes
+	 * a vertex is boxed, when all its edges were traversed
+	 */
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
 	
-	// visualization
+	/**
+	 * the GUI handles display
+	 */
 	private GraphGUI gui;
 	
-	// constructor
+	/**
+	 * default constructor
+	 * 
+	 * @param graph graph
+	 * @param origin origin
+	 * @param target target
+	 */
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
 		this.graph = graph;
 		this.origin = origin;
 		this.target = target;
 	}
 	
-	// execute the algorithm
+	/**
+	 * run the algorithm
+	 */
 	public void execute() {
 		
 		// prepare edges for display
@@ -99,10 +125,16 @@ public class Dijkstra implements GraphAlgorithm {
 		}
 	}
 	
-	// returns whether boxed is target
+	/**
+	 * box a vertex
+	 * 
+	 * @param v vertex to be boxed
+	 * @return is boxed vertex the target
+	 */
 	private boolean boxVertex(Vertex v) {
 		System.out.println(v);
 		
+		// paint vertex red
 		v.setColor(Color.red);
 		gui.repaint();
 		
@@ -147,8 +179,12 @@ public class Dijkstra implements GraphAlgorithm {
 		return false;
 	}
 	
-	// find the vertex with the lowest weight
-	// first sort vertices asc, then check conditions
+	/**
+	 * find the vertex with the lowest weight
+	 * first sort vertices asc, then check conditions
+	 * 
+	 * @return lowest weighted vertex
+	 */
 	private Vertex getLowestVertex() {
 		graph.sortVertices();
 		for (Vertex v : graph.getVertices()) {
@@ -159,22 +195,33 @@ public class Dijkstra implements GraphAlgorithm {
 		return null;
 	}
 	
-	// graph getter
+	/**
+	 * graph getter
+	 */
 	public Graph getGraph() {
 		return graph;
 	}
 	
-	// graph setter
+	/**
+	 * graph setter
+	 */
 	public void setGraph(Graph graph) {
 		this.graph = graph;
 	}
 	
+	/**
+	 * graphGUI setter
+	 */
 	public void setGUI(GraphGUI gui) {
 		this.gui = gui;
 		gui.init();
 	}
 	
-	// window displaying settings of the algorithm
+	/**
+	 * window displaying settings of the algorithm
+	 * 
+	 * @param parent parent window
+	 */
 	public void settingsFrame(JFrame parent) {
 		// create new dialog window
 		final JDialog dialog = new JDialog(parent, "Settings");
@@ -220,7 +267,9 @@ public class Dijkstra implements GraphAlgorithm {
 		dialog.setVisible(true);
 	}
 	
-	// reset to a neutral state
+	/**
+	 * reset algorithm to a neutral state
+	 */
 	public void reset() {
 		graph.reset();
 		boxed.clear();
