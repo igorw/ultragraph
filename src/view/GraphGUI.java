@@ -132,10 +132,10 @@ public class GraphGUI {
 			private Vertex selectedVertex = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final VertexSelectWindow s = new VertexSelectWindow(frame, algo.getGraph());
+				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", algo.getGraph().getVertices());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						selectedVertex = s.getVertex();
+						selectedVertex = s.getItem();
 					}
 				});
 				s.setVisible(true);
@@ -162,10 +162,10 @@ public class GraphGUI {
 			private Vertex selectedVertex = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final VertexSelectWindow s = new VertexSelectWindow(frame, algo.getGraph());
+				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", algo.getGraph().getVertices());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						selectedVertex = s.getVertex();
+						selectedVertex = s.getItem();
 					}
 				});
 				s.setVisible(true);
@@ -206,10 +206,10 @@ public class GraphGUI {
 			private Edge selectedEdge = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final EdgeSelectWindow s = new EdgeSelectWindow(frame, algo.getGraph());
+				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", algo.getGraph().getEdges());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						selectedEdge = s.getEdge();
+						selectedEdge = s.getItem();
 					}
 				});
 				s.setVisible(true);
@@ -236,10 +236,10 @@ public class GraphGUI {
 			private Edge selectedEdge = null;
 			
 			public void actionPerformed(ActionEvent e) {
-				final EdgeSelectWindow s = new EdgeSelectWindow(frame, algo.getGraph());
+				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", algo.getGraph().getEdges());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						selectedEdge = s.getEdge();
+						selectedEdge = s.getItem();
 					}
 				});
 				s.setVisible(true);
@@ -316,6 +316,11 @@ public class GraphGUI {
 	
 	private void updateGraph(Graph graph) {
 		algo.setGraph(graph);
+		canvas.setGraph(algo.getGraph());
+		canvas.repaint();
+	}
+	
+	private void updateGraph() {
 		canvas.setGraph(algo.getGraph());
 		canvas.repaint();
 	}
