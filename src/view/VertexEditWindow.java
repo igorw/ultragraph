@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import model.Vertex;
@@ -16,7 +17,8 @@ import model.Vertex;
 public class VertexEditWindow extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	private JTextField nameField, xField, yField;
+	private JTextField nameField;
+	private JSpinner xField, yField;
 	private JButton saveButton;
 
 	private Vertex vertex;
@@ -35,11 +37,11 @@ public class VertexEditWindow extends JDialog {
 		getContentPane().add(nameField);
 	
 		getContentPane().add(new JLabel("Position X"));
-		xField = new JTextField();
+		xField = new JSpinner();
 		getContentPane().add(xField);
 	
 		getContentPane().add(new JLabel("Position Y"));
-		yField = new JTextField();
+		yField = new JSpinner();
 		getContentPane().add(yField);
 	
 		getContentPane().add(new JLabel(""));
@@ -63,8 +65,8 @@ public class VertexEditWindow extends JDialog {
 		
 		// set text fields
 		nameField.setText(vertex.getName());
-		xField.setText(String.valueOf(vertex.getPosX()));
-		yField.setText(String.valueOf(vertex.getPosY()));
+		xField.setValue(vertex.getPosX());
+		yField.setValue(vertex.getPosY());
 	}
 	
 	public void addSaveListener(ActionListener l) {
@@ -78,15 +80,19 @@ public class VertexEditWindow extends JDialog {
 		}
 		
 		vertex.setName(nameField.getText());
-		vertex.setPosX(Integer.valueOf(xField.getText()));
-		vertex.setPosY(Integer.valueOf(yField.getText()));
+		vertex.setPosX((Integer) xField.getValue());
+		vertex.setPosY((Integer) yField.getValue());
 	}
 	
 	public Vertex getVertex() {
 		if (vertex == null) {
-			vertex = new Vertex(nameField.getText(), Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
+			vertex = new Vertex(nameField.getText(), (Integer) xField.getValue(), (Integer) yField.getValue());
 		}
 		
 		return vertex;
+	}
+	
+	public void setNameField(String name) {
+		nameField.setText(name);
 	}
 }

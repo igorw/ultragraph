@@ -37,6 +37,10 @@ public class GraphGUI {
 	
 	private Graph graph = new Graph();
 	
+	// increase when adding vertices
+	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	private int currentLetter = 0;
+	
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
 		
@@ -130,7 +134,6 @@ public class GraphGUI {
 		menuVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final VertexEditWindow w = new VertexEditWindow(frame, "Add Vertex");
-				
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						graph.add(w.getVertex());
@@ -138,7 +141,10 @@ public class GraphGUI {
 						System.out.println("vertex added");
 					}
 				});
-				
+				if (currentLetter >= alphabet.length()) {
+					currentLetter = 0;
+				}
+				w.setNameField(alphabet.substring(currentLetter++, currentLetter));
 				w.setVisible(true);
 			}
 		});

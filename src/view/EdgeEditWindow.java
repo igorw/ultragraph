@@ -10,7 +10,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import model.Edge;
 import model.Graph;
@@ -20,7 +21,7 @@ public class EdgeEditWindow extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	private JComboBox v1Box, v2Box;
-	private JTextField weightField;
+	private JSpinner weightField;
 	private JButton saveButton;
 
 	private Edge edge;
@@ -44,7 +45,7 @@ public class EdgeEditWindow extends JDialog {
 		getContentPane().add(v2Box);
 	
 		getContentPane().add(new JLabel("Weight"));
-		weightField = new JTextField();
+		weightField = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
 		getContentPane().add(weightField);
 	
 		getContentPane().add(new JLabel(""));
@@ -74,7 +75,7 @@ public class EdgeEditWindow extends JDialog {
 		v2Box.setSelectedItem(edge.getV2());
 		v2Box.setEnabled(false);
 		
-		weightField.setText(String.valueOf(edge.getWeight()));
+		weightField.setValue(edge.getWeight());
 	}
 	
 	public void addSaveListener(ActionListener l) {
@@ -89,12 +90,12 @@ public class EdgeEditWindow extends JDialog {
 
 		edge.setV1((Vertex) v1Box.getSelectedItem());
 		edge.setV2((Vertex) v2Box.getSelectedItem());
-		edge.setWeight(Integer.valueOf(weightField.getText()));
+		edge.setWeight((Integer) weightField.getValue());
 	}
 	
 	public Edge getEdge() {
 		if (edge == null) {
-			edge = new Edge((Vertex) v1Box.getSelectedItem(), (Vertex) v2Box.getSelectedItem(), Integer.valueOf(weightField.getText()));
+			edge = new Edge((Vertex) v1Box.getSelectedItem(), (Vertex) v2Box.getSelectedItem(), (Integer) weightField.getValue());
 		}
 		
 		return edge;
