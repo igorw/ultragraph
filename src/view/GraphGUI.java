@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -13,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
@@ -41,6 +44,12 @@ public class GraphGUI {
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	private int currentLetter = 0;
 	
+	// right-click context menu
+	// and mouse click location
+	private JPopupMenu popup = new JPopupMenu();
+	private int mouseX = 0, mouseY = 0;
+	
+	// constructor
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
 		
@@ -66,14 +75,37 @@ public class GraphGUI {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		}
 		
+		// window
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(500, 400);
 		frame.setLayout(new BorderLayout());
 		frame.setContentPane(new JPanel());
 		frame.getContentPane().add(canvas, BorderLayout.CENTER);
 		
+		// context menu
+		JMenuItem contextVertexAdd = new JMenuItem("Add Vertex");
+		contextVertexAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), mouseX / GraphCanvas.STEP, mouseY / GraphCanvas.STEP);
+				graph.add(v);
+				repaint();
+			}
+		});
+		popup.add(contextVertexAdd);
+		
+		// graph canvas
 		canvas.setBackground(Color.white);
 		canvas.setSize(450, 350);
+		canvas.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					// show right-click menu
+					popup.show(e.getComponent(), e.getX(), e.getY());
+					mouseX = e.getX();
+					mouseY = e.getY();
+				}
+			}
+		});
 		
 		// menu
 		JMenuBar menuBar = new JMenuBar();

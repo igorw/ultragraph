@@ -35,11 +35,13 @@ public class GraphCanvas extends Canvas {
 				selectedVertex = null;
 			}
 			public void mousePressed(MouseEvent e) {
-				// find the vertex for moving
-				for (Vertex v : getGraph().getVertices()) {
-					if (v.getPosX() * STEP < e.getX() && v.getPosX() * STEP + 15 > e.getX() && v.getPosY() * STEP < e.getY() && v.getPosY() * STEP + 15 > e.getY()) {
-						selectedVertex = v;
-						break;
+				if (!e.isPopupTrigger()) {
+					// find the vertex for moving
+					for (Vertex v : getGraph().getVertices()) {
+						if (v.getPosX() * STEP < e.getX() && v.getPosX() * STEP + 15 > e.getX() && v.getPosY() * STEP < e.getY() && v.getPosY() * STEP + 15 > e.getY()) {
+							selectedVertex = v;
+							break;
+						}
 					}
 				}
 			}
