@@ -50,7 +50,7 @@ public class GraphCanvas extends Canvas {
 			public void mouseDragged(MouseEvent e) {
 				if (selectedVertex != null) {
 					// move using the center of the mouse
-					// therefore substract 15/2 = 7
+					// therefore subtract 15/2 = 7
 					selectedVertex.setPosX((e.getX() - 7) / STEP);
 					selectedVertex.setPosY((e.getY() - 7) / STEP);
 					repaint();
