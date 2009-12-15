@@ -33,13 +33,14 @@ public class Tree {
 	}
 	
 	// do both edges touch the tree
+	// use a hashset to ensure vertices aren't checked twice
 	public boolean connectsBoth(Edge edge) {
-		int c = 0;
+		HashSet<Vertex> match = new HashSet<Vertex>();
 		for (Edge e : edges) {
-			if (edge.getV1() == e.getV1() || edge.getV1() == e.getV2()) c++;
-			if (edge.getV2() == e.getV1() || edge.getV2() == e.getV2()) c++;
+			if (edge.getV1() == e.getV1() || edge.getV1() == e.getV2()) match.add(edge.getV1());
+			if (edge.getV2() == e.getV1() || edge.getV2() == e.getV2()) match.add(edge.getV2());
 			
-			if (c >= 2) {
+			if (match.size() >= 2) {
 				// both edges touch the tree
 				return true;
 			}
