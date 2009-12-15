@@ -16,6 +16,11 @@ public class Kruskal implements GraphAlgorithm {
 	private Graph graph;
 	private Forest forest = new Forest();
 	
+	/**
+	 * the GUI handles display
+	 */
+	private GraphGUI gui;
+	
 	public Kruskal(Graph graph) {
 		this.graph = graph;
 		
@@ -43,6 +48,7 @@ public class Kruskal implements GraphAlgorithm {
 			shortestEdge.getV1().setColor(Color.red);
 			shortestEdge.getV2().setColor(Color.red);
 			shortestEdge.setColor(Color.red);
+			gui.repaint();
 			
 			forest.add(shortestEdge);
 			
@@ -84,6 +90,7 @@ public class Kruskal implements GraphAlgorithm {
 	}
 	
 	public void setGUI(GraphGUI gui) {
+		this.gui = gui;
 	}
 	
 	public void settingsFrame(JFrame parent) {
@@ -91,6 +98,11 @@ public class Kruskal implements GraphAlgorithm {
 	
 	// reset to a neutral state
 	public void reset() {
+		graph.reset();
+		graph.sortEdges();
+		forest.clear();
+		
+		gui.repaint();
 	}
 	
 	/**

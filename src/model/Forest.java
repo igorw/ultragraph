@@ -105,4 +105,9 @@ public class Forest {
 		}
 		return count;
 	}
+	
+	// remove all trees
+	public void clear() {
+		trees.clear();
+	}
 }

@@ -19,6 +19,11 @@ public class Prim implements GraphAlgorithm {
 	private Graph graph;
 	private Tree tree = new Tree();
 	
+	/**
+	 * the GUI handles display
+	 */
+	private GraphGUI gui;
+	
 	public Prim(Graph graph) {
 		this.graph = graph;
 	}
@@ -44,6 +49,9 @@ public class Prim implements GraphAlgorithm {
 		shortestEdge.getV2().setColor(Color.red);
 		shortestEdge.setColor(Color.red);
 		
+		// viz
+		gui.repaint();
+		
 		// add initial edge to tree
 		tree.add(shortestEdge);
 		
@@ -63,6 +71,9 @@ public class Prim implements GraphAlgorithm {
 			shortestEdge.getV1().setColor(Color.red);
 			shortestEdge.getV2().setColor(Color.red);
 			shortestEdge.setColor(Color.red);
+			
+			// viz
+			gui.repaint();
 			
 			// add shortest edge to tree
 			tree.add(shortestEdge);
@@ -150,6 +161,7 @@ public class Prim implements GraphAlgorithm {
 	}
 	
 	public void setGUI(GraphGUI gui) {
+		this.gui = gui;
 	}
 	
 	public void settingsFrame(JFrame parent) {
@@ -157,6 +169,10 @@ public class Prim implements GraphAlgorithm {
 	
 	// reset to a neutral state
 	public void reset() {
+		graph.reset();
+		tree = new Tree();
+		
+		gui.repaint();
 	}
 	
 	/**
