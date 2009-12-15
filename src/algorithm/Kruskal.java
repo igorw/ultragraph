@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import model.Edge;
 import model.Forest;
 import model.Graph;
-import model.Vertex;
 import view.GraphGUI;
 
 // kruskal's algorithm
@@ -114,7 +113,7 @@ public class Kruskal implements GraphAlgorithm {
 		return getClass().getName();
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Vertex a = new Vertex("A");
 		Vertex b = new Vertex("B");
 		Vertex c = new Vertex("C");
@@ -137,5 +136,5 @@ public class Kruskal implements GraphAlgorithm {
 		
 		Kruskal kruskal = new Kruskal(graph);
 		kruskal.execute();
-	}
+	}*/
 }

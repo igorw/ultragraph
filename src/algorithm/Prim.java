@@ -184,7 +184,7 @@ public class Prim implements GraphAlgorithm {
 		return getClass().getName();
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Vertex a = new Vertex("A");
 		Vertex b = new Vertex("B");
 		Vertex c = new Vertex("C");
@@ -207,5 +207,5 @@ public class Prim implements GraphAlgorithm {
 		
 		Prim prim = new Prim(graph);
 		prim.execute();
-	}
+	}*/
 }
