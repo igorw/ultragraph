@@ -23,7 +23,7 @@ public class ItemSelectWindow<E> extends JDialog {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setModal(true);
-		setSize(200, 100);
+		setSize(400, 100);
 		
 		getContentPane().setLayout(new GridLayout(0, 2));
 		

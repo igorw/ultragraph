@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Vector;
 
 import misc.Point;
 import model.Edge;
@@ -43,6 +44,16 @@ public class GraphCanvas extends Canvas {
 	
 	public boolean isTempLine() {
 		return p1 != null;
+	}
+	
+	public Vector<Vertex> getMouseVertices(int x, int y) {
+		Vector<Vertex> vertices = new Vector<Vertex>();
+		for (Vertex v : graph.getVertices()) {
+			if (v.getX() * GraphCanvas.STEP < x * STEP && v.getX() * GraphCanvas.STEP + 15 > x * STEP && v.getY() * GraphCanvas.STEP < y * STEP && v.getY() * GraphCanvas.STEP + 15 > y * STEP) {
+				vertices.add(v);
+			}
+		}
+		return vertices;
 	}
 	
 	// (re)paint the graph

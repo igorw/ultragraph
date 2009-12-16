@@ -21,6 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
 import misc.Point;
+import misc.VertexFactory;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
@@ -40,11 +41,9 @@ public class GraphGUI {
 	
 	private Vector<GraphAlgorithm> algorithms = new Vector<GraphAlgorithm>();
 	
-	private Graph graph = new Graph();
+	private VertexFactory vertexFactory = new VertexFactory();
 	
-	// increase when adding vertices
-	private String alphabet = "abcdefghijklmnopqrstuvwxyza";
-	private int currentLetter = 0;
+	private Graph graph = new Graph();
 	
 	// right-click context menu
 	// and mouse click location
@@ -91,10 +90,9 @@ public class GraphGUI {
 		JMenuItem contextVertexAdd = new JMenuItem("Add Vertex");
 		contextVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (currentLetter >= alphabet.length() - 1) {
-					currentLetter = 0;
-				}
-				Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), (int) mouseLocation.getX() / GraphCanvas.STEP, (int) mouseLocation.getY() / GraphCanvas.STEP);
+				Vertex v = vertexFactory.getVertex();
+				v.setX((int) mouseLocation.getX() / GraphCanvas.STEP);
+				v.setY((int) mouseLocation.getY() / GraphCanvas.STEP);
 				graph.add(v);
 				repaint();
 			}
@@ -108,11 +106,9 @@ public class GraphGUI {
 			public void mousePressed(MouseEvent e) {
 				// select a vertex with the mouse
 				// find the vertex for moving
-				for (Vertex v : graph.getVertices()) {
-					if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
-						selectedVertex = v;
-						break;
-					}
+				for (Vertex v : canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP)) {
+					selectedVertex = v;
+					break;
 				}
 				
 				mouseLocation.setPoint(e.getX(), e.getY());
@@ -122,19 +118,12 @@ public class GraphGUI {
 					popup.show(e.getComponent(), e.getX(), e.getY());
 				} else if (e.isAltDown() && e.isShiftDown()) {
 					// find the vertices for deleting
-					Vector<Vertex> remove = new Vector<Vertex>();
-					for (Vertex v : graph.getVertices()) {
-						if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
-							remove.add(v);
-						}
-					}
-					graph.removeVertices(remove);
+					graph.removeVertices(canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
 					repaint();
 				} else if (e.isAltDown()) {
-					if (currentLetter >= alphabet.length() - 1) {
-						currentLetter = 0;
-					}
-					Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP);
+					Vertex v = vertexFactory.getVertex();
+					v.setX((int) e.getX() / GraphCanvas.STEP);
+					v.setY((int) e.getY() / GraphCanvas.STEP);
 					graph.add(v);
 					repaint();
 				}
@@ -143,11 +132,9 @@ public class GraphGUI {
 				if (canvas.isTempLine()) {
 					// create the edge
 					Vertex droppedVertex = null;
-					for (Vertex v : graph.getVertices()) {
-						if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
-							droppedVertex = v;
-							break;
-						}
+					for (Vertex v : canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP)) {
+						droppedVertex = v;
+						break;
 					}
 					if (droppedVertex != null) {
 						graph.connect(selectedVertex, droppedVertex);
@@ -251,10 +238,8 @@ public class GraphGUI {
 						System.out.println("vertex added");
 					}
 				});
-				if (currentLetter >= alphabet.length() - 1) {
-					currentLetter = 0;
-				}
-				w.setNameField(alphabet.substring(currentLetter++, currentLetter));
+				Vertex v = vertexFactory.getVertex();
+				w.setNameField(v.getName());
 				w.setVisible(true);
 			}
 		});
