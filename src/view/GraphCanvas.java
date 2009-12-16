@@ -5,10 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 import model.Edge;
 import model.Graph;
@@ -19,8 +17,8 @@ public class GraphCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
 	private Graph graph;
 	
-	// vertex currently selected by mouse
-	private Vertex selectedVertex = null;
+	// coordinates for temp line
+	private Point p1, p2;
 	
 	public static int STEP = 4;
 	
@@ -28,37 +26,6 @@ public class GraphCanvas extends Canvas {
 		super();
 		
 		setGraph(graph);
-		
-		// select a vertex with the mouse
-		addMouseListener(new MouseAdapter() {
-			public void mouseReleased(MouseEvent e) {
-				selectedVertex = null;
-			}
-			public void mousePressed(MouseEvent e) {
-				if (!e.isPopupTrigger()) {
-					// find the vertex for moving
-					for (Vertex v : getGraph().getVertices()) {
-						if (v.getPosX() * STEP < e.getX() && v.getPosX() * STEP + 15 > e.getX() && v.getPosY() * STEP < e.getY() && v.getPosY() * STEP + 15 > e.getY()) {
-							selectedVertex = v;
-							break;
-						}
-					}
-				}
-			}
-		});
-		
-		// drag and move a vertex
-		addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseDragged(MouseEvent e) {
-				if (selectedVertex != null) {
-					// move using the center of the mouse
-					// therefore subtract 15/2 = 7
-					selectedVertex.setPosX((e.getX() - 7) / STEP);
-					selectedVertex.setPosY((e.getY() - 7) / STEP);
-					repaint();
-				}
-			}
-		});
 	}
 	
 	public Graph getGraph() {
@@ -67,6 +34,15 @@ public class GraphCanvas extends Canvas {
 	
 	public void setGraph(Graph graph) {
 		this.graph = graph;
+	}
+	
+	public void setTempLine(Point p1, Point p2) {
+		this.p1 = p1;
+		this.p2 = p2;
+	}
+	
+	public boolean isTempLine() {
+		return p1 != null;
 	}
 	
 	// (re)paint the graph
@@ -91,6 +67,12 @@ public class GraphCanvas extends Canvas {
 			g.drawString(String.valueOf(e.getWeight()),
 				x * STEP,
 				y * STEP);
+		}
+		
+		// draw temp line
+		if (p1 != null && p2 != null) {
+			g.setColor(Color.black);
+			g.drawLine((int) p1.getX() * STEP + 8, (int) p1.getY() * STEP + 8, (int) p2.getX() * STEP + 8, (int) p2.getY() * STEP + 8);	
 		}
 		
 		// draw vertices

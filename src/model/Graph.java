@@ -23,6 +23,12 @@ public class Graph {
 		return e;
 	}
 	
+	public Edge connect(Vertex v1, Vertex v2) {
+		Edge e = new Edge(v1, v2);
+		edges.add(e);
+		return e;
+	}
+	
 	public Vector<Vertex> getVertices() {
 		return vertices;
 	}
@@ -45,6 +51,12 @@ public class Graph {
 	
 	public void removeEdge(Edge e) {
 		edges.remove(e);
+	}
+	
+	public void removeVertices(Vector<Vertex> vv) {
+		for (Vertex v : vv) {
+			removeVertex(v);
+		}
 	}
 	
 	// returns set of directed edges from vertex v

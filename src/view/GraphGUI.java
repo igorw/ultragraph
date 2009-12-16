@@ -2,10 +2,12 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -41,13 +43,16 @@ public class GraphGUI {
 	private Graph graph = new Graph();
 	
 	// increase when adding vertices
-	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	private String alphabet = "abcdefghijklmnopqrstuvwxyza";
 	private int currentLetter = 0;
 	
 	// right-click context menu
 	// and mouse click location
 	private JPopupMenu popup = new JPopupMenu();
-	private int mouseX = 0, mouseY = 0;
+	private Point mouseLocation = new Point();
+	
+	// vertex currently selected by mouse
+	private Vertex selectedVertex = null;
 	
 	// constructor
 	public GraphGUI(GraphAlgorithm algo) {
@@ -86,7 +91,10 @@ public class GraphGUI {
 		JMenuItem contextVertexAdd = new JMenuItem("Add Vertex");
 		contextVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), mouseX / GraphCanvas.STEP, mouseY / GraphCanvas.STEP);
+				if (currentLetter >= alphabet.length() - 1) {
+					currentLetter = 0;
+				}
+				Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), (int) mouseLocation.getX() / GraphCanvas.STEP, (int) mouseLocation.getY() / GraphCanvas.STEP);
 				graph.add(v);
 				repaint();
 			}
@@ -98,12 +106,82 @@ public class GraphGUI {
 		canvas.setSize(450, 350);
 		canvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				// select a vertex with the mouse
+				// find the vertex for moving
+				for (Vertex v : graph.getVertices()) {
+					if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+						selectedVertex = v;
+						break;
+					}
+				}
+				
+				mouseLocation.setLocation(e.getPoint());
+				
 				if (e.isPopupTrigger()) {
 					// show right-click menu
 					popup.show(e.getComponent(), e.getX(), e.getY());
-					mouseX = e.getX();
-					mouseY = e.getY();
+				} else if (e.isAltDown() && e.isShiftDown()) {
+					// find the vertices for deleting
+					Vector<Vertex> remove = new Vector<Vertex>();
+					for (Vertex v : graph.getVertices()) {
+						if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+							remove.add(v);
+						}
+					}
+					graph.removeVertices(remove);
+					repaint();
+				} else if (e.isAltDown()) {
+					if (currentLetter >= alphabet.length() - 1) {
+						currentLetter = 0;
+					}
+					Vertex v = new Vertex(alphabet.substring(currentLetter++, currentLetter), e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP);
+					graph.add(v);
+					repaint();
 				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (canvas.isTempLine()) {
+					// create the edge
+					Vertex droppedVertex = null;
+					for (Vertex v : graph.getVertices()) {
+						if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+							droppedVertex = v;
+							break;
+						}
+					}
+					if (droppedVertex != null) {
+						graph.connect(selectedVertex, droppedVertex);
+					}
+
+					// reset the canvas temp line
+					canvas.setTempLine(null, null);
+					repaint();
+				}
+			}
+		});
+		canvas.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				if (e.isShiftDown()) {
+					// draw hypothetical edge
+					if (selectedVertex != null) {
+						canvas.setTempLine(new Point(selectedVertex.getPosX(), selectedVertex.getPosY()), new Point(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
+						repaint();
+					}
+				} else {
+					// drag and move a vertex
+					if (selectedVertex != null) {
+						// move using the center of the mouse
+						// therefore subtract 15/2 = 7
+						selectedVertex.setPosX((e.getX() - 7) / GraphCanvas.STEP);
+						selectedVertex.setPosY((e.getY() - 7) / GraphCanvas.STEP);
+						repaint();
+					}
+				}
+			}
+		});
+		canvas.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				selectedVertex = null;
 			}
 		});
 		
@@ -173,7 +251,7 @@ public class GraphGUI {
 						System.out.println("vertex added");
 					}
 				});
-				if (currentLetter >= alphabet.length()) {
+				if (currentLetter >= alphabet.length() - 1) {
 					currentLetter = 0;
 				}
 				w.setNameField(alphabet.substring(currentLetter++, currentLetter));
