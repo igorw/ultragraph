@@ -65,8 +65,8 @@ public class VertexEditWindow extends JDialog {
 		
 		// set text fields
 		nameField.setText(vertex.getName());
-		xField.setValue(vertex.getPosX());
-		yField.setValue(vertex.getPosY());
+		xField.setValue(vertex.getX());
+		yField.setValue(vertex.getY());
 	}
 	
 	public void addSaveListener(ActionListener l) {
@@ -80,8 +80,8 @@ public class VertexEditWindow extends JDialog {
 		}
 		
 		vertex.setName(nameField.getText());
-		vertex.setPosX((Integer) xField.getValue());
-		vertex.setPosY((Integer) yField.getValue());
+		vertex.setX((Integer) xField.getValue());
+		vertex.setY((Integer) yField.getValue());
 	}
 	
 	public Vertex getVertex() {

@@ -5,9 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 
+import misc.Point;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
@@ -56,11 +56,11 @@ public class GraphCanvas extends Canvas {
 		// draw edges
 		for (Edge e : graph.getEdges()) {
 			g.setColor(e.getColor());
-			g.drawLine(e.getV1().getPosX() * STEP + 8, e.getV1().getPosY() * STEP + 8, e.getV2().getPosX() * STEP + 8, e.getV2().getPosY() * STEP + 8);
+			g.drawLine(e.getV1().getX() * STEP + 8, e.getV1().getY() * STEP + 8, e.getV2().getX() * STEP + 8, e.getV2().getY() * STEP + 8);
 			
 			// get mid coordinates
-			int x = (e.getV1().getPosX() + e.getV2().getPosX()) / 2;
-			int y = (e.getV1().getPosY() + e.getV2().getPosY()) / 2;
+			int x = (e.getV1().getX() + e.getV2().getX()) / 2;
+			int y = (e.getV1().getY() + e.getV2().getY()) / 2;
 			
 			g.setColor(Color.black);
 			g.setFont(new Font(null, Font.PLAIN, 10));
@@ -72,29 +72,29 @@ public class GraphCanvas extends Canvas {
 		// draw temp line
 		if (p1 != null && p2 != null) {
 			g.setColor(Color.black);
-			g.drawLine((int) p1.getX() * STEP + 8, (int) p1.getY() * STEP + 8, (int) p2.getX() * STEP + 8, (int) p2.getY() * STEP + 8);	
+			g.drawLine(p1.getX() * STEP + 8, p1.getY() * STEP + 8, p2.getX() * STEP + 8, p2.getY() * STEP + 8);	
 		}
 		
 		// draw vertices
 		for (Vertex v : graph.getVertices()) {
 			// fill background white
 			g.setColor(Color.white);
-			g.fillOval(v.getPosX() * STEP, v.getPosY() * STEP, 15, 15);
+			g.fillOval(v.getX() * STEP, v.getY() * STEP, 15, 15);
 			
 			// draw circle
 			g.setColor(v.getColor());
-			g.drawOval(v.getPosX() * STEP, v.getPosY() * STEP, 15, 15);
+			g.drawOval(v.getX() * STEP, v.getY() * STEP, 15, 15);
 			
 			// vertex name
 			g.setColor(Color.black);
 			g.setFont(new Font(null, Font.PLAIN, 10));
-			g.drawString(v.getName(), v.getPosX() * STEP + 5, v.getPosY() * STEP + 11);
+			g.drawString(v.getName(), v.getX() * STEP + 5, v.getY() * STEP + 11);
 			
 			// vertex label
 			if (v.isLabeled()) {
 				g.setColor(Color.gray);
 				g.setFont(new Font(null, Font.PLAIN, 10));
-				g.drawString(String.valueOf(v.getLabel()), v.getPosX() * STEP + 20, v.getPosY() * STEP + 11);
+				g.drawString(String.valueOf(v.getLabel()), v.getX() * STEP + 20, v.getY() * STEP + 11);
 			}
 		}
 	}

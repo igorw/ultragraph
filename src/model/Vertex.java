@@ -1,7 +1,8 @@
 package model;
 
 import java.awt.Color;
-import java.awt.Point;
+
+import misc.Point;
 
 public class Vertex implements Comparable<Vertex> {
 	private String name;
@@ -10,7 +11,7 @@ public class Vertex implements Comparable<Vertex> {
 	
 	private Color color = Color.black;
 	
-	private Point position = new Point();
+	private Point point = new Point();
 	
 	public Vertex(String name) {
 		setName(name);
@@ -18,8 +19,8 @@ public class Vertex implements Comparable<Vertex> {
 	
 	public Vertex(String name, int posX, int posY) {
 		this(name);
-		setPosX(posX);
-		setPosY(posY);
+		setX(posX);
+		setY(posY);
 	}
 
 	public String getName() {
@@ -58,20 +59,20 @@ public class Vertex implements Comparable<Vertex> {
 		this.color = color;
 	}
 	
-	public int getPosX() {
-		return (int) position.getX();
+	public int getX() {
+		return point.getX();
 	}
 	
-	public void setPosX(int posX) {
-		position.move(posX, (int) position.getY());
+	public void setX(int x) {
+		point.setX(x);
 	}
 	
-	public int getPosY() {
-		return (int) position.getY();
+	public int getY() {
+		return point.getY();
 	}
 	
-	public void setPosY(int posY) {
-		position.move((int) position.getX(), posY);
+	public void setY(int y) {
+		point.setY(y);
 	}
 
 	// reset to a neutral state

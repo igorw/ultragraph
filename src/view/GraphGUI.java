@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,6 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
+import misc.Point;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
@@ -109,13 +109,13 @@ public class GraphGUI {
 				// select a vertex with the mouse
 				// find the vertex for moving
 				for (Vertex v : graph.getVertices()) {
-					if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+					if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
 						selectedVertex = v;
 						break;
 					}
 				}
 				
-				mouseLocation.setLocation(e.getPoint());
+				mouseLocation.setPoint(e.getX(), e.getY());
 				
 				if (e.isPopupTrigger()) {
 					// show right-click menu
@@ -124,7 +124,7 @@ public class GraphGUI {
 					// find the vertices for deleting
 					Vector<Vertex> remove = new Vector<Vertex>();
 					for (Vertex v : graph.getVertices()) {
-						if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+						if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
 							remove.add(v);
 						}
 					}
@@ -144,7 +144,7 @@ public class GraphGUI {
 					// create the edge
 					Vertex droppedVertex = null;
 					for (Vertex v : graph.getVertices()) {
-						if (v.getPosX() * GraphCanvas.STEP < e.getX() && v.getPosX() * GraphCanvas.STEP + 15 > e.getX() && v.getPosY() * GraphCanvas.STEP < e.getY() && v.getPosY() * GraphCanvas.STEP + 15 > e.getY()) {
+						if (v.getX() * GraphCanvas.STEP < e.getX() && v.getX() * GraphCanvas.STEP + 15 > e.getX() && v.getY() * GraphCanvas.STEP < e.getY() && v.getY() * GraphCanvas.STEP + 15 > e.getY()) {
 							droppedVertex = v;
 							break;
 						}
@@ -164,7 +164,7 @@ public class GraphGUI {
 				if (e.isShiftDown()) {
 					// draw hypothetical edge
 					if (selectedVertex != null) {
-						canvas.setTempLine(new Point(selectedVertex.getPosX(), selectedVertex.getPosY()), new Point(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
+						canvas.setTempLine(new Point(selectedVertex.getX(), selectedVertex.getY()), new Point(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
 						repaint();
 					}
 				} else {
@@ -172,8 +172,8 @@ public class GraphGUI {
 					if (selectedVertex != null) {
 						// move using the center of the mouse
 						// therefore subtract 15/2 = 7
-						selectedVertex.setPosX((e.getX() - 7) / GraphCanvas.STEP);
-						selectedVertex.setPosY((e.getY() - 7) / GraphCanvas.STEP);
+						selectedVertex.setX((e.getX() - 7) / GraphCanvas.STEP);
+						selectedVertex.setY((e.getY() - 7) / GraphCanvas.STEP);
 						repaint();
 					}
 				}

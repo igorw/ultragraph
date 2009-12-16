@@ -15,8 +15,8 @@ public class Writer {
 		for(Vertex v : g.getVertices()){
 			file.write("v\t");
 			file.write(v.getName()+"\t");
-			file.write(v.getPosX()+"\t");
-			file.write(v.getPosY()+"\n");
+			file.write(v.getX()+"\t");
+			file.write(v.getY()+"\n");
 		}
 		for(Edge e : g.getEdges()){
 			file.write("e\t");
