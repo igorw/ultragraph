@@ -62,7 +62,8 @@ public class DirectedEdge {
 	
 	/**
 	 * wrapper around getFullWeight from edge
-	 * @return
+	 * 
+	 * @return wrapper around edge's getFullWeight
 	 */
 	public int getFullWeight() {
 		return edge.getFullWeight(origin);

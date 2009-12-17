@@ -122,7 +122,7 @@ public class GraphGUI {
 					popup.show(e.getComponent(), e.getX(), e.getY());
 				} else if (e.isAltDown() && e.isShiftDown()) {
 					// find the vertices for deleting
-					graph.removeVertices(canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
+					graph.removeAll(canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
 					repaint();
 				} else if (e.isAltDown()) {
 					Vertex v = vertexFactory.getVertex();
@@ -297,7 +297,7 @@ public class GraphGUI {
 					return;
 				}
 				
-				graph.removeVertex(selectedVertex);
+				graph.remove(selectedVertex);
 				repaint();
 				System.out.println("vertex removed");
 			}
@@ -371,7 +371,7 @@ public class GraphGUI {
 					return;
 				}
 				
-				graph.removeEdge(selectedEdge);
+				graph.remove(selectedEdge);
 				repaint();
 				System.out.println("edge removed");
 			}

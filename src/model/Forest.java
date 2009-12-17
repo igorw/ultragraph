@@ -2,19 +2,40 @@ package model;
 
 import java.util.HashSet;
 
-//a forest contains a list of separate (disconnected) trees
+/**
+ * forest
+ * a forest contains a list of separate (disconnected) trees
+ */
 public class Forest {
+	/**
+	 * unique list of trees
+	 */
 	private HashSet<Tree> trees = new HashSet<Tree>();
 	
+	/**
+	 * add a tree to the forest
+	 * 
+	 * @param t tree
+	 */
 	public void add(Tree t) {
 		trees.add(t);
 	}
 	
+	/**
+	 * remove a tree from the forest
+	 * 
+	 * @param t tree
+	 */
 	public void remove(Tree t) {
 		trees.remove(t);
 	}
 	
-	// merge two trees
+	/**
+	 * merge two trees into one
+	 * 
+	 * @param t1 first tree
+	 * @param t2 second tree
+	 */
 	public void merge(Tree t1, Tree t2) {
 		for (Edge e : t1.getEdges()) {
 			t2.add(e);
@@ -27,16 +48,28 @@ public class Forest {
 		t1 = t2;
 	}
 	
+	/**
+	 * amount of trees in forest
+	 * 
+	 * @return amount of trees
+	 */
 	public int size() {
 		return trees.size();
 	}
 	
+	/**
+	 * getter for trees
+	 * 
+	 * @return hashset of trees
+	 */
 	public HashSet<Tree> getTrees() {
 		return trees;
 	}
 	
-	// assume we have only one tree left
-	// then we have a spanning tree
+	/**
+	 * assume we have only one tree left
+	 * then we have a spanning tree
+	 */
 	public Tree getSpanningTree() {
 		for (Tree t : trees) {
 			return t;
@@ -44,7 +77,11 @@ public class Forest {
 		return null;
 	}
 	
-	// add edge to forest
+	/**
+	 * add edge to forest
+	 * 
+	 * @param e edge to be added
+	 */
 	public void add(Edge e) {
 		Tree tree1 = null;
 		Tree tree2 = null;
@@ -79,7 +116,12 @@ public class Forest {
 		}
 	}
 	
-	// contains edge
+	/**
+	 * contains edge
+	 * 
+	 * @param e edge
+	 * @return edge is present
+	 */
 	public boolean contains(Edge e) {
 		for (Tree t : trees) {
 			if (t.contains(e)) return true;
@@ -87,7 +129,12 @@ public class Forest {
 		return false;
 	}
 	
-	// does edge connect to tree
+	/**
+	 * does edge connect to tree
+	 * 
+	 * @param e edge
+	 * @return edge connects
+	 */
 	public boolean connectsBoth(Edge e) {
 		for (Tree t : trees) {
 			if (t.connectsBoth(e)) {
@@ -97,7 +144,11 @@ public class Forest {
 		return false;
 	}
 	
-	// count all edges
+	/**
+	 * count all edges
+	 * 
+	 * @return edge count
+	 */
 	public int countEdges() {
 		int count = 0;
 		for (Tree t : trees) {
@@ -106,7 +157,9 @@ public class Forest {
 		return count;
 	}
 	
-	// remove all trees
+	/**
+	 * remove all trees
+	 */
 	public void clear() {
 		trees.clear();
 	}

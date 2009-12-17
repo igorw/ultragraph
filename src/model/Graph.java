@@ -6,38 +6,81 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
+/**
+ * graph
+ * contains vertices and edges
+ */
 public class Graph {
+	/**
+	 * list of vertices
+	 */
 	private Vector<Vertex> vertices = new Vector<Vertex>();
+	
+	/**
+	 * list of edges
+	 */
 	private Vector<Edge> edges = new Vector<Edge>();
 	
-	// add any number of vertices
+	/**
+	 * add any number of vertices
+	 * 
+	 * @param vertices vertices
+	 */
 	public void add(Vertex... vertices) {
 		for (Vertex vertex : vertices) {
 			this.vertices.add(vertex);
 		}
 	}
 	
+	/**
+	 * create and add edge
+	 * 
+	 * @param v1 v1
+	 * @param v2 v2
+	 * @param weight weight
+	 * @return edge
+	 */
 	public Edge connect(Vertex v1, Vertex v2, int weight) {
 		Edge e = new Edge(v1, v2, weight);
 		edges.add(e);
 		return e;
 	}
 	
+	/**
+	 * create and add edge
+	 * 
+	 * @param v1 v1
+	 * @param v2 v2
+	 * @return edge
+	 */
 	public Edge connect(Vertex v1, Vertex v2) {
 		Edge e = new Edge(v1, v2);
 		edges.add(e);
 		return e;
 	}
 	
+	/**
+	 * getter for vertex list
+	 * @return vertices
+	 */
 	public Vector<Vertex> getVertices() {
 		return vertices;
 	}
 	
+	/**
+	 * getter for edge list
+	 * @return edges
+	 */
 	public Vector<Edge> getEdges() {
 		return edges;
 	}
 	
-	public void removeVertex(Vertex v) {
+	/**
+	 * remove vertex and connecting edges
+	 * 
+	 * @param v vertex
+	 */
+	public void remove(Vertex v) {
 		HashSet<Edge> removeEdges = new HashSet<Edge>();
 		for (Edge e : edges) {
 			if (e.getV1() == v || e.getV2() == v) {
@@ -49,17 +92,32 @@ public class Graph {
 		vertices.remove(v);
 	}
 	
-	public void removeEdge(Edge e) {
+	/**
+	 * remove edge
+	 * 
+	 * @param e edge
+	 */
+	public void remove(Edge e) {
 		edges.remove(e);
 	}
 	
-	public void removeVertices(Vector<Vertex> vv) {
+	/**
+	 * remove vertices
+	 * 
+	 * @param vv vertices
+	 */
+	public void removeAll(Vector<Vertex> vv) {
 		for (Vertex v : vv) {
-			removeVertex(v);
+			remove(v);
 		}
 	}
 	
-	// returns set of directed edges from vertex v
+	/**
+	 * returns set of directed edges from vertex
+	 * 
+	 * @param v vertex
+	 * @return directed edges
+	 */
 	public HashSet<DirectedEdge> getVertexEdges(Vertex v) {
 		HashSet<DirectedEdge> vEdges = new HashSet<DirectedEdge>();
 		for (Edge e : edges) {
@@ -72,7 +130,13 @@ public class Graph {
 		return vEdges;
 	}
 	
-	// get all edges directly connecting v1 and v2
+	/**
+	 * get all edges directly connecting v1 and v2
+	 * 
+	 * @param v1 v1
+	 * @param v2 v2
+	 * @return connecting edges
+	 */
 	public HashSet<Edge> getVerticesEdges(Vertex v1, Vertex v2) {
 		HashSet<Edge> vEdges = new HashSet<Edge>();
 		for (Edge e : edges) {
@@ -83,21 +147,33 @@ public class Graph {
 		return vEdges;
 	}
 	
-	// get initial vertex
+	/**
+	 * get initial random vertex
+	 * 
+	 * @return random vertex
+	 */
 	public Vertex getRandomVertex() {
 		int index = new Random().nextInt(vertices.size() - 1) + 1;
 		return vertices.get(index);
 	}
 	
+	/**
+	 * sort vertices
+	 */
 	public void sortVertices() {
 		Collections.sort(vertices);
 	}
 	
+	/**
+	 * sort edges
+	 */
 	public void sortEdges() {
 		Collections.sort(edges);
 	}
 	
-	// reset to a neutral state
+	/**
+	 * reset to a neutral state
+	 */
 	public void reset() {
 		for (Vertex v : vertices) {
 			v.reset();
@@ -107,6 +183,12 @@ public class Graph {
 		}
 	}
 	
+	/**
+	 * get the shortest edge
+	 * 
+	 * @param edges edges
+	 * @return shortest edge
+	 */
 	public static Edge getShortestEdge(Set<Edge> edges) {
 		Edge shortest = null;
 		for (Edge e : edges) {
