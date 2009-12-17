@@ -13,39 +13,85 @@ import model.Edge;
 import model.Graph;
 import model.Vertex;
 
-// canvas to display a graph
+/**
+ * graph canvas
+ * canvas to display a graph
+ */
 public class GraphCanvas extends Canvas {
+	/**
+	 * default serial version id
+	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * graph to be displayed
+	 */
 	private Graph graph;
 	
-	// coordinates for temp line
+	/**
+	 * coordinates for temp line
+	 */
 	private Point p1, p2;
 	
+	/**
+	 * step by which vertex sizes are multiplied
+	 */
 	public static int STEP = 4;
 	
+	/**
+	 * constructor
+	 * @param graph graph
+	 */
 	public GraphCanvas(Graph graph) {
 		super();
 		
 		setGraph(graph);
 	}
 	
+	/**
+	 * getter for graph
+	 * @return graph
+	 */
 	public Graph getGraph() {
 		return graph;
 	}
 	
+	/**
+	 * setter for graph
+	 * @param graph graph
+	 */
 	public void setGraph(Graph graph) {
 		this.graph = graph;
 	}
 	
+	/**
+	 * set points for a temporary line
+	 * set null to remove the line
+	 * 
+	 * @param p1 p1
+	 * @param p2 p2
+	 */
 	public void setTempLine(Point p1, Point p2) {
 		this.p1 = p1;
 		this.p2 = p2;
 	}
 	
+	/**
+	 * check if a temporary line is set
+	 * 
+	 * @return temp line is set
+	 */
 	public boolean isTempLine() {
 		return p1 != null;
 	}
 	
+	/**
+	 * get all vertices located under the mouse pointer
+	 * 
+	 * @param x position x
+	 * @param y position y
+	 * @return list of vertices
+	 */
 	public Vector<Vertex> getMouseVertices(int x, int y) {
 		Vector<Vertex> vertices = new Vector<Vertex>();
 		for (Vertex v : graph.getVertices()) {
@@ -56,7 +102,9 @@ public class GraphCanvas extends Canvas {
 		return vertices;
 	}
 	
-	// (re)paint the graph
+	/**
+	 * (re)paint the graph
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		
