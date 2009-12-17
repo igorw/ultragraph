@@ -79,6 +79,19 @@ public class Tree {
 	}
 	
 	/**
+	 * get set of vertices in tree
+	 * @return vertices
+	 */
+	public HashSet<Vertex> getVertices() {
+		HashSet<Vertex> vertices = new HashSet<Vertex>();
+		for (Edge e : getEdges()) {
+			vertices.add(e.getV1());
+			vertices.add(e.getV2());
+		}
+		return vertices;
+	}
+	
+	/**
 	 * number of edges
 	 * @return size of tree
 	 */

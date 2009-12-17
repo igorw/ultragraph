@@ -34,6 +34,7 @@ public class Graph {
 	
 	/**
 	 * create and add edge
+	 * add vertices if needed
 	 * 
 	 * @param v1 v1
 	 * @param v2 v2
@@ -41,6 +42,13 @@ public class Graph {
 	 * @return edge
 	 */
 	public Edge connect(Vertex v1, Vertex v2, int weight) {
+		if (!vertices.contains(v1)) {
+			add(v1);
+		}
+		if (!vertices.contains(v2)) {
+			add(v2);
+		}
+		
 		Edge e = new Edge(v1, v2, weight);
 		edges.add(e);
 		return e;

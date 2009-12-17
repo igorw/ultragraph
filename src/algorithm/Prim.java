@@ -1,7 +1,6 @@
 package algorithm;
 
 import java.awt.Color;
-import java.util.HashSet;
 
 import javax.swing.JFrame;
 
@@ -11,15 +10,28 @@ import model.Graph;
 import model.Tree;
 import model.Vertex;
 
-// prim's algorithm
-// get a minimal spanning tree
+/**
+ * prim's algorithm
+ * get a minimal spanning tree
+ */
 public class Prim extends GraphAlgorithm {
+	/**
+	 * spanning tree containing edges
+	 */
 	private Tree tree = new Tree();
 	
+	/**
+	 * constructor
+	 * 
+	 * @param graph
+	 */
 	public Prim(Graph graph) {
 		super(graph);
 	}
-
+	
+	/**
+	 * run the algorithm
+	 */
 	public void execute() {
 		
 		// prepare edges for display
@@ -84,7 +96,13 @@ public class Prim extends GraphAlgorithm {
 		// we're done
 	}
 
-	// get shortest edge for a vertex
+	/**
+	 * get shortest edge for a vertex
+	 * exclude self-referential edges
+	 * 
+	 * @param vertex vertex
+	 * @return shortest edge
+	 */
 	private Edge getShortestEdge(Vertex vertex) {
 		Edge shortest = null;
 		for (DirectedEdge e : graph.getVertexEdges(vertex)) {
@@ -100,9 +118,11 @@ public class Prim extends GraphAlgorithm {
 		}
 		return shortest;
 	}
-
-	// get shortest edge
-	// that touches tree at 1 end exclusively
+	
+	/**
+	 * get shortest edge
+	 * that touches tree at 1 end exclusively
+	 */
 	private Edge getShortestEdge() {
 		Edge shortest = null;
 		for (Edge e : graph.getEdges()) {
@@ -124,10 +144,15 @@ public class Prim extends GraphAlgorithm {
 		return shortest;
 	}
 	
-	// edge touches existing tree only at one end
+	/**
+	 * check if an edge touches existing tree only at one end
+	 * 
+	 * @param edge edge
+	 * @return touches tree exclusively
+	 */
 	private boolean touchesTreeExclusive(Edge edge) {
 		int matches = 0;
-		for (Vertex vertex : getTreeVertices()) {
+		for (Vertex vertex : tree.getVertices()) {
 			if (edge.getV1() == vertex) matches++;
 			if (edge.getV2() == vertex) matches++;
 			
@@ -138,19 +163,17 @@ public class Prim extends GraphAlgorithm {
 		return (matches == 1) ? true : false;
 	}
 	
-	private HashSet<Vertex> getTreeVertices() {
-		HashSet<Vertex> vertices = new HashSet<Vertex>();
-		for (Edge e : tree.getEdges()) {
-			vertices.add(e.getV1());
-			vertices.add(e.getV2());
-		}
-		return vertices;
-	}
-	
+	/**
+	 * window displaying settings of the algorithm
+	 * 
+	 * @param parent parent window
+	 */
 	public void settingsFrame(JFrame parent) {
 	}
 	
-	// reset to a neutral state
+	/**
+	 * reset to a neutral state
+	 */
 	public void reset() {
 		super.reset();
 		

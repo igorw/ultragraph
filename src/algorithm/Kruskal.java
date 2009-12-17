@@ -8,17 +8,30 @@ import model.Edge;
 import model.Forest;
 import model.Graph;
 
-// kruskal's algorithm
-// get a minimal spanning tree
+/**
+ * kruskal's algorithm
+ * get a minimal spanning tree
+ */
 public class Kruskal extends GraphAlgorithm {
+	/**
+	 * forest containing trees
+	 */
 	private Forest forest = new Forest();
 	
+	/**
+	 * constructor
+	 * 
+	 * @param graph graph
+	 */
 	public Kruskal(Graph graph) {
 		super(graph);
 		
 		this.graph.sortEdges();
 	}
 	
+	/**
+	 * run the algorithm
+	 */
 	public void execute() {
 		
 		// prepare edges for display
@@ -52,7 +65,10 @@ public class Kruskal extends GraphAlgorithm {
 		System.out.println("done");
 	}
 	
-	// get shortest edge that does not complete a circuit
+	/**
+	 * get shortest edge that does not complete a circuit
+	 * @return shortest edge
+	 */
 	private Edge getShortestEdge() {
 		for (Edge e : graph.getEdges()) {
 			
@@ -71,10 +87,17 @@ public class Kruskal extends GraphAlgorithm {
 		return null;
 	}
 	
+	/**
+	 * window displaying settings of the algorithm
+	 * 
+	 * @param parent parent window
+	 */
 	public void settingsFrame(JFrame parent) {
 	}
 	
-	// reset to a neutral state
+	/**
+	 * reset to a neutral state
+	 */
 	public void reset() {
 		super.reset();
 		
