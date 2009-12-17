@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -56,8 +57,6 @@ public class GraphGUI {
 	// vertex currently selected by mouse
 	private Vertex selectedVertex = null;
 	
-	private Thread algoThread;
-	
 	// constructor
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
@@ -69,9 +68,6 @@ public class GraphGUI {
 		algorithms.add(new Kruskal(graph));
 		
 		algo.setGUI(this);
-		
-		algoThread = new Thread(algo);
-		algoThread.start();
 	}
 	
 	public void init() {
@@ -392,9 +388,12 @@ public class GraphGUI {
 					algo.settingsFrame(frame);
 				}
 				algo.reset();
-				algo.execute();
+				algo.startAlgorithm();
+				//algo.unpause();
+				//algo.notify();
 			}
 		});
+		menuAlgoStart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		menuAlgo.add(menuAlgoStart);
 		JMenuItem menuAlgoStop = new JMenuItem("Pause");
 		menuAlgoStop.addActionListener(new ActionListener() {
@@ -416,6 +415,7 @@ public class GraphGUI {
 				algo.settingsFrame(frame);
 			}
 		});
+		menuAlgoSettings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		menuAlgo.add(menuAlgoSettings);
 
 		menuAlgo.add(new JSeparator());
@@ -443,7 +443,18 @@ public class GraphGUI {
 				
 			}
 		});
+		menuAlgoSelect.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		menuAlgo.add(menuAlgoSelect);
+		
+		JMenu menuHelp = new JMenu("Help");
+		menuBar.add(menuHelp);
+		JMenuItem menuHelpAbout = new JMenuItem("About");
+		menuHelpAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(frame, "UltraGraph Copyright 2009 Boldi & Wiedler");
+			}
+		});
+		menuHelp.add(menuHelpAbout);
 		
 		/*JMenu menuDebug = new JMenu("Debug");
 		menuBar.add(menuDebug);

@@ -76,12 +76,25 @@ public abstract class GraphAlgorithm implements Runnable {
 	 */
 	public abstract String toString();
 	
+	Thread thread;
+	
+	public void startAlgorithm() {
+		thread = new Thread(this);
+		thread.start();
+	}
+
 	private boolean paused = true;
 	
 	protected void breakPoint() {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
+		}
+		
+		if (thread != null) {
+			while (paused) {
+				Thread.yield();
+			}
 		}
 		
 		gui.repaint();
@@ -93,34 +106,13 @@ public abstract class GraphAlgorithm implements Runnable {
 	
 	public void unpause() {
 		paused = false;
-		notify();
 	}
 	
 	public void togglePause() {
-		if (paused) {
-			unpause();
-		} else {
-			pause();
-		}
+		paused = !paused;
 	}
 	
 	public void run() {
-		while (true) {
-			synchronized (this) {
-				while (paused) {
-					try {
-						wait();
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-			
-			execute();
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-		}
+		execute();
 	}
 }
