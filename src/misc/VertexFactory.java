@@ -2,13 +2,25 @@ package misc;
 
 import model.Vertex;
 
-// create vertices with pretty names
-
+/**
+ * vertex factory
+ * create vertices with pretty names 
+ */
 public class VertexFactory {
-	// increase when adding vertices
-	private String alphabet = "abcdefghijklmnopqrstuvwxyza";
+	/**
+	 * mask for getting vertex names
+	 */
+	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	
+	/**
+	 * counter, increment when adding vertices
+	 */
 	private int currentLetter = 0;
 	
+	/**
+	 * get a new vertex
+	 * @return named vertex
+	 */
 	public Vertex getVertex() {
 		if (currentLetter >= alphabet.length()) {
 			currentLetter = 0;
