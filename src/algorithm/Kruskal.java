@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import model.Edge;
 import model.Forest;
 import model.Graph;
-import view.GraphGUI;
 
 // kruskal's algorithm
 // get a minimal spanning tree
@@ -41,7 +40,7 @@ public class Kruskal extends GraphAlgorithm {
 			shortestEdge.getV1().setColor(Color.red);
 			shortestEdge.getV2().setColor(Color.red);
 			shortestEdge.setColor(Color.red);
-			gui.repaint();
+			breakPoint();
 			
 			forest.add(shortestEdge);
 			
@@ -70,20 +69,6 @@ public class Kruskal extends GraphAlgorithm {
 			return e;
 		}
 		return null;
-	}
-	
-	// graph getter
-	public Graph getGraph() {
-		return graph;
-	}
-	
-	// graph setter
-	public void setGraph(Graph graph) {
-		this.graph = graph;
-	}
-	
-	public void setGUI(GraphGUI gui) {
-		this.gui = gui;
 	}
 	
 	public void settingsFrame(JFrame parent) {

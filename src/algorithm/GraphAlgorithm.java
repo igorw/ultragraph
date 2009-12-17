@@ -37,21 +37,27 @@ public abstract class GraphAlgorithm implements Runnable {
 	 * 
 	 * @return graph graph
 	 */
-	public abstract Graph getGraph();
+	public Graph getGraph() {
+		return graph;
+	}
 	
 	/**
 	 * graph setter
 	 * 
 	 * @param graph graph
 	 */
-	public abstract void setGraph(Graph graph);
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
 	
 	/**
 	 * graphGUI setter
 	 * 
 	 * @param gui gui
 	 */
-	public abstract void setGUI(GraphGUI gui);
+	public void setGUI(GraphGUI gui) {
+		this.gui = gui;
+	}
 	
 	/**
 	 * window displaying settings of the algorithm

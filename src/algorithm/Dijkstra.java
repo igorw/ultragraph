@@ -192,27 +192,6 @@ public class Dijkstra extends GraphAlgorithm {
 	}
 	
 	/**
-	 * graph getter
-	 */
-	public Graph getGraph() {
-		return graph;
-	}
-	
-	/**
-	 * graph setter
-	 */
-	public void setGraph(Graph graph) {
-		this.graph = graph;
-	}
-	
-	/**
-	 * graphGUI setter
-	 */
-	public void setGUI(GraphGUI gui) {
-		this.gui = gui;
-	}
-	
-	/**
 	 * window displaying settings of the algorithm
 	 * 
 	 * @param parent parent window

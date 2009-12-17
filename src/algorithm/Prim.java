@@ -5,8 +5,6 @@ import java.util.HashSet;
 
 import javax.swing.JFrame;
 
-import view.GraphGUI;
-
 import model.DirectedEdge;
 import model.Edge;
 import model.Graph;
@@ -44,7 +42,7 @@ public class Prim extends GraphAlgorithm {
 		shortestEdge.setColor(Color.red);
 		
 		// viz
-		gui.repaint();
+		breakPoint();
 		
 		// add initial edge to tree
 		tree.add(shortestEdge);
@@ -67,7 +65,7 @@ public class Prim extends GraphAlgorithm {
 			shortestEdge.setColor(Color.red);
 			
 			// viz
-			gui.repaint();
+			breakPoint();
 			
 			// add shortest edge to tree
 			tree.add(shortestEdge);
@@ -121,16 +119,6 @@ public class Prim extends GraphAlgorithm {
 		return shortest;
 	}
 	
-	// graph getter
-	public Graph getGraph() {
-		return graph;
-	}
-	
-	// graph setter
-	public void setGraph(Graph graph) {
-		this.graph = graph;
-	}
-	
 	// edge touches existing tree only at one end
 	private boolean touchesTreeExclusive(Edge edge) {
 		int matches = 0;
@@ -152,10 +140,6 @@ public class Prim extends GraphAlgorithm {
 			vertices.add(e.getV2());
 		}
 		return vertices;
-	}
-	
-	public void setGUI(GraphGUI gui) {
-		this.gui = gui;
 	}
 	
 	public void settingsFrame(JFrame parent) {
