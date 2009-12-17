@@ -21,6 +21,16 @@ public abstract class GraphAlgorithm implements Runnable {
 	protected GraphGUI gui;
 	
 	/**
+	 * thread for the algo to run in
+	 */
+	Thread thread;
+	
+	/**
+	 * status, paused or not
+	 */
+	private boolean paused = true;
+	
+	/**
 	 * constructor
 	 */
 	public GraphAlgorithm(Graph graph) {
@@ -82,15 +92,27 @@ public abstract class GraphAlgorithm implements Runnable {
 	 */
 	public abstract String toString();
 	
-	Thread thread;
-	
+	/**
+	 * start the algorithm in a new thread
+	 */
 	public void startAlgorithm() {
 		thread = new Thread(this);
 		thread.start();
 	}
 
-	private boolean paused = true;
+	/**
+	 * start the algorithm in a new thread
+	 * 
+	 * @param paused start pause status
+	 */
+	public void startAlgorithm(boolean paused) {
+		this.paused = paused;
+		startAlgorithm();
+	}
 	
+	/**
+	 * breakpoint, graph can halt/pause here
+	 */
 	protected void breakPoint() {
 		try {
 			Thread.sleep(1000);
@@ -106,18 +128,31 @@ public abstract class GraphAlgorithm implements Runnable {
 		gui.repaint();
 	}
 	
+	/**
+	 * pause execution
+	 */
 	public void pause() {
 		paused = true;
 	}
 	
+	/**
+	 * continue execution
+	 */
 	public void unpause() {
 		paused = false;
 	}
 	
+	/**
+	 * toggle paused status
+	 */
 	public void togglePause() {
 		paused = !paused;
 	}
 	
+	/**
+	 * thread run method
+	 * executes the algorithm
+	 */
 	public void run() {
 		execute();
 	}

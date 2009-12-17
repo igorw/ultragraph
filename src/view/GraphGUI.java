@@ -389,8 +389,6 @@ public class GraphGUI {
 				}
 				algo.reset();
 				algo.startAlgorithm();
-				//algo.unpause();
-				//algo.notify();
 			}
 		});
 		menuAlgoStart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

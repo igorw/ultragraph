@@ -47,6 +47,11 @@ public class Prim extends GraphAlgorithm {
 		// add initial edge to tree
 		tree.add(shortestEdge);
 		
+		if (graph.getVertices().size() - 1 == tree.size()) {
+			// already done
+			return;
+		}
+		
 		while (true) {
 			// find next shortest edge
 			shortestEdge = getShortestEdge();
