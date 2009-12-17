@@ -64,8 +64,8 @@ public class GraphGUI {
 		canvas = new GraphCanvas(graph);
 
 		algorithms.add(new Dijkstra(graph, null, null));
-		algorithms.add(new Prim(graph));
 		algorithms.add(new Kruskal(graph));
+		algorithms.add(new Prim(graph));
 		
 		algo.setGUI(this);
 	}
