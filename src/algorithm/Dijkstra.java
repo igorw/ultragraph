@@ -22,12 +22,7 @@ import view.GraphGUI;
  * dijkstra's algorithm
  * find shortest path between two vertices
  */
-public class Dijkstra implements GraphAlgorithm {
-	/**
-	 * the graph used for calculation
-	 */
-	private Graph graph;
-	
+public class Dijkstra extends GraphAlgorithm {
 	/**
 	 * the starting point vertex
 	 */
@@ -45,11 +40,6 @@ public class Dijkstra implements GraphAlgorithm {
 	private HashSet<Vertex> boxed = new HashSet<Vertex>();
 	
 	/**
-	 * the GUI handles display
-	 */
-	private GraphGUI gui;
-	
-	/**
 	 * default constructor
 	 * 
 	 * @param graph graph
@@ -57,7 +47,7 @@ public class Dijkstra implements GraphAlgorithm {
 	 * @param target target
 	 */
 	public Dijkstra(Graph graph, Vertex origin, Vertex target) {
-		this.graph = graph;
+		super(graph);
 		this.origin = origin;
 		this.target = target;
 	}
@@ -109,11 +99,11 @@ public class Dijkstra implements GraphAlgorithm {
 		
 		// viz
 		vertex.setColor(Color.green);
-		gui.repaint();
+		breakPoint();
 		Edge shortest = Graph.getShortestEdge(graph.getVerticesEdges(vertex, vertex.getOrigin()));
 		if (shortest != null) {
 			shortest.setColor(Color.green);
-			gui.repaint();
+			breakPoint();
 		}
 		
 		while (vertex != origin) {
@@ -122,11 +112,11 @@ public class Dijkstra implements GraphAlgorithm {
 			
 			// viz
 			vertex.setColor(Color.green);
-			gui.repaint();
+			breakPoint();
 			shortest = Graph.getShortestEdge(graph.getVerticesEdges(vertex, vertex.getOrigin()));
 			if (shortest != null) {
 				shortest.setColor(Color.green);
-				gui.repaint();
+				breakPoint();
 			}
 		}
 	}
@@ -142,7 +132,7 @@ public class Dijkstra implements GraphAlgorithm {
 		
 		// paint vertex red
 		v.setColor(Color.red);
-		gui.repaint();
+		breakPoint();
 		
 		// add newly boxed vertex to boxed array
 		boxed.add(v);
@@ -163,7 +153,7 @@ public class Dijkstra implements GraphAlgorithm {
 			
 			// viz
 			de.getEdge().setColor(Color.red);
-			gui.repaint();
+			breakPoint();
 			
 			// targeted vertex is already touched
 			// unless we can get a better deal, we skip labelling
@@ -176,8 +166,8 @@ public class Dijkstra implements GraphAlgorithm {
 			// set label
 			de.getTarget().setLabel(de.getFullWeight());
 			de.getTarget().setOrigin(v);
-			
-			gui.repaint();
+
+			breakPoint();
 			
 			System.out.println(v + " " + de.getTarget() + " " + de.getTarget().getLabel());
 		}
@@ -276,7 +266,8 @@ public class Dijkstra implements GraphAlgorithm {
 	 * reset algorithm to a neutral state
 	 */
 	public void reset() {
-		graph.reset();
+		super.reset();
+		
 		boxed.clear();
 		
 		gui.repaint();

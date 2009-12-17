@@ -15,19 +15,13 @@ import model.Vertex;
 
 // prim's algorithm
 // get a minimal spanning tree
-public class Prim implements GraphAlgorithm {
-	private Graph graph;
+public class Prim extends GraphAlgorithm {
 	private Tree tree = new Tree();
 	
-	/**
-	 * the GUI handles display
-	 */
-	private GraphGUI gui;
-	
 	public Prim(Graph graph) {
-		this.graph = graph;
+		super(graph);
 	}
-	
+
 	public void execute() {
 		
 		// prepare edges for display
@@ -169,7 +163,8 @@ public class Prim implements GraphAlgorithm {
 	
 	// reset to a neutral state
 	public void reset() {
-		graph.reset();
+		super.reset();
+		
 		tree = new Tree();
 		
 		gui.repaint();

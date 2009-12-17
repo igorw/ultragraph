@@ -60,6 +60,8 @@ public class GraphCanvas extends Canvas {
 	public void paint(Graphics g) {
 		super.paint(g);
 		
+		System.out.println("TEST");
+		
 		// enable anti-aliasing
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -11,17 +11,11 @@ import view.GraphGUI;
 
 // kruskal's algorithm
 // get a minimal spanning tree
-public class Kruskal implements GraphAlgorithm {
-	private Graph graph;
+public class Kruskal extends GraphAlgorithm {
 	private Forest forest = new Forest();
 	
-	/**
-	 * the GUI handles display
-	 */
-	private GraphGUI gui;
-	
 	public Kruskal(Graph graph) {
-		this.graph = graph;
+		super(graph);
 		
 		this.graph.sortEdges();
 	}
@@ -97,7 +91,8 @@ public class Kruskal implements GraphAlgorithm {
 	
 	// reset to a neutral state
 	public void reset() {
-		graph.reset();
+		super.reset();
+		
 		graph.sortEdges();
 		forest.clear();
 		

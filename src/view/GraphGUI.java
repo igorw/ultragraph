@@ -2,8 +2,10 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -18,6 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import misc.Point;
@@ -53,6 +56,8 @@ public class GraphGUI {
 	// vertex currently selected by mouse
 	private Vertex selectedVertex = null;
 	
+	private Thread algoThread;
+	
 	// constructor
 	public GraphGUI(GraphAlgorithm algo) {
 		this.algo = algo;
@@ -64,6 +69,9 @@ public class GraphGUI {
 		algorithms.add(new Kruskal(graph));
 		
 		algo.setGUI(this);
+		
+		algoThread = new Thread(algo);
+		algoThread.start();
 	}
 	
 	public void init() {
@@ -143,6 +151,9 @@ public class GraphGUI {
 					// reset the canvas temp line
 					canvas.setTempLine(null, null);
 					repaint();
+					
+					// reset selectedVertex
+					selectedVertex = null;
 				}
 			}
 		});
@@ -166,26 +177,22 @@ public class GraphGUI {
 				}
 			}
 		});
-		canvas.addMouseListener(new MouseAdapter() {
-			public void mouseReleased(MouseEvent e) {
-				selectedVertex = null;
-			}
-		});
 		
 		// menu
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuGraph = new JMenu("Graph");
 		menuBar.add(menuGraph);
-		JMenuItem menuFileNew = new JMenuItem("New");
-		menuFileNew.addActionListener(new ActionListener() {
+		JMenuItem menuGraphNew = new JMenuItem("New");
+		menuGraphNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setGraph(new Graph());
 				
 				System.out.println("New graph created");
 			}
 		});
-		menuGraph.add(menuFileNew);
+		menuGraphNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		menuGraph.add(menuGraphNew);
 		JMenuItem menuGraphOpen = new JMenuItem("Open");
 		menuGraphOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -202,6 +209,7 @@ public class GraphGUI {
 				System.out.println("Graph opened: " + chooser.getSelectedFile().getName());
 			}
 		});
+		menuGraphOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		menuGraph.add(menuGraphOpen);
 		JMenuItem menuGraphSave = new JMenuItem("Save");
 		menuGraphSave.addActionListener(new ActionListener() {
@@ -223,6 +231,7 @@ public class GraphGUI {
 				System.out.println("Graph saved: " + chooser.getSelectedFile().getName());
 			}
 		});
+		menuGraphSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		menuGraph.add(menuGraphSave);
 		
 		JMenu menuVertex = new JMenu("Vertex");
@@ -390,6 +399,7 @@ public class GraphGUI {
 		JMenuItem menuAlgoStop = new JMenuItem("Pause");
 		menuAlgoStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				algo.togglePause();
 			}
 		});
 		menuAlgo.add(menuAlgoStop);
