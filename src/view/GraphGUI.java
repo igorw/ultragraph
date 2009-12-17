@@ -36,28 +36,64 @@ import algorithm.Prim;
 import file.Reader;
 import file.Writer;
 
+/**
+ * main GUI class
+ */
 public class GraphGUI {
+	/**
+	 * currently active graphing algorithm
+	 */
 	private GraphAlgorithm algo;
+	
+	/**
+	 * main gui frame
+	 */
 	private JFrame frame = new JFrame("UltraGraph");
+	
+	/**
+	 * canvas for visualization
+	 */
 	private GraphCanvas canvas;
 	
+	/**
+	 * was the algorithm configured
+	 */
 	private boolean isConfigured = false;
 	
+	/**
+	 * list of graphing algorithms
+	 */
 	private Vector<GraphAlgorithm> algorithms = new Vector<GraphAlgorithm>();
 	
+	/**
+	 * factory for pretty-name vertices
+	 */
 	private VertexFactory vertexFactory = new VertexFactory();
 	
+	/**
+	 * the active graph
+	 */
 	private Graph graph = new Graph();
 	
-	// right-click context menu
-	// and mouse click location
+	/**
+	 * right-click context menu
+	 */
 	private JPopupMenu popup = new JPopupMenu();
+	
+	/**
+	 * mouse click location
+	 */
 	private Point mouseLocation = new Point();
 	
-	// vertex currently selected by mouse
+	/**
+	 * vertex currently selected by mouse
+	 * used for dragging
+	 */
 	private Vertex selectedVertex = null;
 	
-	// constructor
+	/**
+	 * constructor
+	 */
 	public GraphGUI() {
 		canvas = new GraphCanvas(graph);
 
@@ -70,6 +106,9 @@ public class GraphGUI {
 		algo.setGUI(this);
 	}
 	
+	/**
+	 * set up all components, set visible
+	 */
 	public void init() {
 		// set up look and feel
 		try {
@@ -476,10 +515,17 @@ public class GraphGUI {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * repaint the canvas
+	 */
 	public void repaint() {
 		canvas.repaint();
 	}
 	
+	/**
+	 * change the algorithm
+	 * @param algo algorithm
+	 */
 	public void setAlgorithm(GraphAlgorithm algo) {
 		this.algo = algo;
 		algo.setGraph(graph);
@@ -488,6 +534,10 @@ public class GraphGUI {
 		isConfigured = false;
 	}
 	
+	/**
+	 * change the graph
+	 * @param graph graph
+	 */
 	public void setGraph(Graph graph) {
 		this.graph = graph;
 		algo.setGraph(graph);
@@ -495,6 +545,10 @@ public class GraphGUI {
 		repaint();
 	}
 	
+	/**
+	 * main method
+	 * @param args args
+	 */
 	public static void main(String[] args) {
 		GraphGUI gui = new GraphGUI();
 		gui.init();
