@@ -7,3 +7,4 @@ anim_*.gif
 *.log
 *.toc
 *.out
+.DS_Store
