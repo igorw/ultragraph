@@ -190,29 +190,4 @@ public class Prim extends GraphAlgorithm {
 	public String toString() {
 		return getClass().getName();
 	}
-	
-	/*public static void main(String[] args) {
-		Vertex a = new Vertex("A");
-		Vertex b = new Vertex("B");
-		Vertex c = new Vertex("C");
-		Vertex d = new Vertex("D");
-		Vertex e = new Vertex("E");
-		Vertex f = new Vertex("F");
-		
-		Graph graph = new Graph();
-		graph.add(a, b, c, d, e, f);
-		
-		graph.connect(a, b, 5);
-		graph.connect(a, d, 4);
-		graph.connect(a, e, 8);
-		graph.connect(b, c, 3);
-		graph.connect(b, d, 3);
-		graph.connect(d, c, 7);
-		graph.connect(d, e, 3);
-		graph.connect(e, f, 1);
-		graph.connect(c, f, 2);
-		
-		Prim prim = new Prim(graph);
-		prim.execute();
-	}*/
 }

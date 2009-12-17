@@ -58,14 +58,14 @@ public class GraphGUI {
 	private Vertex selectedVertex = null;
 	
 	// constructor
-	public GraphGUI(GraphAlgorithm algo) {
-		this.algo = algo;
-		
+	public GraphGUI() {
 		canvas = new GraphCanvas(graph);
 
 		algorithms.add(new Dijkstra(graph, null, null));
 		algorithms.add(new Kruskal(graph));
 		algorithms.add(new Prim(graph));
+		
+		algo = algorithms.firstElement();
 		
 		algo.setGUI(this);
 	}
@@ -117,7 +117,10 @@ public class GraphGUI {
 				
 				mouseLocation.setPoint(e.getX(), e.getY());
 				
-				if (e.isPopupTrigger()) {
+				if (e.getClickCount() == 2) {
+					// double click
+					// ...
+				} else if (e.isPopupTrigger()) {
 					// show right-click menu
 					popup.show(e.getComponent(), e.getX(), e.getY());
 				} else if (e.isAltDown() && e.isShiftDown()) {
@@ -140,7 +143,7 @@ public class GraphGUI {
 						droppedVertex = v;
 						break;
 					}
-					if (droppedVertex != null) {
+					if (selectedVertex != null && droppedVertex != null) {
 						graph.connect(selectedVertex, droppedVertex);
 					}
 
@@ -490,5 +493,10 @@ public class GraphGUI {
 		algo.setGraph(graph);
 		canvas.setGraph(graph);
 		repaint();
+	}
+	
+	public static void main(String[] args) {
+		GraphGUI gui = new GraphGUI();
+		gui.init();
 	}
 }
