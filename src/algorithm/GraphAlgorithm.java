@@ -6,8 +6,7 @@ import model.Graph;
 import view.GraphGUI;
 
 /**
- * algorithm interface
- * algorithms can be run, they contain a graph
+ * abstract algorithm
  */
 public abstract class GraphAlgorithm implements Runnable {
 	/**
