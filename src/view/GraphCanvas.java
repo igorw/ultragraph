@@ -2,9 +2,11 @@ package view;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.util.Vector;
 
@@ -156,5 +158,28 @@ public class GraphCanvas extends Canvas {
 				g.drawString(String.valueOf(v.getLabel()), v.getX() * STEP + 20, v.getY() * STEP + 11);
 			}
 		}
+	}
+	
+	/**
+	 * implement double buffering
+	 * taken from: http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html
+	 */
+	@SuppressWarnings("deprecation")
+	public void update(Graphics g) {
+		Graphics offgc;
+		Image offscreen = null;
+		Dimension d = size();
+
+		// create the offscreen buffer and associated Graphics
+		offscreen = createImage(d.width, d.height);
+		offgc = offscreen.getGraphics();
+		// clear the exposed area
+		offgc.setColor(getBackground());
+		offgc.fillRect(0, 0, d.width, d.height);
+		offgc.setColor(getForeground());
+		// do normal redraw
+		paint(offgc);
+		// transfer offscreen to window
+		g.drawImage(offscreen, 0, 0, this);
 	}
 }
