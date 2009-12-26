@@ -23,9 +23,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
 
 import misc.Point;
 import misc.VertexFactory;
+import misc.WriterFileFilter;
 import model.Edge;
 import model.Graph;
 import model.Vertex;
@@ -33,6 +35,8 @@ import algorithm.Dijkstra;
 import algorithm.GraphAlgorithm;
 import algorithm.Kruskal;
 import algorithm.Prim;
+import file.DotWriter;
+import file.GraphWriter;
 import file.Reader;
 import file.Writer;
 
@@ -253,6 +257,16 @@ public class GraphGUI {
 		menuGraphSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
+
+				// save using default format
+				FileFilter f = new WriterFileFilter(new Writer());
+				chooser.addChoosableFileFilter(f);
+				
+				// save using dot format
+				chooser.addChoosableFileFilter(new WriterFileFilter(new DotWriter()));
+				
+				// set default writer
+				chooser.setFileFilter(f);
 				
 				int returnVal = chooser.showSaveDialog(frame);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -260,8 +274,8 @@ public class GraphGUI {
 				}
 				
 				try {
-					Writer w = new Writer(graph, chooser.getSelectedFile());
-					w.getClass(); // dummy
+					GraphWriter w = ((WriterFileFilter) chooser.getFileFilter()).getWriter();
+					w.write(graph, chooser.getSelectedFile());
 				} catch (IOException e1) {
 					System.out.println("Save failed");
 				}

@@ -8,10 +8,10 @@ import model.Edge;
 import model.Graph;
 import model.Vertex;
 
-public class Writer {
+public class Writer implements GraphWriter {
 	
 	// für die Funktion Writer müssen der Graph g und den gewünschte Namen für das Text File übergeben werden
-	public Writer(Graph g, File f) throws IOException{
+	public void write(Graph g, File f) throws IOException{
 		// Das File mit dem gewünschten Namen wird erzeugt
 		FileWriter file = new FileWriter(f);
 		// Solange Vertices im Graph g vorhanden sind
@@ -31,6 +31,10 @@ public class Writer {
 		
 		// file wird geschlossen
 		file.close();
+	}
+	
+	public String getName() {
+		return "UltraGraph";
 	}
 
 }
