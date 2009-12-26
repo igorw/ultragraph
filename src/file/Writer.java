@@ -10,7 +10,7 @@ import model.Vertex;
 
 public class Writer {
 	
-	// fŸr die Funktion Writer müssen der Graph g und den gewünschte Namen fŸr das Text File übergeben werden
+	// fŸr die Funktion Writer mŸssen der Graph g und den gewŸnschte Namen fŸr das Text File Ÿbergeben werden
 	public Writer(Graph g, File f) throws IOException{
 		// Das File mit dem gewŸnschten Namen wird erzeugt
 		FileWriter file = new FileWriter(f);
