@@ -34,6 +34,7 @@ public class DotWriter implements GraphWriter {
 		file.write("graph mygraph {\n");
 		
 		for (Vertex v : g.getVertices()) {
+			// negative y because it's postscript style coordinates
 			file.write("\t" + v.getName() + " [pos=\"" + v.getX() * STEP + "," + -v.getY() * STEP + "\"];\n");
 		}
 		
