@@ -444,7 +444,7 @@ public class GraphGUI {
 					algo.settingsFrame(frame);
 				}
 				algo.reset();
-				algo.startAlgorithm();
+				algo.startAlgorithm(false);
 			}
 		});
 		menuAlgoStart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
