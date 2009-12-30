@@ -200,7 +200,7 @@ public class Graph {
 	public static Edge getShortestEdge(Set<Edge> edges) {
 		Edge shortest = null;
 		for (Edge e : edges) {
-			if (shortest == null || e.getWeight() > shortest.getWeight()) {
+			if (shortest == null || e.getWeight() < shortest.getWeight()) {
 				shortest = e;
 			}
 		}
