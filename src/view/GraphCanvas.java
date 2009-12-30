@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.CubicCurve2D;
+import java.util.HashMap;
 import java.util.Vector;
 
 import misc.Point;
@@ -113,21 +115,54 @@ public class GraphCanvas extends Canvas {
 		// enable anti-aliasing
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		// draw edges
-		for (Edge e : graph.getEdges()) {
-			g.setColor(e.getColor());
-			g.drawLine(e.getV1().getX() * STEP + 8, e.getV1().getY() * STEP + 8, e.getV2().getX() * STEP + 8, e.getV2().getY() * STEP + 8);
+
+		// iterate over edgegroups
+		HashMap<String, Vector<Edge>> edgeGroupList = getEdgeGroupList(graph);
+		for (String key : edgeGroupList.keySet()) {
+			Vector<Edge> edgeGroup = edgeGroupList.get(key);
 			
-			// get mid coordinates
-			int x = (e.getV1().getX() + e.getV2().getX()) / 2;
-			int y = (e.getV1().getY() + e.getV2().getY()) / 2;
+			int size = edgeGroup.size();
+			int i = 0;
 			
-			g.setColor(Color.black);
-			g.setFont(new Font(null, Font.PLAIN, 10));
-			g.drawString(String.valueOf(e.getWeight()),
-				x * STEP,
-				y * STEP);
+			// draw curved edges
+			for (Edge e : edgeGroup) {
+				// get main coordinates
+				int x1 = e.getV1().getX() * STEP + 8;
+				int y1 = e.getV1().getY() * STEP + 8;
+				int x2 = e.getV2().getX() * STEP + 8;
+				int y2 = e.getV2().getY() * STEP + 8;
+				
+				// get mid coordinates
+				int x = (e.getV1().getX() + e.getV2().getX()) / 2;
+				int y = (e.getV1().getY() + e.getV2().getY()) / 2;
+				
+				// curve factor
+				int xFactor = 0;
+				int yFactor = 0;
+				
+				if (size > 1) {
+					if (i < size / 2) {
+						xFactor = -15 - 10*i;
+						yFactor = -15 - 10*i;
+					} else if (i > size / 2) {
+						xFactor = 15 + 10*(size-i);
+						yFactor = 15 + 10*(size-i);
+					}
+				}
+				
+				// draw curved edge
+				g2.setColor(e.getColor());
+				g2.draw(new CubicCurve2D.Float(x1, y1, x1 + xFactor, y1 + yFactor, x2 + xFactor, y2 + yFactor, x2, y2));
+				
+				// draw edge weight
+				g.setColor(Color.black);
+				g.setFont(new Font(null, Font.PLAIN, 10));
+				g.drawString(String.valueOf(e.getWeight()),
+					x * STEP + xFactor,
+					y * STEP + yFactor);
+				
+				i++;
+			}
 		}
 		
 		// draw temp line
@@ -181,5 +216,36 @@ public class GraphCanvas extends Canvas {
 		paint(offgc);
 		// transfer offscreen to window
 		g.drawImage(offscreen, 0, 0, this);
+	}
+	
+	public static HashMap<String, Vector<Edge>> getEdgeGroupList(Graph graph) {
+		// group all edges by connected vertices
+		// hashmap of "v1-v2" => Vector<Edge>
+		// needed for drawing curved edges
+		HashMap<String, Vector<Edge>> edgeGroupList = new HashMap<String, Vector<Edge>>();
+		for (Edge e : graph.getEdges()) {
+			// get hashcodes
+			int v1 = e.getV1().hashCode();
+			int v2 = e.getV2().hashCode();
+			
+			// get existing edge group
+			Vector<Edge> edgeGroup = null;
+			if (edgeGroupList.containsKey(v1 + "-" + v2)) {
+				edgeGroup = edgeGroupList.get(v1 + "-" + v2);
+			} else if (edgeGroupList.containsKey(v2 + "-" + v1)) {
+				edgeGroup = edgeGroupList.get(v2 + "-" + v1);
+			}
+			
+			// add edge group if none exists
+			if (edgeGroup == null) {
+				edgeGroup = new Vector<Edge>();
+				edgeGroupList.put(v1 + "-" + v2, edgeGroup);
+			}
+			
+			// add edge
+			edgeGroup.add(e);
+		}
+		
+		return edgeGroupList;
 	}
 }
