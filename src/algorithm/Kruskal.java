@@ -12,7 +12,7 @@ import model.Graph;
  * kruskal's algorithm
  * get a minimal spanning tree
  */
-public class Kruskal extends GraphAlgorithm {
+public class Kruskal extends DefaultGraphAlgorithm {
 	/**
 	 * forest containing trees
 	 */

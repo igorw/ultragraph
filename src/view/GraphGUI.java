@@ -538,12 +538,12 @@ public class GraphGUI {
 	
 	/**
 	 * change the algorithm
-	 * @param algo algorithm
+	 * @param selectedAlgo algorithm
 	 */
-	public void setAlgorithm(GraphAlgorithm algo) {
-		this.algo = algo;
-		algo.setGraph(graph);
-		algo.setGUI(this);
+	public void setAlgorithm(GraphAlgorithm selectedAlgo) {
+		this.algo = selectedAlgo;
+		selectedAlgo.setGraph(graph);
+		selectedAlgo.setGUI(this);
 		
 		isConfigured = false;
 	}

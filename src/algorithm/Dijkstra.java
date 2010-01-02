@@ -21,7 +21,7 @@ import model.Vertex;
  * dijkstra's algorithm
  * find shortest path between two vertices
  */
-public class Dijkstra extends GraphAlgorithm {
+public class Dijkstra extends DefaultGraphAlgorithm {
 	/**
 	 * the starting point vertex
 	 */

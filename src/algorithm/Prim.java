@@ -14,7 +14,7 @@ import model.Vertex;
  * prim's algorithm
  * get a minimal spanning tree
  */
-public class Prim extends GraphAlgorithm {
+public class Prim extends DefaultGraphAlgorithm {
 	/**
 	 * spanning tree containing edges
 	 */
