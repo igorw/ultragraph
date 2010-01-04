@@ -67,7 +67,7 @@ public class GraphGUI {
 	/**
 	 * list of graphing algorithms
 	 */
-	private Vector<GraphAlgorithm> algorithms = new Vector<GraphAlgorithm>();
+	private Vector<GraphAlgorithm> algorithms;
 	
 	/**
 	 * factory for pretty-name vertices
@@ -77,7 +77,7 @@ public class GraphGUI {
 	/**
 	 * the active graph
 	 */
-	private Graph graph = new Graph();
+	private Graph graph;
 	
 	/**
 	 * right-click context menu
@@ -96,18 +96,24 @@ public class GraphGUI {
 	private Vertex selectedVertex = null;
 	
 	/**
-	 * constructor
+	 * default constructor
 	 */
-	public GraphGUI() {
+	public GraphGUI(Vector<GraphAlgorithm> algorithms, Graph graph) {
+		this.graph = graph;
+		
 		canvas = new GraphCanvas(graph);
-
-		algorithms.add(new Dijkstra(graph, null, null));
-		algorithms.add(new Kruskal(graph));
-		algorithms.add(new Prim(graph));
+		
+		this.algorithms = algorithms;
 		
 		algo = algorithms.firstElement();
-		
 		algo.setGUI(this);
+	}
+	
+	/**
+	 * constructor
+	 */
+	public GraphGUI(Vector<GraphAlgorithm> algorithms) {
+		this(algorithms, new Graph());
 	}
 	
 	/**
@@ -564,7 +570,15 @@ public class GraphGUI {
 	 * @param args args
 	 */
 	public static void main(String[] args) {
-		GraphGUI gui = new GraphGUI();
+		Graph graph = new Graph();
+		
+		Vector<GraphAlgorithm> algorithms = new Vector<GraphAlgorithm>();
+		
+		algorithms.add(new Dijkstra(graph, null, null));
+		algorithms.add(new Kruskal(graph));
+		algorithms.add(new Prim(graph));
+		
+		GraphGUI gui = new GraphGUI(algorithms, graph);
 		gui.init();
 	}
 }
