@@ -462,12 +462,12 @@ public class GraphGUI {
 			}
 		});
 		menuAlgo.add(menuAlgoStop);
-		JMenuItem menuAlgoStep = new JMenuItem("Next Step");
+		/*JMenuItem menuAlgoStep = new JMenuItem("Next Step");
 		menuAlgoStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		menuAlgo.add(menuAlgoStep);
+		menuAlgo.add(menuAlgoStep);*/
 		JMenuItem menuAlgoSettings = new JMenuItem("Settings");
 		menuAlgoSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
