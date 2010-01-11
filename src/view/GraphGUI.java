@@ -39,6 +39,7 @@ import file.DotWriter;
 import file.GraphWriter;
 import file.Reader;
 import file.Writer;
+import file.XStreamWriter;
 
 /**
  * main GUI class
@@ -268,8 +269,9 @@ public class GraphGUI {
 				FileFilter f = new WriterFileFilter(new Writer());
 				chooser.addChoosableFileFilter(f);
 				
-				// save using dot format
+				// save using alternate format
 				chooser.addChoosableFileFilter(new WriterFileFilter(new DotWriter()));
+				chooser.addChoosableFileFilter(new WriterFileFilter(new XStreamWriter()));
 				
 				// set default writer
 				chooser.setFileFilter(f);
