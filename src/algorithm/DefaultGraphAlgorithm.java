@@ -134,4 +134,13 @@ public abstract class DefaultGraphAlgorithm implements GraphAlgorithm, Runnable 
 	public void run() {
 		execute();
 	}
+	
+	/**
+	 * string representation of algorithm
+	 * 
+	 * @return graph name
+	 */
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

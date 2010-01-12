@@ -106,13 +106,4 @@ public class Kruskal extends DefaultGraphAlgorithm {
 		
 		gui.repaint();
 	}
-	
-	/**
-	 * string representation of graph
-	 * 
-	 * @return graph name
-	 */
-	public String toString() {
-		return getClass().getName();
-	}
 }
