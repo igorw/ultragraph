@@ -280,7 +280,11 @@ output: result
 
 \subsection{Generell}
 
-Die Applikation \emph{UltraGraph} wurde in Java realisiert.
+Die Applikation \emph{UltraGraph} wurde in Java realisiert. Java enthält erweiterte Objektorientierte Features sowie eine einheitliche grafische Oberfläche und gute Unterstützung für die gängigsten Betriebssysteme.
+
+Abstraktion wurde eingesetzt, um die Komponenten so lose wie möglich zu koppeln. Beispielsweise ist das GUI nicht von einem bestimmten Algorithmus abhängig, es kann mehrere verwenden. Ausserdem wurden Teile des Model-View-Controller Patterns eingesetzt, welche die Logik von Daten und Darstellung trennen.
+
+Da der Quellcode weitgehend mit Javadoc kommentiert wurde, ist eine Javadoc-Dokumentation vorhanden.
 
 \subsection{Klassen}
 
@@ -417,6 +421,39 @@ Um eine Edge zu löschen, selektiert man im Menü \emph{Vertex $\rightarrow$ Rem
 
 UltraGraph beherscht sowohl den Dijkstra-Algorithmus, wie auch Kruskal und Prim. Um den zu verwendenden Algorithmus auszuwählen muss man \emph{Command + A} oder im Menü \emph{Algorithm $\rightarrow$ Select algorithm} wählen.
 
+Um den ausgewählten Algorithmus zu starten, wird \emph{Command + R} gedrückt, oder im Menü \emph{Algorithm $\rightarrow$ Start} ausgewählt. Im Falle das Dijkstra, muss noch konfiguriert werden, welches die Start- und Endknoten sein sollen, bei den anderen beiden ist keine Konfiguration nötig. Sobald diese vorgenommen wurde, wird der Algorithmus gestartet. Die Anzeige erfolgt direkt im Hauptfenster.
+
+Es ist möglich, den laufenden Algorithmus via \emph{Algorithm $\rightarrow$ Pause} zu pausieren.
+
+Falls das Programm auf der Kommandozeile ausgeführt wird, werden dort zusätzliche Informationen angezeigt.
+
+\newpage
+
+\subsection{Beispiele}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{screenshot/example.png}
+\end{center}
+\caption{Beispielsgraph nach Dijkstra Durchlauf}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{screenshot/example2.png}
+\end{center}
+\caption{Beispielsgraph nach Kruskal Durchlauf}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=\textwidth]{screenshot/example_dot.png}
+\end{center}
+\caption{Beispielsgraph mit Graphviz visualisiert}
+\end{figure}
+
 \newpage
 
 \section{Verwendete Mittel}
@@ -432,6 +469,9 @@ UltraGraph beherscht sowohl den Dijkstra-Algorithmus, wie auch Kruskal und Prim.
 	\emph{\href{http://graphviz.org}{http://graphviz.org}}
 \item \LaTeX: Textsatz-Software \\
 	\emph{\href{http://www.latex-project.org}{http://www.latex-project.org}}
+\item \emph{XStream}: Java XML-Enkodierungs-Bibliothek \\
+	\emph{\href{http://xstream.codehaus.org}{http://xstream.codehaus.org}} \\
+	\emph{\href{http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/index.html}{http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/index.html}}
 \end{itemize}
 
 \subsection{Quellen}
@@ -455,8 +495,12 @@ UltraGraph beherscht sowohl den Dijkstra-Algorithmus, wie auch Kruskal und Prim.
 	\emph{\href{http://students.ceid.upatras.gr/~papagel/project/pseukrus.htm}{http://students.ceid.upatras.gr/$\sim$papagel/project/pseukrus.htm}}
 \item Wikipedia: \emph{Algorithmus von Prim}, 13. September 2008, 12. Januar 2010 \\
 	\emph{\href{http://de.wikipedia.org/wiki/Algorithmus_von_Prim}{http://de.wikipedia.org/wiki/Algorithmus\_von\_Prim}}
-\item Kenji Ikeda, William F. Klostermeyer: \emph{Prim's Algorithm Demo} \\
+\item Kenji Ikeda, William F. Klostermeyer: \emph{Prim's Algorithm Demo}, 6. Juli 2001, 12. Januar 2010 \\
 	\emph{\href{http://www.unf.edu/~wkloster/foundations/PrimApplet/PrimApplet.htm}{http://www.unf.edu/$\sim$wkloster/foundations/PrimApplet/PrimApplet.htm}}
+\item Jean-Michel Léon: \emph{Implementing Double Buffering with Java}, 27. September 2006, 12. Januar 2010 \\
+	\emph{\href{http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html}{http://www.ecst.csuchico.edu/$\sim$amk/classes/csciOOP/double-buffering.html}}
+\item Unbekannter Author: \emph{The DOT Language}, unbekannte Datierung, 12. Januar 2010 \\
+	\emph{\href{http://www.graphviz.org/doc/info/lang.html}{http://www.graphviz.org/doc/info/lang.html}}
 \end{itemize}
 
 \subsubsection{Literatur}
