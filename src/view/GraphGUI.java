@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -513,7 +514,7 @@ public class GraphGUI {
 		JMenuItem menuHelpAbout = new JMenuItem("About");
 		menuHelpAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frame, "UltraGraph Copyright 2009 Boldi & Wiedler");
+				JOptionPane.showMessageDialog(frame, "UltraGraph Copyright 2009 Boldi & Wiedler", "About UltraGraph", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("logo.png"));
 			}
 		});
 		menuHelp.add(menuHelpAbout);
