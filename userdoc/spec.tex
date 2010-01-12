@@ -280,11 +280,142 @@ output: result
 
 \subsection{Generell}
 
-Die Applikation \emph{Boldi--Wiedler--Graph} wurde in Java realisiert.
+Die Applikation \emph{UltraGraph} wurde in Java realisiert.
 
-\newpage
+\subsection{Klassen}
 
-\section{Projektablauf}
+\subsubsection{Reader}
+
+Die Klasse Reader ist dazu da, um die gespeicherten Graphen aus einer Text Datei auszulesen, und den Graph zu erzeugen.
+
+Ablaufbeschreibung der Funktion \emph{getGraph}:
+
+\begin{enumerate}
+\item Aufruf der Funktion mit dem Namen des Files als Parameter.
+\item Einlesen der ersten Linie.
+\item Die Linien werden nun gesplitet
+\item Der erste Character der Linie wird überprüft
+\begin{itemize}\item Wenn \emph{v}, dann einen neuen Vertex mit den drei folgenden Characters
+\begin{itemize}\item Vertex wird zu Graph \emph{g} hinzugefügt.\end{itemize}\end{itemize}
+\begin{itemize}\item Wenn \emph{e}, dann eine neue Edge mit den drei folgenden Characters
+\begin{itemize}\item Im Graph \emph{g} werden zwei Vertex mit der Edge verbunden.\end{itemize}\end{itemize}
+\item Gibt den Graph \emph{g} zurück
+\end{enumerate}
+
+\subsubsection{Writer}
+
+Die Klasse Writer ist dazu da, um den Graph in eine Text Datei zu speichern.
+
+Ablaufbeschreibung:
+
+\begin{enumerate}
+\item Aufruf der Funktion mit den Parametern: Graph \emph{g} und des gewünschten Filename
+\item Das File wird erstellt
+\item Solange Vertices im Graph \emph{g} vorhanden sind
+\begin{itemize}\item Schreibe Identifikation, Name, X-Koordinate und Y-Koordinate in das File\end{itemize}
+\item Solange Edges im Graph \emph{g} vorhanden sind
+\begin{itemize}\item Schreibe Identifikation, Start Vertex, End Vertex und Gewichtung in das File\end{itemize}
+\item File wird geschlossen
+\end{enumerate}
+
+\subsubsection{Dijkstra}
+
+In der Klasse Dijekstra ist der eigentliche Algorithmus implementiert. Eine genauere Beschreibung des Algorithmus finden sie in Punkt 2.1.
+
+\subsubsection{Graph}
+
+\begin{itemize}
+\item Methode add(Vertex... vertices)
+\begin{itemize}\item fügt alle Vertices in den Vektror Vertices hinzu.\end{itemize}
+\item Methode connect(Vertex v1, Vertex v2, int weight)
+\begin{itemize}\item erzeugt Edges und fügt diesen dem Vektor Edge hinzu.\end{itemize}
+\item Methode connect(Vertex v1, Vertex v2)
+\begin{itemize}\item erzeugt Edges mit einem Defaultwert für weight und fügt diesen dem Vektor Edge hinzu.\end{itemize}
+\item Methode getVertices()
+\begin{itemize}\item gibt alle Vertices zurück\end{itemize}
+\item Methode getEdges()
+\begin{itemize}\item gibt alle Edges zurück\end{itemize}
+\item Methode removeVertex(Vertex v)
+\begin{itemize}\item löscht den Vertex v mit allen angeschlossenen Edges\end{itemize}
+\item Methode removeEdge(Edge e)
+\begin{itemize}\item löscht die Edge e\end{itemize}
+\item Methode removeVertices(Vector<Vertex> vv)
+\begin{itemize}\item löscht alle Vertices vv\end{itemize}
+\item Methode getVertexEdges(Vertex v)
+\begin{itemize}\item gibt alle mit v verbundenen Edges zurück\end{itemize}
+\item Methode getVerticesEdges(Vertex v1, Vertex v2)
+\begin{itemize}\item gibt alle mit v1 und v2 verbundenen Vertices zurück\end{itemize}
+\end{itemize}
+
+\subsubsection{Vertex}
+
+Die Klasse Vertex ist das Model für die Vertices.
+
+\subsubsection{Edge}
+
+Die Klasse Vertex ist das Model für die Edges.
+
+\subsubsection{GraphGUI}
+
+Die Klasse GraphGUI enthält das graphische Oberfläche von UltraGraph.
+
+\subsubsection{Point}
+
+Representiert die Koordinaten der Vertices.
+
+\subsubsection{EdgeEditWindow}
+
+Das Fenster für die Editierung eines Edges.
+
+\subsubsection{VertexFactory}
+
+Erstellt Vertex mit einem Namen.
+
+\subsubsection{VertexEditWindow}
+
+Das Fenster für die Editierung eines Vertex mit X- und Y-Position.
+
+\subsubsection{ItemSelectWindow}
+
+Auswahlfenster zum auswählen des gewünschten Edges oder Vertices zum editieren.
+
+\subsection{Anwendung}
+
+Wenn Sie UltraGraph starten erscheint das Hauptfenster. Die leere Fläche bietet Platz für Ihren Graphen.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{screenshot/main_window.png}
+\end{center}
+\end{figure}
+
+\subsubsection{Graphen}
+
+Nach dem Programmstart erscheint ein neuer leerer Graph. Falls Sie den momentanen Graph verwerfen wollen, drücken Sie \emph{Command + N}, um einen neuen zu erzeugen. Über \emph{Graph $\rightarrow$ New} besteht eine alternative Möglichkeit hierfür.
+
+Falls Sie einen gespeicherten Graphen laden wollen, drücken Sie \emph{Command + O}, und wählen Sie die Datei aus, welche den Graphen enthält. Über \emph{Graph $\rightarrow$ Open} besteht eine alternative Möglichkeit hierfür.
+
+Um einen Graphen zu speichern, drücken Sie \emph{Command + S}. Ein Graph kann in verschiedenen Formaten gespeichert werden: Das UltraGraph-Format, Graphviz-dot und XStream-XML. Wählen Sie den Ort und den Dateinamen für die Datei. Über \emph{Graph $\rightarrow$ Save} besteht eine alternative Möglichkeit hierfür.
+
+\subsubsection{Vertices}
+
+Um einen Vertex hinzuzufügen, muss mit gedrückter Alt-Taste auf die Position geklickt werden, an welcher der neue Vertex erscheinen soll. Über \emph{Vertex $\rightarrow$ Add} besteht eine alternative Möglichkeit hierfür.
+
+Vertices können verschoben werden, indem der Vertex mit gedrückter Maustaste an die gewünschte stelle gezogen wird. Über \emph{Vertex $\rightarrow$ Edit} besteht eine alternative Möglichkeit hierfür, bei der es auch möglich ist Vertices umzubenennen.
+
+Um einen Vertex zu löschen, muss mit gedrückten Shift- und Alt-Tasten auf den Vertex geklickt werden, welcher gelöscht werden soll. Über \emph{Vertex $\rightarrow$ Remove} besteht eine alternative Möglichkeit hierfür.
+
+\subsubsection{Edges}
+
+Um eine Edge hinzuzufügen, müssen die beiden zu verbindenden Vertices mit gedrückter Shift-Taste verbunden werden. Die neue Edge erscheint dann. Es ist auch möglich mehrere Edges zwischen zwei Vertices zu haben. Über \emph{Edge $\rightarrow$ Add} besteht eine alternative Möglichkeit hierfür.
+
+Die Gewichtung von Edges kann geändert werden, indem im Menü \emph{Vertex $\rightarrow$ Edit} ausgewählt wird.
+
+Um eine Edge zu löschen, selektiert man im Menü \emph{Vertex $\rightarrow$ Remove}.
+
+\subsubsection{Algorithmen}
+
+UltraGraph beherscht sowohl den Dijkstra-Algorithmus, wie auch Kruskal und Prim. Um den zu verwendenden Algorithmus auszuwählen muss man \emph{Command + A} oder im Menü \emph{Algorithm $\rightarrow$ Select algorithm} wählen.
 
 \newpage
 
@@ -293,10 +424,14 @@ Die Applikation \emph{Boldi--Wiedler--Graph} wurde in Java realisiert.
 \subsection{Programme}
 
 \begin{itemize}
-\item \emph{\href{http://www.eclipse.org}{Eclipse}:} Entwicklungsumgebung für Java
-\item \emph{\href{http://gaphor.sourceforge.net}{Gaphor}:} UML Diagramm Tool
-\item \emph{\href{http://graphviz.org}{Graphviz}:} Graphenvisualisierung
-\item \href{http://www.latex-project.org}{\LaTeX}: Textsatz-Software
+\item \emph{Eclipse:} Entwicklungsumgebung für Java \\
+	\emph{\href{http://www.eclipse.org}{http://www.eclipse.org}}
+\item \emph{Gaphor} UML Diagramm Tool \\
+	\emph{\href{http://gaphor.sourceforge.net}{http://gaphor.sourceforge.net}}
+\item \emph{Graphviz} Graphenvisualisierung \\
+	\emph{\href{http://graphviz.org}{http://graphviz.org}}
+\item \LaTeX: Textsatz-Software \\
+	\emph{\href{http://www.latex-project.org}{http://www.latex-project.org}}
 \end{itemize}
 
 \subsection{Quellen}
@@ -304,21 +439,29 @@ Die Applikation \emph{Boldi--Wiedler--Graph} wurde in Java realisiert.
 \subsubsection{WWW}
 
 \begin{itemize}
-\item \emph{\href{http://ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}{Dijkstra’s Algorithm (PDF)}}
-\item \emph{\href{http://www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien_inf/kommuniation_kryptographie/routing/la3.pdf}{Der Algorithmus von Dijkstra (PDF)}}
-\item \emph{\href{http://de.wikipedia.org/wiki/Algorithmus_von_Kruskal}{Algorithmus von Kruskal -- Wikipedia}}
-\item \emph{\href{http://infofrosch.info/a/al/algorithmus_von_kruskal.html}{Algorithmus von Kruskal Info}}
-\item \emph{\href{http://students.ceid.upatras.gr/~papagel/project/kruskal.htm}{Kruskal Algorithm}}
-\item \emph{\href{http://students.ceid.upatras.gr/~papagel/project/pseukrus.htm}{Pseudocode For Kruskal Algorithm}}
-\item \emph{\href{http://de.wikipedia.org/wiki/Algorithmus_von_Prim}{Algorithmus von Prim -- Wikipedia}}
-\item \emph{\href{http://www.unf.edu/~wkloster/foundations/PrimApplet/PrimApplet.htm}{Prim's Algorithm Demo}}
-\item \emph{\href{http://en.wikibooks.org/wiki/LaTeX}{LaTeX -- Wikibooks}}
+\item vkaul: \emph{Dijkstra's Alhorithm}, 23. Januar 2004, 12. Januar, 2010 \\
+	\emph{\href{http://ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/15-082JNetwork-OptimizationSpring2003/FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}{http://ocw.mit.edu/NR/rdonlyres/Sloan-School-of-Management/15-082JNetwork-OptimizationSpring2003/ \\
+	FC13EFA1-0FE2-4BFB-B019-8939606EDDCC/0/dijkstrasalgorithm.pdf}}
+\item Unbekannter Author: \emph{Der Algorithmus von Dijkstra}, 31. März 1998, 12. Januar, 2010 \\
+	\emph{\href{http://www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien_inf/kommuniation_kryptographie/routing/la3.pdf}{http://www.educ.ethz.ch/lehrpersonen/informatik/unterrichtsmaterialien\_inf/kommuniation\_kryptographie/ \\
+	routing/la3.pdf}}
+\item Wikipedia: \emph{Algorithmus von Kruskal}, 18. August 2009, 12. Januar 2010 \\
+	\emph{\href{http://de.wikipedia.org/wiki/Algorithmus_von_Kruskal}{http://de.wikipedia.org/wiki/Algorithmus\_von\_Kruskal}}
+\item Jean-Philippe Rameau: \emph{Algorithmus von Kruskal Info}, unbekannte Datierung, 12. Dezember 2009 \\
+	\emph{\href{http://infofrosch.info/a/al/algorithmus_von_kruskal.html}{http://infofrosch.info/a/al/algorithmus\_von\_kruskal.html}}
+\item Papagelis Athanasios: \emph{Kruskal Algorithm}, 13. Oktober 1997, 12. Januar 2010 \\
+	\emph{\href{http://students.ceid.upatras.gr/~papagel/project/kruskal.htm}{http://students.ceid.upatras.gr/$\sim$papagel/project/kruskal.htm}}
+\item Papagelis Athanasios: \emph{Pseudocode For Kruskal Algorithm}, 13. Oktober 1997, 12. Januar 2010 \\
+	\emph{\href{http://students.ceid.upatras.gr/~papagel/project/pseukrus.htm}{http://students.ceid.upatras.gr/$\sim$papagel/project/pseukrus.htm}}
+\item Wikipedia: \emph{Algorithmus von Prim}, 13. September 2008, 12. Januar 2010 \\
+	\emph{\href{http://de.wikipedia.org/wiki/Algorithmus_von_Prim}{http://de.wikipedia.org/wiki/Algorithmus\_von\_Prim}}
+\item Kenji Ikeda, William F. Klostermeyer: \emph{Prim's Algorithm Demo} \\
+	\emph{\href{http://www.unf.edu/~wkloster/foundations/PrimApplet/PrimApplet.htm}{http://www.unf.edu/$\sim$wkloster/foundations/PrimApplet/PrimApplet.htm}}
 \end{itemize}
 
 \subsubsection{Literatur}
 \begin{itemize}
-\item \emph{Networks -- Student text and unit guide, Cambridge 2000}
-\item andere Unterlagen aus dem Unterricht
+\item \emph{Networks -- Student text and unit guide}, Cambridge University Press, 2000
 \end{itemize}
 
 \end{document}
