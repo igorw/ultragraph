@@ -175,7 +175,7 @@ public class Dijkstra extends DefaultGraphAlgorithm {
 	}
 	
 	/**
-	 * find the vertex with the lowest weight
+	 * find the vertex with the lowest weight and isn't boxed
 	 * first sort vertices asc, then check conditions
 	 * 
 	 * @return lowest weighted vertex
