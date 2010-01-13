@@ -155,7 +155,7 @@ public class Dijkstra extends DefaultGraphAlgorithm {
 			breakPoint();
 			
 			// targeted vertex is already touched
-			// unless we can get a better deal, we skip labelling
+			// unless we can get a better deal, we skip labeling
 			// this also catches going back to parent vertices
 			if (de.getTarget().isLabeled() && de.getEdge().getFullWeight(v) >= de.getTarget().getLabel()) {
 				System.out.println(v + " " + de.getTarget() + " " + de.getTarget().getLabel() + " unprofitable");
