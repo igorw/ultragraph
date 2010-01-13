@@ -25,8 +25,6 @@ public class Kruskal extends DefaultGraphAlgorithm {
 	 */
 	public Kruskal(Graph graph) {
 		super(graph);
-		
-		this.graph.sortEdges();
 	}
 	
 	/**
@@ -38,6 +36,8 @@ public class Kruskal extends DefaultGraphAlgorithm {
 		for (Edge e : graph.getEdges()) {
 			e.setColor(Color.gray);
 		}
+		
+		sortEdges();
 		
 		while (true) {
 			Edge shortestEdge = getShortestEdge();
@@ -101,9 +101,17 @@ public class Kruskal extends DefaultGraphAlgorithm {
 	public void reset() {
 		super.reset();
 		
-		graph.sortEdges();
+		sortEdges();
 		forest.clear();
 		
 		gui.repaint();
+	}
+	
+	/**
+	 * sort the graph's edges
+	 * method can be overwritten
+	 */
+	public void sortEdges() {
+		graph.sortEdges();
 	}
 }

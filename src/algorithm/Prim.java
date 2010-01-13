@@ -112,7 +112,7 @@ public class Prim extends DefaultGraphAlgorithm {
 				continue;
 			}
 			
-			if (shortest == null || e.getEdge().getWeight() < shortest.getWeight()) {
+			if (shortest == null || compareEdges(e.getEdge(), shortest)) {
 				shortest = e.getEdge();
 			}
 		}
@@ -137,7 +137,7 @@ public class Prim extends DefaultGraphAlgorithm {
 				continue;
 			}
 			
-			if (shortest == null || e.getWeight() < shortest.getWeight()) {
+			if (shortest == null || compareEdges(e, shortest)) {
 				shortest = e;
 			}
 		}
@@ -150,7 +150,7 @@ public class Prim extends DefaultGraphAlgorithm {
 	 * @param edge edge
 	 * @return touches tree exclusively
 	 */
-	private boolean touchesTreeExclusive(Edge edge) {
+	public boolean touchesTreeExclusive(Edge edge) {
 		int matches = 0;
 		for (Vertex vertex : tree.getVertices()) {
 			if (edge.getV1() == vertex) matches++;
@@ -180,5 +180,13 @@ public class Prim extends DefaultGraphAlgorithm {
 		tree = new Tree();
 		
 		gui.repaint();
+	}
+	
+	/**
+	 * compare edge e1 to edge e2
+	 * useful when reversing the algorithm
+	 */
+	public boolean compareEdges(Edge e1, Edge e2) {
+		return e1.getWeight() < e2.getWeight();
 	}
 }

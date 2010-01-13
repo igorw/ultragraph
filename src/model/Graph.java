@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -177,6 +178,18 @@ public class Graph {
 	 */
 	public void sortEdges() {
 		Collections.sort(edges);
+	}
+	
+	/**
+	 * sort edges in reverse order
+	 * simply compare the other way round
+	 */
+	public void sortEdgesReverse() {
+		Collections.sort(edges, new Comparator<Edge>() {
+			public int compare(Edge e1, Edge e2) {
+				return e2.compareTo(e1);
+			}
+		});
 	}
 	
 	/**

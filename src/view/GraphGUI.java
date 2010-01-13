@@ -36,6 +36,8 @@ import algorithm.Dijkstra;
 import algorithm.GraphAlgorithm;
 import algorithm.Kruskal;
 import algorithm.Prim;
+import algorithm.ReverseKruskal;
+import algorithm.ReversePrim;
 import file.DotWriter;
 import file.GraphWriter;
 import file.Reader;
@@ -591,6 +593,8 @@ public class GraphGUI {
 		algorithms.add(new Dijkstra(graph, null, null));
 		algorithms.add(new Kruskal(graph));
 		algorithms.add(new Prim(graph));
+		algorithms.add(new ReverseKruskal(graph));
+		algorithms.add(new ReversePrim(graph));
 		
 		GraphGUI gui = new GraphGUI(algorithms, graph);
 		gui.init();
