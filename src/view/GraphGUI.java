@@ -179,6 +179,7 @@ public class GraphGUI {
 					graph.removeAll(canvas.getMouseVertices(e.getX() / GraphCanvas.STEP, e.getY() / GraphCanvas.STEP));
 					repaint();
 				} else if (e.isAltDown()) {
+					// create vertex
 					Vertex v = vertexFactory.getVertex();
 					v.setX((int) e.getX() / GraphCanvas.STEP);
 					v.setY((int) e.getY() / GraphCanvas.STEP);
@@ -195,7 +196,17 @@ public class GraphGUI {
 						break;
 					}
 					if (selectedVertex != null && droppedVertex != null) {
-						graph.connect(selectedVertex, droppedVertex);
+						Edge edge = graph.connect(selectedVertex, droppedVertex);
+						
+						// show window to edit new edge
+						final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", graph, edge);
+						w.addSaveListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								w.save();
+								repaint();
+							}
+						});
+						w.setVisible(true);
 					}
 
 					// reset the canvas temp line
