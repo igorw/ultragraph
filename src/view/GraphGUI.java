@@ -202,6 +202,7 @@ public class GraphGUI {
 						
 						// show window to edit new edge
 						final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", graph, edge);
+						w.setLocation(frame.getX(), frame.getY());
 						w.addSaveListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								w.save();
@@ -314,6 +315,7 @@ public class GraphGUI {
 		menuVertexAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final VertexEditWindow w = new VertexEditWindow(frame, "Add Vertex");
+				w.setLocation(frame.getX(), frame.getY());
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						graph.add(w.getVertex());
@@ -333,6 +335,7 @@ public class GraphGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", graph.getVertices());
+				s.setLocation(frame.getX(), frame.getY());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedVertex = s.getItem();
@@ -346,6 +349,7 @@ public class GraphGUI {
 				}
 				
 				final VertexEditWindow w = new VertexEditWindow(frame, "Edit Vertex", selectedVertex);
+				w.setLocation(frame.getX(), frame.getY());
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						w.save();
@@ -363,6 +367,7 @@ public class GraphGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				final ItemSelectWindow<Vertex> s = new ItemSelectWindow<Vertex>(frame, "Select Vertex", "Vertex", graph.getVertices());
+				s.setLocation(frame.getX(), frame.getY());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedVertex = s.getItem();
@@ -388,6 +393,7 @@ public class GraphGUI {
 		menuEdgeAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final EdgeEditWindow w = new EdgeEditWindow(frame, "Add Edge", graph);
+				w.setLocation(frame.getX(), frame.getY());
 				
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -420,6 +426,7 @@ public class GraphGUI {
 				}
 				
 				final EdgeEditWindow w = new EdgeEditWindow(frame, "Edit Edge", graph, selectedEdge);
+				w.setLocation(frame.getX(), frame.getY());
 				w.addSaveListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						w.save();
@@ -437,6 +444,7 @@ public class GraphGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				final ItemSelectWindow<Edge> s = new ItemSelectWindow<Edge>(frame, "Select Edge", "Edge", graph.getEdges());
+				s.setLocation(frame.getX(), frame.getY());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedEdge = s.getItem();
@@ -502,6 +510,7 @@ public class GraphGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				final ItemSelectWindow<GraphAlgorithm> s = new ItemSelectWindow<GraphAlgorithm>(frame, "Select algorithm", "Algorithm", algorithms, algo);
+				s.setLocation(frame.getX(), frame.getY());
 				s.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selectedAlgo = s.getItem();
