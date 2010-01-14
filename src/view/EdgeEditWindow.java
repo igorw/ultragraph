@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import model.Edge;
 import model.Graph;
@@ -47,6 +49,15 @@ public class EdgeEditWindow extends JDialog {
 		getContentPane().add(new JLabel("Weight"));
 		weightField = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
 		getContentPane().add(weightField);
+		
+		// save on enter
+		weightField.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (weightField.isCursorSet()) {
+					dispose();
+				}
+			}
+		});
 	
 		getContentPane().add(new JLabel(""));
 		saveButton = new JButton("Save");
